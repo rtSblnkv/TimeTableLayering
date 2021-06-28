@@ -1,5 +1,7 @@
 package TTL.entity;
 
+
+import java.util.List;
 import java.util.Map;
 
 enum ORDER_TYPES{
@@ -9,29 +11,50 @@ enum ORDER_TYPES{
 }
 
 public class Order {
+
     //order_id,date,time,order_type,branch_code,order_items,order_price,customer_lat,customer_lon,customerHasloyalty?,distance_to_customer_KM,delivery_fee
     private int orderId;
     private String date;
     private String time;
-    private int orderType;
-    private  String branchCode;
-    private Map<String,Integer> orderItems;
+    private String orderType;
+    private String branchCode;
+    private Node location;
+    private Boolean hasLoyality;
+    private List<OrderItem> orderItems;
     private double order_price;
     private double distanceTo;
     private double delivery_fee;
 
     public Order(){}
 
-    public Order(int orderId, String date, String time, int orderType, String branchCode, Map<String, Integer> orderItems, double order_price, double distanceTo, double delivery_fee) {
+    public Order(int orderId, String date, String time, String orderType, String branchCode, Node location, Boolean hasLoyality, List<OrderItem> orderItems, double order_price, double distanceTo, double delivery_fee) {
         this.orderId = orderId;
         this.date = date;
         this.time = time;
         this.orderType = orderType;
         this.branchCode = branchCode;
+        this.location = location;
+        this.hasLoyality = hasLoyality;
         this.orderItems = orderItems;
         this.order_price = order_price;
         this.distanceTo = distanceTo;
         this.delivery_fee = delivery_fee;
+    }
+
+    public Node getLocation() {
+        return location;
+    }
+
+    public void setLocation(Node location) {
+        this.location = location;
+    }
+
+    public Boolean getHasLoyality() {
+        return hasLoyality;
+    }
+
+    public void setHasLoyality(Boolean hasLoyality) {
+        this.hasLoyality = hasLoyality;
     }
 
     public int getOrderId() {
@@ -58,11 +81,11 @@ public class Order {
         this.time = time;
     }
 
-    public int getOrderType() {
+    public String getOrderType() {
         return orderType;
     }
 
-    public void setOrderType(int orderType) {
+    public void setOrderType(String orderType) {
         this.orderType = orderType;
     }
 
@@ -74,11 +97,11 @@ public class Order {
         this.branchCode = branchCode;
     }
 
-    public Map<String, Integer> getOrderItems() {
+    public List<OrderItem> getOrderItems() {
         return orderItems;
     }
 
-    public void setOrderItems(Map<String, Integer> orderItems) {
+    public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
 
