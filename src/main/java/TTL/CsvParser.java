@@ -1,14 +1,10 @@
 package TTL;
 
-import TTL.entity.OrderItem;
+import TTL.entity.*;
 
 import java.util.List;
 
-public class Parser {
+public class CsvParser {
 
-    public static List<OrderItem> parseList(String order)
-    {
-        return null;
 
-    }
 }

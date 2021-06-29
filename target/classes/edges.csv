@@ -1,4 +1,4 @@
-num,u,v,distance(m),street type,speed(km/h)
+dist_on_limit,u,v,distance(m),street type,speed(km/h)
 0,711327755,711332946,58.0,1,15.0
 2,711327755,55725841,15.0,2,20.0
 3,711327755,711327760,165.0,1,15.0
