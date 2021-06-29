@@ -1,27 +1,22 @@
 package TTL.entity;
 
+import com.opencsv.bean.CsvBindByName;
+
 import java.io.Serializable;
 
 public class Node implements Serializable {
-    private int id;
+    @CsvBindByName(column="node")
+    private long id;
+    @CsvBindByName(column="lat")
     private double latitude;
+    @CsvBindByName(column="lon")
     private double longtitude;
 
     public Node(){}
 
-    public Node(int id,double latitude,double longtitude)
-    {
-        this.id = id;
-        this.latitude = latitude ;
-        this.longtitude = longtitude;
-    }
+    public long getId() { return id; }
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId(int id)
+    public void setId(long id)
     {
         this.id=id;
     }
@@ -46,6 +41,12 @@ public class Node implements Serializable {
         this.latitude  = latitude ;
     }
 
+    @Override
+    public String toString(){
+        return "id: " + id +
+                " latitude: " + latitude +
+                " longtitude: " + longtitude;
+    }
 
 
 }

@@ -1,75 +1,81 @@
 package TTL.entity;
 
 
-import java.util.List;
-import java.util.Map;
+import com.opencsv.bean.CsvBindAndSplitByName;
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvDate;
 
-enum ORDER_TYPES{
-    BREAKFAST,
-    LUNCH,
-    DINNER
-}
+import java.util.Date;
+import java.util.List;
+
 
 public class Order {
 
-    //order_id,date,time,order_type,branch_code,order_items,order_price,customer_lat,customer_lon,customerHasloyalty?,distance_to_customer_KM,delivery_fee
-    private int orderId;
-    private String date;
+    @CsvBindByName(column="order_id")
+    private String orderId;
+
+    @CsvBindByName
+    @CsvDate("YYYY-MM-DD")
+    private Date date;
+
+    @CsvBindByName
     private String time;
+
+    @CsvBindByName(column="order_type")
     private String orderType;
+
+    @CsvBindByName(column="branch_code")
     private String branchCode;
-    private Node location;
+
+    @CsvBindByName(column="order_price")
+    private double orderPrice;
+
+    @CsvBindByName(column="customer_lat")
+    private double latitude;
+
+    @CsvBindByName(column="customer_lon")
+    private double longtude;
+
+    @CsvBindByName(column="customerHasloyalty?")
     private Boolean hasLoyality;
+
+    //TODO: write converter for order lists
+
+    //@CsvBindAndSplitByName(column="order_items",elementType= OrderItem.class)
     private List<OrderItem> orderItems;
-    private double order_price;
+
+    @CsvBindByName(column="order_items")
+    private String ois;
+
+    @CsvBindByName(column="distance_to_customer_KM")
     private double distanceTo;
-    private double delivery_fee;
+
+    @CsvBindByName(column="delivery_fee")
+    private double deliveryFee;
 
     public Order(){}
 
-    public Order(int orderId, String date, String time, String orderType, String branchCode, Node location, Boolean hasLoyality, List<OrderItem> orderItems, double order_price, double distanceTo, double delivery_fee) {
-        this.orderId = orderId;
-        this.date = date;
-        this.time = time;
-        this.orderType = orderType;
-        this.branchCode = branchCode;
-        this.location = location;
-        this.hasLoyality = hasLoyality;
-        this.orderItems = orderItems;
-        this.order_price = order_price;
-        this.distanceTo = distanceTo;
-        this.delivery_fee = delivery_fee;
-    }
-
-    public Node getLocation() {
-        return location;
-    }
-
-    public void setLocation(Node location) {
-        this.location = location;
-    }
-
-    public Boolean getHasLoyality() {
-        return hasLoyality;
-    }
-
-    public void setHasLoyality(Boolean hasLoyality) {
-        this.hasLoyality = hasLoyality;
-    }
-
-    public int getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public String getOis() {
+        return ois;
+    }
+
+    public void setOis(String ois) {
+        this.ois = ois;
+    }
+
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -97,35 +103,84 @@ public class Order {
         this.branchCode = branchCode;
     }
 
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
+    public double getOrderPrice() {
+        return orderPrice;
     }
 
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
+    public void setOrderPrice(double orderPrice) {
+        this.orderPrice = orderPrice;
     }
 
-    public double getOrder_price() {
-        return order_price;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setOrder_price(double order_price) {
-        this.order_price = order_price;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
-    public double getDistanceTo() {
-        return distanceTo;
+    public double getLongtude() {
+        return longtude;
     }
 
-    public void setDistanceTo(double distanceTo) {
-        this.distanceTo = distanceTo;
+    public void setLongtude(double longtude) {
+        this.longtude = longtude;
     }
 
-    public double getDelivery_fee() {
-        return delivery_fee;
+    public Boolean getHasLoyality() {
+        return hasLoyality;
     }
 
-    public void setDelivery_fee(double delivery_fee) {
-        this.delivery_fee = delivery_fee;
+    public void setHasLoyality(Boolean hasLoyality) {
+        this.hasLoyality = hasLoyality;
+    }
+
+    public List<OrderItem> getOrderItems() { return orderItems; }
+
+    public void setOrderItems(List<OrderItem> orderItems){ this.orderItems = orderItems; }
+
+    public double getDistanceTo() { return distanceTo; }
+
+    public void setDistanceTo(double distanceTo) { this.distanceTo = distanceTo; }
+
+    public double getDeliveryFee() { return deliveryFee; }
+
+    public void setDeliveryFee(double deliveryFee) { this.deliveryFee = deliveryFee; }
+
+    @Override
+    public String toString() {
+        if(orderItems != null)
+        {
+            StringBuilder ois = new StringBuilder("(");
+            for (OrderItem oi : orderItems)
+            {
+                ois.append(oi.toString())  ;
+            }
+            ois.append(")");
+            return "order id = " + orderId +
+                    ", date = " + date +
+                    ", time = " + time +
+                    ", orderType = " + orderType  +
+                    ", branchCode = " + branchCode +
+                    ", orderPrice = " + orderPrice +
+                    ", latitude = " + latitude +
+                    ", longtude = " + longtude +
+                    ", hasLoyality = " + hasLoyality +
+                    ", orderItems = " + ois.toString() +
+                    ", distanceTo = " + distanceTo +
+                    ", deliveryFee = " + deliveryFee;
+        }
+        return "order id = " + orderId +
+                ", date = " + date +
+                ", time = " + time +
+                ", orderType = " + orderType  +
+                ", branchCode = " + branchCode +
+                ", orderPrice = " + orderPrice +
+                ", latitude = " + latitude +
+                ", longtude = " + longtude +
+                ", ois = " + ois +
+                ", hasLoyality = " + hasLoyality +
+                ", distanceTo = " + distanceTo +
+                ", deliveryFee = " + deliveryFee;
     }
 }

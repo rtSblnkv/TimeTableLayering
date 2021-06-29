@@ -1,31 +1,62 @@
 package TTL.entity;
 
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvRecurse;
+
 import java.io.Serializable;
 
 public class Branch implements Serializable {
-    private Node location;
-    private String branch_code;
+
+    @CsvBindByName(column = "lon")
+    private double longtitude;
+
+    @CsvBindByName(column = "lat")
+    private double latitude;
+
+    private long nodeId;
+
+    @CsvBindByName(column ="branch_code")
+    private String branchCode;
+
+    @CsvBindByName(column ="branch_name")
+    private String branchName;
 
     public Branch() {}
 
-    public Branch(Node location, String branch_code) {
-        this.location = location;
-        this.branch_code = branch_code;
+    public long getNodeId() {
+        return nodeId;
     }
 
-    public Node getLocation() {
-        return location;
+    public void setNodeId(int nodeId) {
+        this.nodeId = nodeId;
     }
 
-    public void setLocation(Node location) {
-        this.location = location;
+    public double getLongtitude() { return longtitude; }
+
+    public void setLongtitude(double longtitude) { this.longtitude = longtitude; }
+
+    public double getLatitude() { return latitude; }
+
+    public void setLatitude(double latitude) { this.latitude = latitude; }
+
+    public String getBranchCode() {
+        return branchCode;
     }
 
-    public String getBranch_code() {
-        return branch_code;
+    public void setBranchCode(String branchCode) {
+        this.branchCode = branchCode;
     }
 
-    public void setBranch_code(String branch_code) {
-        this.branch_code = branch_code;
+    public String getBranchName() { return branchName; }
+
+    public void setBranchName(String branchName) { this.branchName = branchName; }
+
+    @Override
+    public String toString()
+    {
+        return "Branch code: " + branchCode +
+                ", name:" + branchName +
+                "location: " + latitude + "." + longtitude;
     }
+
 }

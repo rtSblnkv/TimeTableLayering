@@ -1,52 +1,68 @@
 package TTL.entity;
 
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvIgnore;
+
 import java.io.Serializable;
 
 public class Edge implements Serializable {
-    private Node from;
-    private Node to;
+
+    @CsvBindByName(column = "u")
+    private long from;
+
+    @CsvBindByName(column = "v")
+    private long to;
+
+    @CsvBindByName(column="distance(m)")
     private double distance;
-    private int speed_limit;
+
+    @CsvBindByName(column="speed(km/h)")
+    private double speedLimit;
+
+    @CsvIgnore
+    private int street_type;
+
+    @CsvIgnore
+    private double dist_on_limit;
+
 
     public Edge(){ }
 
-    public Edge(Node from, Node to, double distance, int speed_limit) {
-        this.from = from;
-        this.to = to;
-        this.distance = distance;
-        this.speed_limit = speed_limit;
-    }
-
-    public Node getFrom() {
+    public long getFrom() {
         return from;
     }
 
-    public void setFrom(Node from) {
+    public void setFrom(long from) {
         this.from = from;
     }
 
-    public Node getTo() {
+    public long getTo() {
         return to;
     }
 
-    public void setTo(Node to) {
+    public void setTo(long to) {
         this.to = to;
     }
 
-    public double getDistance() {
-        return distance;
-    }
+    public void setTo(int to) { this.to = to; }
 
-    public void setDistance(double distance) {
-        this.distance = distance;
-    }
+    public double getDistance() { return distance; }
 
-    public int getSpeed_limit() {
-        return speed_limit;
-    }
+    public void setDistance(double distance) { this.distance = distance; }
 
-    public void setSpeed_limit(int speed_limit) {
-        this.speed_limit = speed_limit;
-    }
+    public double getSpeedLimit() { return speedLimit;}
 
+    public void setSpeedLimit(int speedLimit) { this.speedLimit = speedLimit; }
+
+    public double getDist_on_limit() { return dist_on_limit; }
+
+    public void setDist_on_limit(double dist_on_limit) { this.dist_on_limit = dist_on_limit;}
+
+    @Override
+    public String toString() {
+        return "from: " + from +
+                ", to: " + to +
+                ", distance: " + distance +
+                ", speedLimit: " + speedLimit;
+    }
 }

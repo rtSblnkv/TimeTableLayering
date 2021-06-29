@@ -1,5 +1,7 @@
 package TTL.entity;
 
+import com.opencsv.bean.CsvBindByName;
+
 public class OrderItem{
     private String dish;
     private int count;
@@ -18,5 +20,10 @@ public class OrderItem{
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    @Override
+    public String toString() {
+        return " [" + dish  + ", count]" + count;
     }
 }
