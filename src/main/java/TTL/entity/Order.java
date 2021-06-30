@@ -1,10 +1,12 @@
 package TTL.entity;
 
 
+import TTL.TextToOrderItems;
 import com.opencsv.bean.CsvBindAndSplitByName;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,13 +41,8 @@ public class Order {
     @CsvBindByName(column="customerHasloyalty?")
     private Boolean hasLoyality;
 
-    //TODO: write converter for order lists
-
-    //@CsvBindAndSplitByName(column="order_items",elementType= OrderItem.class)
+    @CsvBindAndSplitByName(column="order_items",splitOn = "]",elementType= OrderItem.class,converter = TextToOrderItems.class)
     private List<OrderItem> orderItems;
-
-    @CsvBindByName(column="order_items")
-    private String ois;
 
     @CsvBindByName(column="distance_to_customer_KM")
     private double distanceTo;
@@ -55,24 +52,12 @@ public class Order {
 
     public Order(){}
 
-    public String getOrderId() {
-        return orderId;
-    }
+    public String getOrderId() { return orderId; }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
+    public void setOrderId(String orderId) { this.orderId = orderId; }
 
     public Date getDate() {
         return date;
-    }
-
-    public String getOis() {
-        return ois;
-    }
-
-    public void setOis(String ois) {
-        this.ois = ois;
     }
 
     public void setDate(Date date) {
@@ -137,7 +122,7 @@ public class Order {
 
     public List<OrderItem> getOrderItems() { return orderItems; }
 
-    public void setOrderItems(List<OrderItem> orderItems){ this.orderItems = orderItems; }
+    public void setOrderItems(ArrayList<OrderItem> orderItems){ this.orderItems = orderItems; }
 
     public double getDistanceTo() { return distanceTo; }
 
@@ -151,12 +136,7 @@ public class Order {
     public String toString() {
         if(orderItems != null)
         {
-            StringBuilder ois = new StringBuilder("(");
-            for (OrderItem oi : orderItems)
-            {
-                ois.append(oi.toString())  ;
-            }
-            ois.append(")");
+            System.out.println(orderItems);
             return "order id = " + orderId +
                     ", date = " + date +
                     ", time = " + time +
@@ -166,7 +146,7 @@ public class Order {
                     ", latitude = " + latitude +
                     ", longtude = " + longtude +
                     ", hasLoyality = " + hasLoyality +
-                    ", orderItems = " + ois.toString() +
+                    ", orderItems = " + orderItems.toString() +
                     ", distanceTo = " + distanceTo +
                     ", deliveryFee = " + deliveryFee;
         }
@@ -178,7 +158,6 @@ public class Order {
                 ", orderPrice = " + orderPrice +
                 ", latitude = " + latitude +
                 ", longtude = " + longtude +
-                ", ois = " + ois +
                 ", hasLoyality = " + hasLoyality +
                 ", distanceTo = " + distanceTo +
                 ", deliveryFee = " + deliveryFee;

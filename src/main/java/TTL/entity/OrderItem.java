@@ -24,6 +24,6 @@ public class OrderItem{
 
     @Override
     public String toString() {
-        return " [" + dish  + ", count]" + count;
+        return "(" + dish + "," + count + ")";
     }
 }

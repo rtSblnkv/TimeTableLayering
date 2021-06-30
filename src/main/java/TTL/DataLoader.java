@@ -78,7 +78,6 @@ public class DataLoader {
         List<Order> orders = null;
         try{
             orders = new CsvToBeanBuilder(new FileReader(csvPaths.get("orders"))).withType(Order.class).build().parse();
-
             for( int  i = 0; i < 10;i++)
             {
                 System.out.println(orders.get(i) + "\n");
@@ -86,11 +85,16 @@ public class DataLoader {
         }
         catch(IOException ex)
         {
-            System.out.println(ex.getMessage());
+            System.out.println("DataLoader IOException: " + ex.getMessage());
+        }
+        catch(NullPointerException ex)
+        {
+            System.out.println("DataLoader NPException: " + ex.getMessage());
         }
         return orders;
     }
 
+    //non-actual
     public static List<String[]> csvToList(String key)
     {
         CSVReader reader;

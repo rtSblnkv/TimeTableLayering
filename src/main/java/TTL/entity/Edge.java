@@ -28,21 +28,13 @@ public class Edge implements Serializable {
 
     public Edge(){ }
 
-    public long getFrom() {
-        return from;
-    }
+    public long getFrom() { return from; }
 
-    public void setFrom(long from) {
-        this.from = from;
-    }
+    public void setFrom(long from) { this.from = from; }
 
-    public long getTo() {
-        return to;
-    }
+    public long getTo() { return to; }
 
-    public void setTo(long to) {
-        this.to = to;
-    }
+    public void setTo(long to) { this.to = to; }
 
     public void setTo(int to) { this.to = to; }
 
