@@ -45,6 +45,7 @@ cmake-build-*/
 out/
 resources/
 target/
+TTL/Correlation.java
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/

@@ -3,11 +3,6 @@ package TTL;
 import TTL.entity.OrderItem;
 import com.opencsv.bean.AbstractCsvConverter;
 
-
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class TextToOrderItems extends AbstractCsvConverter {
     public Object convertToRead(String orders) {
         OrderItem oi = new OrderItem();

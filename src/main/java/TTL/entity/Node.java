@@ -21,12 +21,12 @@ public class Node implements Serializable {
         this.id=id;
     }
 
-    public double getLongitude()
+    public double getLongtitude()
     {
         return longtitude;
     }
 
-    public void setLongitude(double longtitude)
+    public void setLongtitude(double longtitude)
     {
         this.longtitude = longtitude;
     }

@@ -27,10 +27,6 @@ public class DataLoader {
         List<Branch> branches = null;
         try{
             branches = new CsvToBeanBuilder(new FileReader(csvPaths.get("branches"))).withType(Branch.class).build().parse();
-            for( Branch branch : branches)
-            {
-                System.out.println(branch + "\n");
-            }
         }
         catch(IOException ex)
         {
@@ -44,10 +40,6 @@ public class DataLoader {
         List<Edge> edges = null;
         try{
             edges = new CsvToBeanBuilder(new FileReader(csvPaths.get("edges"))).withType(Edge.class).build().parse();
-            for( int  i = 0; i < 10;i++)
-            {
-                System.out.println(edges.get(i) + "\n");
-            }
         }
         catch(IOException ex)
         {
@@ -61,10 +53,6 @@ public class DataLoader {
         List<Node> nodes = null;
         try{
             nodes = new CsvToBeanBuilder(new FileReader(csvPaths.get("nodes"))).withType(Node.class).build().parse();
-            for( int  i = 0; i < 10;i++)
-            {
-                System.out.println(nodes.get(i) + "\n");
-            }
         }
         catch(IOException ex)
         {
@@ -78,10 +66,6 @@ public class DataLoader {
         List<Order> orders = null;
         try{
             orders = new CsvToBeanBuilder(new FileReader(csvPaths.get("orders"))).withType(Order.class).build().parse();
-            for( int  i = 0; i < 10;i++)
-            {
-                System.out.println(orders.get(i) + "\n");
-            }
         }
         catch(IOException ex)
         {

@@ -36,7 +36,7 @@ public class Order {
     private double latitude;
 
     @CsvBindByName(column="customer_lon")
-    private double longtude;
+    private double longtitude;
 
     @CsvBindByName(column="customerHasloyalty?")
     private Boolean hasLoyality;
@@ -56,69 +56,37 @@ public class Order {
 
     public void setOrderId(String orderId) { this.orderId = orderId; }
 
-    public Date getDate() {
-        return date;
-    }
+    public Date getDate() { return date; }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+    public void setDate(Date date) { this.date = date; }
 
-    public String getTime() {
-        return time;
-    }
+    public String getTime() { return time; }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
+    public void setTime(String time) { this.time = time; }
 
-    public String getOrderType() {
-        return orderType;
-    }
+    public String getOrderType() { return orderType; }
 
-    public void setOrderType(String orderType) {
-        this.orderType = orderType;
-    }
+    public void setOrderType(String orderType) { this.orderType = orderType; }
 
-    public String getBranchCode() {
-        return branchCode;
-    }
+    public String getBranchCode() { return branchCode; }
 
-    public void setBranchCode(String branchCode) {
-        this.branchCode = branchCode;
-    }
+    public void setBranchCode(String branchCode) { this.branchCode = branchCode; }
 
-    public double getOrderPrice() {
-        return orderPrice;
-    }
+    public double getOrderPrice() { return orderPrice; }
 
-    public void setOrderPrice(double orderPrice) {
-        this.orderPrice = orderPrice;
-    }
+    public void setOrderPrice(double orderPrice) { this.orderPrice = orderPrice; }
 
-    public double getLatitude() {
-        return latitude;
-    }
+    public double getLatitude() { return latitude; }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
+    public void setLatitude(double latitude) { this.latitude = latitude; }
 
-    public double getLongtude() {
-        return longtude;
-    }
+    public double getLongtitude() { return longtitude; }
 
-    public void setLongtude(double longtude) {
-        this.longtude = longtude;
-    }
+    public void setLongtitude(double longtitude) { this.longtitude = longtitude; }
 
-    public Boolean getHasLoyality() {
-        return hasLoyality;
-    }
+    public Boolean getHasLoyality() { return hasLoyality; }
 
-    public void setHasLoyality(Boolean hasLoyality) {
-        this.hasLoyality = hasLoyality;
-    }
+    public void setHasLoyality(Boolean hasLoyality) { this.hasLoyality = hasLoyality; }
 
     public List<OrderItem> getOrderItems() { return orderItems; }
 
@@ -143,7 +111,7 @@ public class Order {
                     ", branchCode = " + branchCode +
                     ", orderPrice = " + orderPrice +
                     ", latitude = " + latitude +
-                    ", longtude = " + longtude +
+                    ", longtude = " + longtitude +
                     ", hasLoyality = " + hasLoyality +
                     ", orderItems = " + orderItems +
                     ", distanceTo = " + distanceTo +
@@ -156,7 +124,7 @@ public class Order {
                 ", branchCode = " + branchCode +
                 ", orderPrice = " + orderPrice +
                 ", latitude = " + latitude +
-                ", longtude = " + longtude +
+                ", longtude = " + longtitude +
                 ", hasLoyality = " + hasLoyality +
                 ", distanceTo = " + distanceTo +
                 ", deliveryFee = " + deliveryFee;
