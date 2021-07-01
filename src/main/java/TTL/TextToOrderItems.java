@@ -9,35 +9,43 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TextToOrderItems extends AbstractCsvConverter {
-    //TODO: Решить трабл с двойным ArrayList [[(gg),()]]
     public Object convertToRead(String orders) {
-        List<OrderItem> ois = new ArrayList<OrderItem>();
-        Matcher matcher = Pattern.compile("\\('\\w*',\\s+\\d+\\)").matcher(orders);
-        //('Cereal', 8)
-        try {
-            while (matcher.find()) {
-                //('Cereal', 8)
-                int startOfSubstring = matcher.start() + 1;
-                int endOfSubstring = matcher.end() - 1;
-                //'Cereal', 8
-                String orderItem = orders.substring(startOfSubstring, endOfSubstring);
-                // { "'Cereal'", "8"}
-                String[] items = orderItem.split(", ");
-                //Cereal
-                String dish = items[0].substring(1, items[0].length() - 1);
-                //(int) 8
-                int count = Integer.parseInt(items[1]);
-
-                OrderItem oi = new OrderItem();
-                oi.setDish(dish);
-                oi.setCount(count);
-                ois.add(oi);
-            }
+        OrderItem oi = new OrderItem();
+        //[('Steak', 3), ('Salad', 1), ('Chicken', 6), ('Fries', 4), ('Burger', 8)] - Поступает CsvToBeanReader
+        //Сплит по ), (
+        // На вход данному методу поступают [('Steak', 3 ; 'Chicken', 6 или 'Burger', 8)]
+        try{
+        //Если поступил [('Steak', 3
+        if (orders.startsWith("[("))
+        {
+            orders = orders.substring(2);
+        }
+        //Если поступил 'Burger', 8)]
+        if (orders.endsWith(")]"))
+        {
+            orders = orders.substring(0,orders.length()-2);
+        }
+        // Если  'Chicken', 6
+        // Сплитим  'Burger', 8 по , и пробелу получаем {"'Burger'","8"}
+        String[] items = orders.split(", ");
+        // OrderItem передаем блюдо без кавычек Burger
+        oi.setDish(getItemWithoutSingleQuotes(items[0]));
+        // 8
+        oi.setCount(Integer.parseInt(items[1]));
         }
         catch(Exception ex)
         {
             System.out.println("textToOrder " + ex.getMessage());
         }
-        return ois;
+        return oi;
+    }
+
+    private String getItemWithoutSingleQuotes(String item)
+    {
+        if (item.startsWith("'") && item.startsWith("'"))
+        {
+            return item.substring(1,item.length()-1);
+        }
+        else return item;
     }
 }

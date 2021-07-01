@@ -10,7 +10,11 @@ import static TTL.DataLoader.*;
 public class Main {
     public static void main(String[]args)
     {
-        List<Order> nodes = DataLoader.ordersToList();
-        System.out.println(nodes.size());
+        List<Order> orders = DataLoader.ordersToList();
+        for (Order order : orders)
+        {
+            System.out.println(order.getOrderItems());
+        }
+        System.out.println(orders.size());
     }
 }

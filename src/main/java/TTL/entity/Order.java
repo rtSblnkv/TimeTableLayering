@@ -41,7 +41,7 @@ public class Order {
     @CsvBindByName(column="customerHasloyalty?")
     private Boolean hasLoyality;
 
-    @CsvBindAndSplitByName(column="order_items",splitOn = "]",elementType= OrderItem.class,converter = TextToOrderItems.class)
+    @CsvBindAndSplitByName(column="order_items",splitOn = "\\), \\(",elementType= OrderItem.class,converter = TextToOrderItems.class)
     private List<OrderItem> orderItems;
 
     @CsvBindByName(column="distance_to_customer_KM")
@@ -136,7 +136,6 @@ public class Order {
     public String toString() {
         if(orderItems != null)
         {
-            System.out.println(orderItems);
             return "order id = " + orderId +
                     ", date = " + date +
                     ", time = " + time +
@@ -146,7 +145,7 @@ public class Order {
                     ", latitude = " + latitude +
                     ", longtude = " + longtude +
                     ", hasLoyality = " + hasLoyality +
-                    ", orderItems = " + orderItems.toString() +
+                    ", orderItems = " + orderItems +
                     ", distanceTo = " + distanceTo +
                     ", deliveryFee = " + deliveryFee;
         }
