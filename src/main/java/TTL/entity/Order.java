@@ -1,7 +1,7 @@
 package TTL.entity;
 
 
-import TTL.TextToOrderItems;
+import TTL.DataUtils.TextToOrderItems;
 import com.opencsv.bean.CsvBindAndSplitByName;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;

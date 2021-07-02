@@ -1,4 +1,4 @@
-package TTL;
+package TTL.DataUtils;
 
 import TTL.entity.Branch;
 import TTL.entity.Edge;

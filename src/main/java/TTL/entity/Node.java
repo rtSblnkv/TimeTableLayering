@@ -47,6 +47,4 @@ public class Node implements Serializable {
                 " latitude: " + latitude +
                 " longtitude: " + longtitude;
     }
-
-
 }
