@@ -1,9 +1,11 @@
 package TTL;
 
+import TTL.entity.Order;
+
 import java.util.HashMap;
 import java.util.List;
 
-public class Layer {
+public abstract class Layer {
 
     private HashMap<String, List<?>> layers;
     private List<?> graph;
@@ -26,6 +28,9 @@ public class Layer {
     public void setGraph(List<?> graph) {
         this.graph = graph;
     }
+
+    public abstract void createLayer(List<Order> orders);
+
 
 
 }
