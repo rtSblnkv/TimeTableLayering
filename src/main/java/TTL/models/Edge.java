@@ -1,4 +1,4 @@
-package TTL.entity;
+package TTL.models;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvIgnore;
@@ -24,7 +24,6 @@ public class Edge implements Serializable {
 
     @CsvIgnore
     private double dist_on_limit;
-
 
     public Edge(){ }
 
@@ -55,6 +54,6 @@ public class Edge implements Serializable {
         return "from: " + from +
                 ", to: " + to +
                 ", distance: " + distance +
-                ", speedLimit: " + speedLimit;
+                ", speedLimit: " + speedLimit + "\n";
     }
 }

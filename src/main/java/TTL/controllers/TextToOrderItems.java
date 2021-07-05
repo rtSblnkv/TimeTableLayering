@@ -1,6 +1,6 @@
-package TTL.DataUtils;
+package TTL.controllers;
 
-import TTL.entity.OrderItem;
+import TTL.models.OrderItem;
 import com.opencsv.bean.AbstractCsvConverter;
 
 public class TextToOrderItems extends AbstractCsvConverter {

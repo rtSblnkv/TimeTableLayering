@@ -1,6 +1,6 @@
 package TTL;
 
-import TTL.entity.Order;
+import TTL.models.Order;
 
 import java.util.HashMap;
 import java.util.List;

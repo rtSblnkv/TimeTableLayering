@@ -1,9 +1,9 @@
-package TTL.DataUtils;
+package TTL.controllers;
 
-import TTL.entity.Branch;
-import TTL.entity.Edge;
-import TTL.entity.Node;
-import TTL.entity.Order;
+import TTL.models.Branch;
+import TTL.models.Edge;
+import TTL.models.Node;
+import TTL.models.Order;
 
 import java.util.Iterator;
 import java.util.List;

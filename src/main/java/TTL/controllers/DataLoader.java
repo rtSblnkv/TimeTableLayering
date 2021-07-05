@@ -1,9 +1,9 @@
-package TTL.DataUtils;
+package TTL.controllers;
 
-import TTL.entity.Branch;
-import TTL.entity.Edge;
-import TTL.entity.Node;
-import TTL.entity.Order;
+import TTL.models.Branch;
+import TTL.models.Edge;
+import TTL.models.Node;
+import TTL.models.Order;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.exceptions.CsvException;
@@ -26,7 +26,10 @@ public class DataLoader {
     {
         List<Branch> branches = null;
         try{
-            branches = new CsvToBeanBuilder(new FileReader(csvPaths.get("branches"))).withType(Branch.class).build().parse();
+            branches = new CsvToBeanBuilder(new FileReader(csvPaths.get("branches")))
+                    .withType(Branch.class)
+                    .build()
+                    .parse();
         }
         catch(IOException ex)
         {
@@ -39,7 +42,10 @@ public class DataLoader {
     {
         List<Edge> edges = null;
         try{
-            edges = new CsvToBeanBuilder(new FileReader(csvPaths.get("edges"))).withType(Edge.class).build().parse();
+            edges = new CsvToBeanBuilder(new FileReader(csvPaths.get("edges")))
+                    .withType(Edge.class)
+                    .build()
+                    .parse();
         }
         catch(IOException ex)
         {
@@ -52,7 +58,10 @@ public class DataLoader {
     {
         List<Node> nodes = null;
         try{
-            nodes = new CsvToBeanBuilder(new FileReader(csvPaths.get("nodes"))).withType(Node.class).build().parse();
+            nodes = new CsvToBeanBuilder(new FileReader(csvPaths.get("nodes")))
+                    .withType(Node.class)
+                    .build()
+                    .parse();
         }
         catch(IOException ex)
         {
@@ -65,7 +74,10 @@ public class DataLoader {
     {
         List<Order> orders = null;
         try{
-            orders = new CsvToBeanBuilder(new FileReader(csvPaths.get("orders"))).withType(Order.class).build().parse();
+            orders = new CsvToBeanBuilder(new FileReader(csvPaths.get("orders")))
+                    .withType(Order.class)
+                    .build()
+                    .parse();
         }
         catch(IOException ex)
         {
@@ -87,13 +99,9 @@ public class DataLoader {
             reader = new CSVReader(new FileReader(csvPaths.get(key)));
             allRows = reader.readAll();
         }
-        catch(IOException e)
+        catch(IOException |CsvException e)
         {
             System.out.println(e.getMessage());
-        }
-        catch(CsvException exp)
-        {
-            System.out.println(exp.getMessage());
         }
         return allRows;
     }

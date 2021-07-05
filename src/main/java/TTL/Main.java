@@ -1,12 +1,12 @@
 package TTL;
 
-import TTL.DataUtils.Correlation;
-import TTL.DataUtils.DataInspector;
-import TTL.DataUtils.DataLoader;
-import TTL.DataUtils.Getters;
-import TTL.entity.*;
+import TTL.controllers.*;
+import TTL.models.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
 
 public class Main {
     private static List<Order> orders;
@@ -18,11 +18,32 @@ public class Main {
 
     public static void main(String[]args)
     {
-        orders = DataLoader.ordersToList();
+        printTime();
+        System.out.println("nodes");
+        //orders = DataLoader.ordersToList();
         nodes = DataLoader.nodesToList();
-        branches = DataLoader.branchesToList();
+        printTime();
+        //branches = DataLoader.branchesToList();
+        System.out.println("edges");
         edges = DataLoader.edgesToList();
-        checkData();
+        printTime();
+        System.out.println("createGraph");
+        GraphCreator.createGraph(nodes,edges);
+        System.out.println("createGraph done");
+        printTime();
+        System.out.println("HashMap");
+        GraphCreator.createGraphHash(nodes,edges);
+        System.out.println("HashMap done");
+        printTime();
+
+        //checkData();
+    }
+
+    static void printTime()
+    {
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        System.out.println(formatter.format(date));
     }
 
     static void checkData()

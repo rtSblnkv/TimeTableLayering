@@ -1,6 +1,4 @@
-package TTL.entity;
-
-import com.opencsv.bean.CsvBindByName;
+package TTL.models;
 
 public class OrderItem{
     private String dish;

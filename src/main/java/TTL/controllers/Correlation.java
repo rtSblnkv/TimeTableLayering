@@ -1,8 +1,7 @@
-package TTL.DataUtils;
+package TTL.controllers;
 
-import TTL.DataUtils.Getters;
-import TTL.entity.Branch;
-import TTL.entity.Order;
+import TTL.models.Branch;
+import TTL.models.Order;
 
 import java.util.ArrayList;
 import java.util.List;

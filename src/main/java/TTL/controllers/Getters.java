@@ -1,9 +1,9 @@
-package TTL.DataUtils;
+package TTL.controllers;
 
-import TTL.entity.Branch;
-import TTL.entity.Edge;
-import TTL.entity.Node;
-import TTL.entity.Order;
+import TTL.models.Branch;
+import TTL.models.Edge;
+import TTL.models.Node;
+import TTL.models.Order;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +20,18 @@ public class Getters {
             }
         }
         return 0;
+    }
+
+    public static Node getNodeById(List<Node> nodes,int id)
+    {
+        for (Node node:nodes)
+        {
+            if (node.getId() == id)
+            {
+                return node;
+            }
+        }
+        return null;
     }
 
     // Method get ID of nodes if customer location exist in Nodes else 0
@@ -61,4 +73,5 @@ public class Getters {
         }
         return orderTypes;
     }
+
 }

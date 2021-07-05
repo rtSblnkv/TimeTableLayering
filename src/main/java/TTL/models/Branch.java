@@ -1,7 +1,6 @@
-package TTL.entity;
+package TTL.models;
 
 import com.opencsv.bean.CsvBindByName;
-import com.opencsv.bean.CsvRecurse;
 
 import java.io.Serializable;
 
