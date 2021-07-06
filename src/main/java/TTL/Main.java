@@ -19,27 +19,36 @@ public class Main {
     public static void main(String[]args)
     {
         printTime();
+        System.out.println("orders");
+        orders = DataLoader.ordersToList();
+        printTime();
         System.out.println("nodes");
-        //orders = DataLoader.ordersToList();
         nodes = DataLoader.nodesToList();
         printTime();
-        //branches = DataLoader.branchesToList();
+        System.out.println("branches");
+        branches = DataLoader.branchesToList();
+        printTime();
         System.out.println("edges");
         edges = DataLoader.edgesToList();
         printTime();
-        System.out.println("createGraph");
+        /*System.out.println("createGraph");
         GraphCreator.createGraph(nodes,edges);
         System.out.println("createGraph done");
-        printTime();
+        printTime();*/
         System.out.println("HashMap");
         GraphCreator.createGraphHash(nodes,edges);
         System.out.println("HashMap done");
         printTime();
-
+        System.out.println("Split on order type");
+        System.out.println(ToHashMap.ordersListToHashMapByOrderType(orders));
+        printTime();
+        System.out.println("Split on branch code");
+        System.out.println(ToHashMap.ordersListToHashMapByBranch(orders,branches));
+        printTime();
         //checkData();
     }
 
-    static void printTime()
+    private static void printTime()
     {
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");

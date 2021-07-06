@@ -22,15 +22,15 @@ public class GraphCreator {
         return curNodeEdges;
     }
 
-
+    //8 секунд
     static List<Node> createGraph(List<Node> nodes, List<Edge> edges)
     {
         nodes.forEach(node -> node.setEdges(getEdgesByNodeId(edges, node.getId())));
         return nodes;
     }
 
-
-    static List<Node> createGraphHash(List<Node> nodes, List<Edge> edges)
+    //меньше 1 секунды
+    static List<Node> createGraph(List<Node> nodes, List<Edge> edges)
     {
         HashMap<Long,List<Edge>>  edgeHashMap = ToHashMap.edgesListToHashMapOnFromNodeId(edges);
         nodes.forEach(node -> node.setEdges(edgeHashMap.get(node.getId())));

@@ -1,5 +1,6 @@
 package TTL.controllers;
 
+import TTL.models.Branch;
 import TTL.models.Edge;
 import TTL.models.Node;
 import TTL.models.Order;
@@ -28,7 +29,6 @@ public class ToHashMap {
 
             edgesHashMap.get(edge.getFrom()).add(edge);
         });
-        //System.out.println(edgesHashMap);
         return edgesHashMap;
     }
 
@@ -37,5 +37,23 @@ public class ToHashMap {
         HashMap<String,Order> ordersHashMap = new HashMap<>();
         orders.forEach(order -> ordersHashMap.put(order.getOrderId(),order));
         return ordersHashMap;
+    }
+
+    public static HashMap<String,List<Order>> ordersListToHashMapByOrderType(List<Order> orders)
+    {
+        List<String> orderTypes = Getters.getOrderTypes(orders);
+        HashMap<String,List<Order>> ordersOnOrderTypeHashMap = new HashMap<>();
+        orderTypes.forEach(orderType -> ordersOnOrderTypeHashMap.put(orderType,new ArrayList<Order>()));
+        orders.forEach(order -> ordersOnOrderTypeHashMap.get(order.getOrderType()).add(order));
+        return ordersOnOrderTypeHashMap;
+    }
+
+    public static HashMap<String,List<Order>> ordersListToHashMapByBranch(List<Order> orders, List<Branch> branches)
+    {
+        List<String> branchCodes = Getters.getBranchCodes(branches);
+        HashMap<String,List<Order>> ordersOnBranchCodeHashMap = new HashMap<>();
+        branchCodes.forEach(branchCode -> ordersOnBranchCodeHashMap.put(branchCode,new ArrayList<Order>()));
+        orders.forEach(order -> ordersOnBranchCodeHashMap.get(order.getBranchCode().toUpperCase()).add(order));
+        return ordersOnBranchCodeHashMap;
     }
 }
