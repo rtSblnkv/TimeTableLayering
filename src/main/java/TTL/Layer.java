@@ -31,6 +31,4 @@ public abstract class Layer {
 
     public abstract void createLayer(List<Order> orders);
 
-
-
 }

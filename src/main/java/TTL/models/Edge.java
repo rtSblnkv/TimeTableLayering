@@ -25,6 +25,8 @@ public class Edge implements Serializable {
     @CsvIgnore
     private double dist_on_limit;
 
+    private double rangeTime;
+
     public Edge(){ }
 
     public long getFrom() { return from; }
@@ -45,15 +47,18 @@ public class Edge implements Serializable {
 
     public void setSpeedLimit(int speedLimit) { this.speedLimit = speedLimit; }
 
-    public double getDist_on_limit() { return dist_on_limit; }
+    public double getRangeTime() { return rangeTime; }
 
-    public void setDist_on_limit(double dist_on_limit) { this.dist_on_limit = dist_on_limit;}
+    public void setRangeTime() {
+        rangeTime = distance * 3.6 / speedLimit;
+    }
 
     @Override
     public String toString() {
         return "from: " + from +
                 ", to: " + to +
                 ", distance: " + distance +
-                ", speedLimit: " + speedLimit + "\n";
+                ", rangeTime: " + rangeTime +
+                ", speedLimit: " + speedLimit;
     }
 }

@@ -7,8 +7,11 @@ import TTL.models.Order;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Getters {
+
+    //TODO: Start to use Stream API instead of it
 
     public static long getNodeId(double lat, double lon,List<Node> nodes)
     {
@@ -22,17 +25,6 @@ public class Getters {
         return 0;
     }
 
-    public static Node getNodeById(List<Node> nodes,int id)
-    {
-        for (Node node:nodes)
-        {
-            if (node.getId() == id)
-            {
-                return node;
-            }
-        }
-        return null;
-    }
 
     // Method get ID of nodes if customer location exist in Nodes else 0
     public static long[] getCustomerNodesId(List<Node> nodes,List<Order> orders)
@@ -58,6 +50,24 @@ public class Getters {
             }
         }
         return branchCodes;
+    }
+
+    public static Long getBranchNodeIdByBranchCode(String branchCode,List<Branch>branches)
+    {
+        //return branches
+        // .stream()
+        // .filter(branch -> branch.getBranchCode() == branchCode.toUpperCase())
+        // .collect(Collectors.toList())
+        // .get(0)
+        // .getNodeId();
+        for(Branch branch : branches)
+        {
+            if(branch.getBranchCode().equals(branchCode.toUpperCase()))
+            {
+                return branch.getNodeId();
+            }
+        }
+        return 0L;
     }
 
     public static ArrayList<String> getOrderTypes(List<Order> orders)

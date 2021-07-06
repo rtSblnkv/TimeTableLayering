@@ -19,6 +19,15 @@ public class Main {
     public static void main(String[]args)
     {
         printTime();
+        System.out.println("edges");
+        edges = DataLoader.edgesToList();
+        edges.forEach(edge-> edge.setRangeTime());
+        edges.stream().limit(10).forEach(System.out::println);
+    }
+
+    private static void test()
+    {
+        printTime();
         System.out.println("orders");
         orders = DataLoader.ordersToList();
         printTime();
@@ -28,15 +37,12 @@ public class Main {
         System.out.println("branches");
         branches = DataLoader.branchesToList();
         printTime();
-        System.out.println("edges");
-        edges = DataLoader.edgesToList();
-        printTime();
         /*System.out.println("createGraph");
         GraphCreator.createGraph(nodes,edges);
         System.out.println("createGraph done");
         printTime();*/
         System.out.println("HashMap");
-        GraphCreator.createGraphHash(nodes,edges);
+        GraphCreator.createGraph(nodes,edges);
         System.out.println("HashMap done");
         printTime();
         System.out.println("Split on order type");

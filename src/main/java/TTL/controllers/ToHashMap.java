@@ -26,7 +26,6 @@ public class ToHashMap {
             {
                 edgesHashMap.put(edge.getFrom(), new ArrayList<>());
             }
-
             edgesHashMap.get(edge.getFrom()).add(edge);
         });
         return edgesHashMap;
