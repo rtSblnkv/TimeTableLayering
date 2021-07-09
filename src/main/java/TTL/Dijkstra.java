@@ -1,5 +1,6 @@
 package TTL;
 
+import TTL.models.Edge;
 import TTL.models.Node;
 
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ public class Dijkstra {
 
     private HashMap<Long,Node> nodesHashMap;
 
+    public Dijkstra(){}
+
     public void setNodesHashMap(HashMap<Long, Node> nodesHashMap) {
         this.nodesHashMap = nodesHashMap;
     }
@@ -22,25 +25,36 @@ public class Dijkstra {
         nodeFrom.setMinDistance(0);
         PriorityBlockingQueue<Node> priorityQueue = new PriorityBlockingQueue<>();
         priorityQueue.add(nodeFrom);
+        try {
 
-        while(!priorityQueue.isEmpty())
-        {
-            Node curNode = priorityQueue.poll();
+            while (!priorityQueue.isEmpty()) {
+                Node curNode = priorityQueue.poll();
+                List<Edge> curNodeEdges = curNode.getEdges();
+                if(curNodeEdges != null) {
+                    curNodeEdges.forEach(edge -> {
+                        Node nodeTo = nodesHashMap.get(edge.getTo());
+                        double minDistance = curNode.getMinDistance() + edge.getDistance();
 
-            curNode.getEdges().forEach(edge ->{
-                Node nodeTo = nodesHashMap.get(edge.getTo());
-                double minDistance = nodeTo.getMinDistance() + edge.getDistance();
-
-                if(minDistance < curNode.getMinDistance())
-                {
-                    priorityQueue.remove(curNode);
-                    nodeTo.setPreviousNode(curNode);
-                    nodeTo.setMinDistance(minDistance);
-                    priorityQueue.add(nodeTo);
+                        if (minDistance < nodeTo.getMinDistance()) {
+                            priorityQueue.remove(curNode);
+                            nodeTo.setPreviousNode(curNode);
+                            nodeTo.setMinDistance(minDistance);
+                            priorityQueue.add(nodeTo);
+                        }
+                    });
                 }
-            });
+            }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
         }
     }
+
+    public void printNodes(){
+        nodesHashMap.entrySet().stream().limit(10).forEach(System.out::println);
+    }
+
 
     public void computePathesFromByTime(Node nodeFrom)
     {
@@ -50,20 +64,31 @@ public class Dijkstra {
 
         while(!priorityQueue.isEmpty())
         {
-            Node curNode = priorityQueue.poll();
+            try {
 
-            curNode.getEdges().forEach(edge ->{
-                Node nodeTo = nodesHashMap.get(edge.getTo());
-                double minDistance = nodeTo.getMinDistance() + edge.getRangeTime();
+                while (!priorityQueue.isEmpty()) {
+                    Node curNode = priorityQueue.poll();
+                    List<Edge> curNodeEdges = curNode.getEdges();
+                    if(curNodeEdges != null)
+                    {
+                        curNodeEdges.forEach(edge -> {
+                            Node nodeTo = nodesHashMap.get(edge.getTo());
+                            double minDistance = curNode.getMinDistance() + edge.getRangeTime();
 
-                if(minDistance < curNode.getMinDistance())
-                {
-                    priorityQueue.remove(curNode);
-                    nodeTo.setPreviousNode(curNode);
-                    nodeTo.setMinDistance(minDistance);
-                    priorityQueue.add(nodeTo);
+                            if (minDistance < nodeTo.getMinDistance()) {
+                                priorityQueue.remove(curNode);
+                                nodeTo.setPreviousNode(curNode);
+                                nodeTo.setMinDistance(minDistance);
+                                priorityQueue.add(nodeTo);
+                            }
+                        });
+                    }
                 }
-            });
+            }
+            catch (Exception ex)
+            {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -73,9 +98,10 @@ public class Dijkstra {
         for(Node node = nodeTo;node != null; node = node.getPreviousNode()){
             path.add(node);
         }
-        Collections.reverse(path);
+        //Collections.reverse(path);
         return path;
     }
+
 
     // parallel algorithm by distance and time
     public void computePathParallelByWeight(Node sourceNode)

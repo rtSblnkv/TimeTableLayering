@@ -1,12 +1,12 @@
 package TTL;
 
-import TTL.controllers.*;
+import TTL.controllers.dataloader.DataLoader;
+import TTL.controllers.ToHashMap;
 import TTL.models.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Timer;
 
 public class Main {
     private static List<Order> orders;
@@ -18,11 +18,8 @@ public class Main {
 
     public static void main(String[]args)
     {
-        printTime();
-        System.out.println("edges");
-        edges = DataLoader.edgesToList();
-        edges.forEach(edge-> edge.setRangeTime());
-        edges.stream().limit(10).forEach(System.out::println);
+        DijkstraRunner dr = new DijkstraRunner();
+        dr.getShortestForAllOrdersLinear();
     }
 
     private static void test()
@@ -51,7 +48,6 @@ public class Main {
         System.out.println("Split on branch code");
         System.out.println(ToHashMap.ordersListToHashMapByBranch(orders,branches));
         printTime();
-        //checkData();
     }
 
     private static void printTime()
@@ -61,24 +57,6 @@ public class Main {
         System.out.println(formatter.format(date));
     }
 
-    static void checkData()
-    {
-        // Class which checkes input data
-        DataInspector di = new DataInspector();
-
-        di.setNodes(nodes);
-        di.setBranches(branches);
-        di.setEdges(edges);
-        di.setOrders(orders);
-
-        di.deleteOrdersWithIncorrectNodes();
-        Getters.getCustomerNodesId(nodes,orders);
-        System.out.println("Edges");
-        di.checkEdgeNodesExist();
-        System.out.println("Branches");
-        di.checkBranchNodes();
-        System.out.println(Correlation.getCorrelationOfOrderTypesAndBranchCodes(orders,branches));
-    }
 
 
 

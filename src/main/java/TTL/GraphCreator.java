@@ -9,11 +9,17 @@ import java.util.List;
 
 public class GraphCreator {
     //меньше 1 секунды
-    static List<Node> createGraph(List<Node> nodes, List<Edge> edges)
+    static HashMap<Long, Node> createGraph(List<Node> nodes, List<Edge> edges)
     {
+        HashMap<Long, Node> nodesHashMap;
+
+        edges.forEach(edge -> edge.setRangeTime());
+
         HashMap<Long,List<Edge>>  edgeHashMap = ToHashMap.edgesListToHashMapOnFromNodeId(edges);
         nodes.forEach(node -> node.setEdges(edgeHashMap.get(node.getId())));
-        return nodes;
+
+        nodesHashMap = ToHashMap.nodesListToHashMap(nodes);
+        return nodesHashMap;
     }
 
 

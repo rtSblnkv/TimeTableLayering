@@ -74,12 +74,13 @@ public class Node implements Serializable,Comparable<Node> {
 
     @Override
     public String toString() {
-        return " id = " + id +
+        /*return " id = " + id +
                 ", latitude = " + latitude +
                 ", longtitude = " + longtitude +
                 ", visited = " + visited +
                 ", minDistance = " + minDistance +
-                ", edges = " + edges + "\n";
+                ", edges = " + edges + "\n";*/
+        return "id = "+ id + ", min = " + minDistance;
     }
 
     public int compareTo(Node secondNode)

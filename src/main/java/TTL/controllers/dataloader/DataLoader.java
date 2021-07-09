@@ -1,4 +1,4 @@
-package TTL.controllers;
+package TTL.controllers.dataloader;
 
 import TTL.models.Branch;
 import TTL.models.Edge;

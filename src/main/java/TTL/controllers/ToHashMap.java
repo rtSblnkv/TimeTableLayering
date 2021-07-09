@@ -1,5 +1,6 @@
 package TTL.controllers;
 
+import TTL.controllers.Getters;
 import TTL.models.Branch;
 import TTL.models.Edge;
 import TTL.models.Node;
@@ -11,12 +12,29 @@ import java.util.List;
 
 public class ToHashMap {
 
+    //TODO: Start to use Stream API instead of it
+
     public static HashMap<Long, Node> nodesListToHashMap(List<Node> nodes)
     {
         HashMap<Long,Node> nodesHashMap = new HashMap<>();
         nodes.forEach(node -> nodesHashMap.put(node.getId(),node));
         return nodesHashMap;
     }
+
+    public static HashMap<String, Order> ordersListToHashMap(List<Order> orders)
+    {
+        HashMap<String,Order> ordersHashMap = new HashMap<>();
+        orders.forEach(order -> ordersHashMap.put(order.getOrderId(),order));
+        return ordersHashMap;
+    }
+
+    public static HashMap<String, Branch> branchesListToHashMap(List<Branch> branches)
+    {
+        HashMap<String,Branch> branchesHashMap = new HashMap<>();
+
+        return branchesHashMap;
+    }
+
 
     public static HashMap<Long,List<Edge>> edgesListToHashMapOnFromNodeId(List<Edge> edges)
     {
@@ -29,13 +47,6 @@ public class ToHashMap {
             edgesHashMap.get(edge.getFrom()).add(edge);
         });
         return edgesHashMap;
-    }
-
-    public static HashMap<String, Order> ordersListToHashMap(List<Order> orders)
-    {
-        HashMap<String,Order> ordersHashMap = new HashMap<>();
-        orders.forEach(order -> ordersHashMap.put(order.getOrderId(),order));
-        return ordersHashMap;
     }
 
     public static HashMap<String,List<Order>> ordersListToHashMapByOrderType(List<Order> orders)

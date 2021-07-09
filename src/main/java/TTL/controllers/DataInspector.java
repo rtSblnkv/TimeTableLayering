@@ -16,13 +16,11 @@ public class DataInspector {
 
     public DataInspector(){}
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
+    public List<Order> getOrders() { return orders; }
 
-    public void setBranches(List<Branch> branches) {
-        this.branches = branches;
-    }
+    public void setOrders(List<Order> orders) { this.orders = orders; }
+
+    public void setBranches(List<Branch> branches) { this.branches = branches; }
 
     public void setNodes(List<Node> nodes) {
         this.nodes = nodes;
@@ -32,6 +30,7 @@ public class DataInspector {
         this.edges = edges;
     }
 
+    //correct
     private Boolean checkNodesExist(long nodeStartId, long nodeEndId)
     {
         Boolean firstExist = false;
@@ -50,6 +49,18 @@ public class DataInspector {
         return firstExist && secondExist;
     }
 
+    public Boolean checkEdgeNodesExist()
+    {
+        for(Edge edge :edges)
+        {
+            if(!checkNodesExist(edge.getFrom(),edge.getTo()))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     //Method deletes orders with incorrect location
     public void deleteOrdersWithIncorrectNodes()
     {
@@ -65,20 +76,7 @@ public class DataInspector {
         }
     }
 
-    public void checkBranchNodes()
-    {
-        for (Branch branch : branches)
-        {
-            System.out.println(Getters.getNodeId(branch.getLatitude(),branch.getLongtitude(),nodes));
-        }
-    }
 
-    public void checkEdgeNodesExist()
-    {
-        for(Edge edge :edges)
-        {
-            System.out.println(checkNodesExist(edge.getFrom(),edge.getTo()));
-        }
-    }
+
 
 }

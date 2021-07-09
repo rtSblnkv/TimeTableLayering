@@ -1,13 +1,11 @@
 package TTL.controllers;
 
 import TTL.models.Branch;
-import TTL.models.Edge;
 import TTL.models.Node;
 import TTL.models.Order;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Getters {
 
@@ -15,6 +13,11 @@ public class Getters {
 
     public static long getNodeId(double lat, double lon,List<Node> nodes)
     {
+        /*return nodes
+                .stream()
+                .filter(node -> lat == node.getLatitude() && lon == node.getLongtitude())
+                .collect(Collectors.toList())
+                .get(0);*/
         for (Node node : nodes)
         {
             if (lat == node.getLatitude() && lon == node.getLongtitude())
@@ -25,17 +28,21 @@ public class Getters {
         return 0;
     }
 
-
-    // Method get ID of nodes if customer location exist in Nodes else 0
-    public static long[] getCustomerNodesId(List<Node> nodes,List<Order> orders)
+    public static Node getNodeByCoordinates(double lat, double lon,List<Node> nodes)
     {
-        long[] customerNodesId = new long[orders.size()];
-        int i = 0;
-        for (Order order : orders)
+        /*return nodes
+                .stream()
+                .filter(node -> lat == node.getLatitude() && lon == node.getLongtitude())
+                .collect(Collectors.toList())
+                .get(0);*/
+        for (Node node : nodes)
         {
-            customerNodesId[i] = getNodeId(order.getLatitude(),order.getLongtitude(),nodes);
+            if (lat == node.getLatitude() && lon == node.getLongtitude())
+            {
+                return node;
+            }
         }
-        return customerNodesId;
+        return new Node();
     }
 
     public static ArrayList<String> getBranchCodes(List<Branch> branches)
@@ -52,23 +59,6 @@ public class Getters {
         return branchCodes;
     }
 
-    public static Long getBranchNodeIdByBranchCode(String branchCode,List<Branch>branches)
-    {
-        //return branches
-        // .stream()
-        // .filter(branch -> branch.getBranchCode() == branchCode.toUpperCase())
-        // .collect(Collectors.toList())
-        // .get(0)
-        // .getNodeId();
-        for(Branch branch : branches)
-        {
-            if(branch.getBranchCode().equals(branchCode.toUpperCase()))
-            {
-                return branch.getNodeId();
-            }
-        }
-        return 0L;
-    }
 
     public static ArrayList<String> getOrderTypes(List<Order> orders)
     {
