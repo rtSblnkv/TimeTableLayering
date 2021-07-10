@@ -6,6 +6,7 @@ import TTL.models.Order;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Getters {
 
@@ -13,41 +14,48 @@ public class Getters {
 
     public static long getNodeId(double lat, double lon,List<Node> nodes)
     {
-        /*return nodes
+        return nodes
                 .stream()
                 .filter(node -> lat == node.getLatitude() && lon == node.getLongtitude())
-                .collect(Collectors.toList())
-                .get(0);*/
-        for (Node node : nodes)
+                .map(Node::getId)
+                .findFirst()
+                .orElse(0L);
+        /*for (Node node : nodes)
         {
             if (lat == node.getLatitude() && lon == node.getLongtitude())
             {
                 return node.getId();
             }
         }
-        return 0;
+        return 0;*/
     }
 
     public static Node getNodeByCoordinates(double lat, double lon,List<Node> nodes)
     {
-        /*return nodes
+        return nodes
                 .stream()
                 .filter(node -> lat == node.getLatitude() && lon == node.getLongtitude())
-                .collect(Collectors.toList())
-                .get(0);*/
-        for (Node node : nodes)
+                .findFirst()
+                .orElse(new Node());
+        /*for (Node node : nodes)
         {
             if (lat == node.getLatitude() && lon == node.getLongtitude())
             {
                 return node;
             }
         }
-        return new Node();
+        return new Node();*/
     }
 
-    public static ArrayList<String> getBranchCodes(List<Branch> branches)
+    public static List<String> getBranchCodes(List<Branch> branches)
     {
-        ArrayList<String> branchCodes = new ArrayList<String>();
+        return new ArrayList<>(
+                branches
+                .stream()
+                .map(Branch::getBranchCode)
+                .collect(Collectors.toSet())
+        );
+        /*List<String> branchCodes = new ArrayList<String>();
         for (Branch branch: branches)
         {
             String branchCode = branch.getBranchCode();
@@ -56,13 +64,20 @@ public class Getters {
                 branchCodes.add(branchCode);
             }
         }
-        return branchCodes;
+        return branchCodes;*/
     }
 
 
-    public static ArrayList<String> getOrderTypes(List<Order> orders)
+    public static List<String> getOrderTypes(List<Order> orders)
     {
-        ArrayList<String> orderTypes = new ArrayList<String>();
+        return new ArrayList<>(
+                orders
+                .stream()
+                .map(Order::getOrderType)
+                .collect(Collectors.toSet())
+
+        );
+        /*ArrayList<String> orderTypes = new ArrayList<String>();
         for (Order order: orders)
         {
             String orderType = order.getOrderType();
@@ -71,7 +86,7 @@ public class Getters {
                 orderTypes.add(orderType);
             }
         }
-        return orderTypes;
+        return orderTypes;*/
     }
 
 }
