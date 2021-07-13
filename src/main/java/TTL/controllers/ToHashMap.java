@@ -1,10 +1,6 @@
 package TTL.controllers;
 
-import TTL.controllers.Getters;
-import TTL.models.Branch;
-import TTL.models.Edge;
-import TTL.models.Node;
-import TTL.models.Order;
+import TTL.models.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +27,7 @@ public class ToHashMap {
     public static HashMap<String, Branch> branchesListToHashMap(List<Branch> branches)
     {
         HashMap<String,Branch> branchesHashMap = new HashMap<>();
-
+        branches.forEach(branch -> branchesHashMap.put(branch.getBranchCode(),branch));
         return branchesHashMap;
     }
 
@@ -58,9 +54,9 @@ public class ToHashMap {
         return ordersOnOrderTypeHashMap;
     }
 
-    public static HashMap<String,List<Order>> ordersListToHashMapByBranch(List<Order> orders, List<Branch> branches)
+    public static HashMap<String,List<Order>> ordersListToHashMapByBranch(List<Order> orders)
     {
-        List<String> branchCodes = Getters.getBranchCodes(branches);
+        List<String> branchCodes = Getters.getBranchCodes(orders);
         HashMap<String,List<Order>> ordersOnBranchCodeHashMap = new HashMap<>();
         branchCodes.forEach(branchCode -> ordersOnBranchCodeHashMap.put(branchCode,new ArrayList<Order>()));
         orders.forEach(order -> ordersOnBranchCodeHashMap.get(order.getBranchCode().toUpperCase()).add(order));

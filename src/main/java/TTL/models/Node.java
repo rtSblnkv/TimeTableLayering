@@ -80,7 +80,7 @@ public class Node implements Serializable,Comparable<Node> {
                 ", visited = " + visited +
                 ", minDistance = " + minDistance +
                 ", edges = " + edges + "\n";*/
-        return "id = "+ id + ", min = " + minDistance;
+        return latitude + "\t" + longtitude;
     }
 
     public int compareTo(Node secondNode)

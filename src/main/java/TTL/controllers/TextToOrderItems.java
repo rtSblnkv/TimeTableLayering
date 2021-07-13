@@ -8,7 +8,7 @@ public class TextToOrderItems extends AbstractCsvConverter {
         OrderItem oi = new OrderItem();
         //[('Steak', 3), ('Salad', 1), ('Chicken', 6), ('Fries', 4), ('Burger', 8)] - Поступает CsvToBeanReader
         //Сплит по ), (
-        // На вход данному методу поступают [('Steak', 3 ; 'Chicken', 6 или 'Burger', 8)]
+        // На вход данному методу поступают [('Steak', 3   ;   'Chicken', 6 или 'Burger', 8)]
         try{
         //Если поступил [('Steak', 3
         if (orders.startsWith("[("))

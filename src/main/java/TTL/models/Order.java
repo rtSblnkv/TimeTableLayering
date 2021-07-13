@@ -115,7 +115,7 @@ public class Order {
                     ", hasLoyality = " + hasLoyality +
                     ", orderItems = " + orderItems +
                     ", distanceTo = " + distanceTo +
-                    ", deliveryFee = " + deliveryFee;
+                    ", deliveryFee = " + deliveryFee + "\n";
         }
         return "order id = " + orderId +
                 ", date = " + date +
@@ -127,6 +127,6 @@ public class Order {
                 ", longtude = " + longtitude +
                 ", hasLoyality = " + hasLoyality +
                 ", distanceTo = " + distanceTo +
-                ", deliveryFee = " + deliveryFee;
+                ", deliveryFee = " + deliveryFee+ "\n";
     }
 }

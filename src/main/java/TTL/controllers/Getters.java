@@ -1,8 +1,6 @@
 package TTL.controllers;
 
-import TTL.models.Branch;
-import TTL.models.Node;
-import TTL.models.Order;
+import TTL.models.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +8,17 @@ import java.util.stream.Collectors;
 
 public class Getters {
 
-    //TODO: Start to use Stream API instead of it
+    //TODO: Перестроить структуру на более удобную
+
+    private List<Order> orders;
+    private List<Node> nodes;
+    private List<Branch> branches;
+
+    public Getters()
+    {
+
+    }
+
 
     public static long getNodeId(double lat, double lon,List<Node> nodes)
     {
@@ -47,12 +55,12 @@ public class Getters {
         return new Node();*/
     }
 
-    public static List<String> getBranchCodes(List<Branch> branches)
+    public static List<String> getBranchCodes(List<Order> orders)
     {
         return new ArrayList<>(
-                branches
+                orders
                 .stream()
-                .map(Branch::getBranchCode)
+                .map(Order::getBranchCode)
                 .collect(Collectors.toSet())
         );
         /*List<String> branchCodes = new ArrayList<String>();

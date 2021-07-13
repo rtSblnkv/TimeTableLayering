@@ -1,10 +1,12 @@
-package TTL.controllers;
+package TTL.controllers.datainspector;
 
+import TTL.controllers.Getters;
 import TTL.models.Branch;
 import TTL.models.Edge;
 import TTL.models.Node;
 import TTL.models.Order;
 
+import javax.xml.crypto.Data;
 import java.util.Iterator;
 import java.util.List;
 
@@ -20,8 +22,6 @@ public class DataInspector {
 
     public void setOrders(List<Order> orders) { this.orders = orders; }
 
-    public void setBranches(List<Branch> branches) { this.branches = branches; }
-
     public void setNodes(List<Node> nodes) {
         this.nodes = nodes;
     }
@@ -35,15 +35,18 @@ public class DataInspector {
     {
         Boolean firstExist = false;
         Boolean secondExist = false;
-        for(Node node : nodes)
+        if (nodes != null && !nodes.isEmpty())
         {
-            if(node.getId() == nodeStartId)
+            for(Node node : nodes)
             {
-                firstExist = true;
-            }
-            if(node.getId() == nodeEndId)
-            {
-                secondExist = true;
+                if(node.getId() == nodeStartId)
+                {
+                    firstExist = true;
+                }
+                if(node.getId() == nodeEndId)
+                {
+                    secondExist = true;
+                }
             }
         }
         return firstExist && secondExist;
@@ -51,29 +54,23 @@ public class DataInspector {
 
     public Boolean checkEdgeNodesExist()
     {
-        for(Edge edge :edges)
+        return edges
+                .stream()
+                .anyMatch( edge -> checkNodesExist(edge.getFrom(),edge.getTo()));
+        /*for(Edge edge :edges)
         {
-            if(!checkNodesExist(edge.getFrom(),edge.getTo()))
+            if(!)
             {
                 return false;
             }
         }
-        return true;
+        return true;*/
     }
 
     //Method deletes orders with incorrect location
     public void deleteOrdersWithIncorrectNodes()
     {
-        Iterator ordersIterator = orders.iterator();
-        while(ordersIterator.hasNext())
-        {
-            Order order = (Order)ordersIterator.next();
-            long id = Getters.getNodeId(order.getLatitude(),order.getLongtitude(),nodes);
-            if (id == 0)
-            {
-                ordersIterator.remove();
-            }
-        }
+        orders.removeIf(order -> Getters.getNodeId(order.getLatitude(),order.getLongtitude(),nodes) == 0);
     }
 
 

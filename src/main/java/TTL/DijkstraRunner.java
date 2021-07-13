@@ -3,10 +3,7 @@ package TTL;
 import TTL.controllers.*;
 import TTL.controllers.dataloader.DataLoader;
 import TTL.controllers.ToHashMap;
-import TTL.models.Branch;
-import TTL.models.Edge;
-import TTL.models.Node;
-import TTL.models.Order;
+import TTL.models.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +35,7 @@ public class DijkstraRunner {
         ordersHashMap = ToHashMap.ordersListToHashMap(orders);
 
         ordersHashMapByOrderType = ToHashMap.ordersListToHashMapByOrderType(orders);
-        ordersHashMapByBranch = ToHashMap.ordersListToHashMapByBranch(orders,branches);
+        ordersHashMapByBranch = ToHashMap.ordersListToHashMapByBranch(orders);
     }
 
 

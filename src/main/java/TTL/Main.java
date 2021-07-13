@@ -1,12 +1,14 @@
 package TTL;
 
+import TTL.controllers.Getters;
 import TTL.controllers.dataloader.DataLoader;
 import TTL.controllers.ToHashMap;
 import TTL.models.*;
 
+import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
     private static List<Order> orders;
@@ -18,9 +20,37 @@ public class Main {
 
     public static void main(String[]args)
     {
+        nodes = DataLoader.nodesToList();
+        orders = DataLoader.ordersToList();
+        branches = DataLoader.branchesToList();
+        edges = DataLoader.edgesToList();
+
+        // пересобрать решение
+        printTime();
         DijkstraRunner dr = new DijkstraRunner();
         dr.getShortestForAllOrdersLinear();
+        //printTime();
     }
+
+    private static List<Node> getListOfOrderNodes(List<Order> ordersGrouped)
+    {
+        /*List<Node> orderNodes = new ArrayList<>();
+        for (Order order: ordersSorted)
+        {
+            Node curNode = ;
+            if(curNode.getLatitude()!= 0)
+            {
+                orderNodes.add(curNode);
+            }
+        }
+        return orderNodes;*/
+        return ordersGrouped
+                .stream()
+                .map(order -> Getters.getNodeByCoordinates(order.getLatitude(),order.getLongtitude(),nodes))
+                .filter(node -> node.getLatitude() != 0)
+                .collect(Collectors.toList());
+    }
+
 
     private static void test()
     {
@@ -53,7 +83,7 @@ public class Main {
     private static void printTime()
     {
         Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("ss:SS");
         System.out.println(formatter.format(date));
     }
 
