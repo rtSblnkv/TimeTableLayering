@@ -1,7 +1,6 @@
 package TTL.controllers.datainspector;
 
-import TTL.controllers.datainspector.encoder.BranchCodeLabelEncoder;
-import TTL.controllers.datainspector.encoder.OrderTypeLabelEncoder;
+import TTL.controllers.datainspector.encoder.*;
 import TTL.models.Order;
 
 import java.util.List;

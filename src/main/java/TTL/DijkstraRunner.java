@@ -1,21 +1,14 @@
 package TTL;
 
-import TTL.controllers.*;
-import TTL.controllers.layers.ByBranchCodeLayers;
-import TTL.controllers.layers.ByOrderTypeLayers;
-import TTL.controllers.listWorkers.BranchWorker;
-import TTL.controllers.listWorkers.NodeWorker;
-import TTL.controllers.listWorkers.OrderWorker;
+import TTL.controllers.layers.*;
+import TTL.controllers.listWorkers.*;
 import TTL.controllers.dataloader.CsvLoader;
 import TTL.controllers.dataloader.CsvLoaderFactory;
 import TTL.models.*;
 import org.openjdk.jmh.annotations.*;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 
 @BenchmarkMode(Mode.All)
@@ -28,7 +21,6 @@ public class DijkstraRunner {
     private List<Edge> edges;
     private List<Branch> branches;
 
-    //private HashMap<String, Order> ordersHashMap;
     private HashMap<String, Node> branchNodes;
 
     ByBranchCodeLayers byBranchCodeLayer;
@@ -107,7 +99,7 @@ public class DijkstraRunner {
         return x;
     }
 
-    private HashMap<Node,List<Node>> computePathesForLayer(String branch,List<Order> branchOrders,String type)
+    private HashMap<Node,List<Node>> computePathesForLayer(String branch,List<Order> orders,String type)
     {
         HashMap<Node,List<Node>> shortPathes = new HashMap<>();
         NodeWorker nodeWorker = new NodeWorker(nodes);
@@ -128,7 +120,7 @@ public class DijkstraRunner {
         String fileName = branch + type + ".txt";
         NodesToFileWriter.createFile(fileName);
 
-        branchOrders.forEach(order ->{
+        orders.forEach(order ->{
             Node nodeTo = nodeWorker.getNodeByCoordinates(order.getLatitude(),order.getLongtitude());
             if(nodeTo.getId() != 0 && nodeTo.getMinDistance() < 1000000000) {
                 System.out.println("\n Current node : " + nodeTo);

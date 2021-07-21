@@ -1,7 +1,5 @@
 package TTL.controllers.datainspector;
 
-import TTL.models.Node;
-
 import java.util.List;
 
 public class DeviationCalculator {
