@@ -1,83 +1,35 @@
 package TTL;
 
-import TTL.controllers.Getters;
-import TTL.controllers.dataloader.DataLoader;
-import TTL.controllers.ToHashMap;
 import TTL.models.*;
 
-import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Main {
-    private static List<Order> orders;
-    private static List<Branch> branches;
-    private static List<Node> nodes;
-    private static List<Edge> edges;
-
     //DONE:Посчитать корреляцию order_type и BranchCode : 0.14823003 - параметры независимы
 
-    public static void main(String[]args)
-    {
-        nodes = DataLoader.nodesToList();
-        orders = DataLoader.ordersToList();
-        branches = DataLoader.branchesToList();
-        edges = DataLoader.edgesToList();
+    public static final HashMap<String,String> csvPaths = new HashMap<String,String>(){{
 
-        // пересобрать решение
+        put("branches","C:\\Users\\роппг\\IdeaProjects\\magentaTTL\\src\\main\\resources\\branches.csv");
+        put("edges","C:\\Users\\роппг\\IdeaProjects\\magentaTTL\\src\\main\\resources\\edges.csv");
+        put("nodes","C:\\Users\\роппг\\IdeaProjects\\magentaTTL\\src\\main\\resources\\nodes.csv");
+        put("orders","C:\\Users\\роппг\\IdeaProjects\\magentaTTL\\src\\main\\resources\\orders.csv");
+    }};
+
+    public static void main(String[]args) {
         printTime();
+        System.out.println("Start");
         DijkstraRunner dr = new DijkstraRunner();
-        dr.getShortestForAllOrdersLinear();
-        //printTime();
-    }
-
-    private static List<Node> getListOfOrderNodes(List<Order> ordersGrouped)
-    {
-        /*List<Node> orderNodes = new ArrayList<>();
-        for (Order order: ordersSorted)
-        {
-            Node curNode = ;
-            if(curNode.getLatitude()!= 0)
-            {
-                orderNodes.add(curNode);
-            }
-        }
-        return orderNodes;*/
-        return ordersGrouped
-                .stream()
-                .map(order -> Getters.getNodeByCoordinates(order.getLatitude(),order.getLongtitude(),nodes))
-                .filter(node -> node.getLatitude() != 0)
-                .collect(Collectors.toList());
-    }
-
-
-    private static void test()
-    {
         printTime();
-        System.out.println("orders");
-        orders = DataLoader.ordersToList();
+        System.out.println("Linear");
+        HashMap<Node,List<Node>> pathes = dr.getShortestForAllOrdersLinear();
         printTime();
-        System.out.println("nodes");
-        nodes = DataLoader.nodesToList();
+        pathes.forEach((node,path) -> System.out.println(node.getId() + "="+ path));
+        System.out.println(pathes.keySet().size());
+        System.out.println("Parallel");
+        HashMap<Node,List<Node>> pathesParallel = dr.getShortestForAllOrdersParallel();
         printTime();
-        System.out.println("branches");
-        branches = DataLoader.branchesToList();
-        printTime();
-        /*System.out.println("createGraph");
-        GraphCreator.createGraph(nodes,edges);
-        System.out.println("createGraph done");
-        printTime();*/
-        System.out.println("HashMap");
-        GraphCreator.createGraph(nodes,edges);
-        System.out.println("HashMap done");
-        printTime();
-        System.out.println("Split on order type");
-        System.out.println(ToHashMap.ordersListToHashMapByOrderType(orders));
-        printTime();
-        System.out.println("Split on branch code");
-        System.out.println(ToHashMap.ordersListToHashMapByBranch(orders,branches));
-        printTime();
+        pathesParallel.forEach((node,path) -> System.out.println(node.getId() + "="+ path));
     }
 
     private static void printTime()
@@ -86,6 +38,11 @@ public class Main {
         SimpleDateFormat formatter = new SimpleDateFormat("ss:SS");
         System.out.println(formatter.format(date));
     }
+
+
+
+
+
 
 
 

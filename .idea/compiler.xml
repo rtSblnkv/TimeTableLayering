@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="magentaTTL" target="8" />
+      <module name="magentaTTL" target="9" />
     </bytecodeTargetLevel>
   </component>
 </project>

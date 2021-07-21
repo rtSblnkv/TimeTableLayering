@@ -1,10 +1,7 @@
-package TTL.controllers.Lists;
+package TTL.controllers.listWorkers;
 
-import TTL.controllers.Getters;
-import TTL.models.Node;
 import TTL.models.Order;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,6 +40,14 @@ public class OrderWorker implements Worker {
         return branchCodes;*/
     }
 
+    public List<Double> getOrdersDistancesTo()
+    {
+        return orders
+                .stream()
+                .map(Order::getDistanceTo)
+                .collect(Collectors.toList());
+    }
+
 
     public List<String> getOrderTypes()
     {
@@ -64,48 +69,10 @@ public class OrderWorker implements Worker {
         return orderTypes;*/
     }
 
-    private static List<Node> getListOfOrderNodes(List<Order> ordersGrouped)
-    {
-        List<Node> orderNodes = new ArrayList<>();
-        for (Order order: ordersSorted)
-        {
-            Node curNode = ;
-            if(curNode.getLatitude()!= 0)
-            {
-                orderNodes.add(curNode);
-            }
-        }
-        return orderNodes;*//*
-        return ordersGrouped
-                .stream()
-                .map(order -> Getters.getNodeByCoordinates(order.getLatitude(),order.getLongtitude(),nodes))
-                .filter(node -> node.getLatitude() != 0)
-                .collect(Collectors.toList());
-    }
-
     public void deleteOrdersWithIncorrectNodes(NodeWorker nw )
     {
         orders.removeIf(order -> nw.getNodeId(order.getLatitude(),order.getLongtitude()) == 0);
     }
-
-    public HashMap<String,List<Order>> ordersListToHashMapByOrderType()
-    {
-        List<String> orderTypes = getOrderTypes();
-        HashMap<String,List<Order>> ordersOnOrderTypeHashMap = new HashMap<>();
-        orderTypes.forEach(orderType -> ordersOnOrderTypeHashMap.put(orderType,new ArrayList<Order>()));
-        orders.forEach(order -> ordersOnOrderTypeHashMap.get(order.getOrderType()).add(order));
-        return ordersOnOrderTypeHashMap;
-    }
-
-    public HashMap<String,List<Order>> ordersListToHashMapByBranch()
-    {
-        List<String> branchCodes = getBranchCodes();
-        HashMap<String,List<Order>> ordersOnBranchCodeHashMap = new HashMap<>();
-        branchCodes.forEach(branchCode -> ordersOnBranchCodeHashMap.put(branchCode,new ArrayList<Order>()));
-        orders.forEach(order -> ordersOnBranchCodeHashMap.get(order.getBranchCode()).add(order));
-        return ordersOnBranchCodeHashMap;
-    }
-
 
     @Override
     public HashMap<String, Order> toHashMap() {

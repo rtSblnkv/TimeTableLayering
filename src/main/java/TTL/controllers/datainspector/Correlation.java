@@ -8,10 +8,10 @@ import java.util.List;
 
 public class Correlation {
 
-    private static float correlationCoefficient(int x[], int y[])
+    private static float correlationCoefficient(double x[], double y[])
     {
-        int sum_X = 0, sum_Y = 0, sum_XY = 0,n = x.length;
-        int squareSum_X = 0, squareSum_Y = 0;
+        double sum_X = 0, sum_Y = 0, sum_XY = 0,n = x.length;
+        double squareSum_X = 0, squareSum_Y = 0;
 
         for (int i = 0; i < n; i++)
         {
@@ -39,10 +39,11 @@ public class Correlation {
     public static float getCorrelationOfOrderTypesAndBranchCodes(List<Order> orders)
     {
         BranchCodeLabelEncoder bcle = new BranchCodeLabelEncoder();
-        int[] branchCodesLE = bcle.labelEncode(orders);
+        double[] branchCodesLE = bcle.labelEncode(orders);
 
         OrderTypeLabelEncoder otle = new OrderTypeLabelEncoder();
-        int[] orderTypeLE = otle.labelEncode(orders);
-        return correlationCoefficient(orderTypeLE,branchCodesLE);
+        double[] orderTypeLE = otle.labelEncode(orders);
+        return correlationCoefficient(branchCodesLE,orderTypeLE);
     }
+
 }

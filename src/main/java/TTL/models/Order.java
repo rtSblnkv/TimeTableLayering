@@ -68,7 +68,7 @@ public class Order {
 
     public void setOrderType(String orderType) { this.orderType = orderType; }
 
-    public String getBranchCode() { return branchCode; }
+    public String getBranchCode() { return branchCode.toUpperCase(); }
 
     public void setBranchCode(String branchCode) { this.branchCode = branchCode; }
 

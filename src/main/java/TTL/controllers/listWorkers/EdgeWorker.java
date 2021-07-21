@@ -1,7 +1,6 @@
-package TTL.controllers.Lists;
+package TTL.controllers.listWorkers;
 
 import TTL.models.Edge;
-import TTL.models.Node;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,13 +45,16 @@ public class EdgeWorker implements Worker{
     @Override
     public HashMap<Long,List<Edge>> toHashMap() {
         HashMap<Long,List<Edge>> edgesHashMap = new HashMap<>();
-        edges.forEach(edge ->{
-            if(!edgesHashMap.containsKey(edge.getFrom()))
-            {
-                edgesHashMap.put(edge.getFrom(), new ArrayList<>());
-            }
-            edgesHashMap.get(edge.getFrom()).add(edge);
-        });
+//        edges.forEach(edge ->{
+//            if(!edgesHashMap.containsKey(edge.getFrom()))
+//            {
+//                edgesHashMap.put(edge.getFrom(), new ArrayList<>());
+//            }
+//            edgesHashMap.get(edge.getFrom()).add(edge);
+//        });
+        for (Edge edge : edges) {
+            edgesHashMap.computeIfAbsent(edge.getFrom(), k -> new ArrayList<>()).add(edge);
+        }
         return edgesHashMap;
     }
 }

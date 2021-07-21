@@ -55,7 +55,7 @@ public class Branch implements Serializable {
     {
         return "Branch code: " + branchCode +
                 ", name:" + branchName +
-                "location: " + latitude + "." + longtitude;
+                "location: " + latitude + "." + longtitude + "\n";
     }
 
 }

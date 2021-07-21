@@ -1,14 +1,26 @@
 package TTL;
 
 import TTL.controllers.*;
-import TTL.controllers.dataloader.DataLoader;
-import TTL.controllers.ToHashMap;
+import TTL.controllers.layers.ByBranchCodeLayers;
+import TTL.controllers.layers.ByOrderTypeLayers;
+import TTL.controllers.listWorkers.BranchWorker;
+import TTL.controllers.listWorkers.NodeWorker;
+import TTL.controllers.listWorkers.OrderWorker;
+import TTL.controllers.dataloader.CsvLoader;
+import TTL.controllers.dataloader.CsvLoaderFactory;
 import TTL.models.*;
+import org.openjdk.jmh.annotations.*;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+
+@BenchmarkMode(Mode.All)
+@Warmup(iterations = 2)
+@State(Scope.Benchmark)
 public class DijkstraRunner {
 
     private List<Order> orders;
@@ -16,104 +28,124 @@ public class DijkstraRunner {
     private List<Edge> edges;
     private List<Branch> branches;
 
-    private HashMap<String, Order> ordersHashMap;
-    private HashMap<Long, Node> nodesHashMap;
+    //private HashMap<String, Order> ordersHashMap;
     private HashMap<String, Node> branchNodes;
 
+    ByBranchCodeLayers byBranchCodeLayer;
+    ByOrderTypeLayers byOrderTypeLayers;
 
-    private HashMap<String,List<Order>> ordersHashMapByOrderType;
-    private HashMap<String,List<Order>> ordersHashMapByBranch;
+
+    private static final HashMap<String,String> csvPaths = new HashMap<>(){{
+        put("branches","C:\\Users\\роппг\\IdeaProjects\\magentaTTL\\src\\main\\resources\\branches.csv");
+        put("edges","C:\\Users\\роппг\\IdeaProjects\\magentaTTL\\src\\main\\resources\\edges.csv");
+        put("nodes","C:\\Users\\роппг\\IdeaProjects\\magentaTTL\\src\\main\\resources\\nodes.csv");
+        put("orders","C:\\Users\\роппг\\IdeaProjects\\magentaTTL\\src\\main\\resources\\orders.csv");
+    }};
+
+    public List<Order> getOrders() { return orders; }
 
 
     public DijkstraRunner(){
-        orders = DataLoader.ordersToList();
-        edges = DataLoader.edgesToList();
-        nodes = DataLoader.nodesToList();
-        branches = DataLoader.branchesToList();
-
-        nodesHashMap = GraphCreator.createGraph(nodes,edges);
-        ordersHashMap = ToHashMap.ordersListToHashMap(orders);
-
-        ordersHashMapByOrderType = ToHashMap.ordersListToHashMapByOrderType(orders);
-        ordersHashMapByBranch = ToHashMap.ordersListToHashMapByBranch(orders);
+        uploadDataFromCsvFiles();
+        byBranchCodeLayer = new ByBranchCodeLayers(orders);
+        byOrderTypeLayers = new ByOrderTypeLayers(orders);
     }
 
+    //@Benchmark
+    private void uploadDataFromCsvFiles()
+    {
+        CsvLoaderFactory loaderFactory = new CsvLoaderFactory();
 
+        CsvLoader branchLoader = loaderFactory.createCsvLoader("branches");
+        branches = branchLoader.csvToList(csvPaths.get("branches"));
+
+        System.out.println("branches " + branches.size());
+
+        CsvLoader edgeLoader = loaderFactory.createCsvLoader("edges");
+        edges = edgeLoader.csvToList(csvPaths.get("edges"));
+
+        System.out.println("edges " + edges.size());
+
+        CsvLoader nodeLoader = loaderFactory.createCsvLoader("nodes");
+        nodes = nodeLoader.csvToList(csvPaths.get("nodes"));
+
+        System.out.println("nodes " + nodes.size());
+
+        CsvLoader orderLoader = loaderFactory.createCsvLoader("orders");
+        orders = orderLoader.csvToList(csvPaths.get("orders"));
+
+        System.out.println("orders " + orders.size());
+    }
+
+    @Benchmark
     public HashMap<Node,List<Node>> getShortestForAllOrdersLinear()
     {
+        System.out.println("Linear");
+        return byBranchCodeLayer.getLayers()
+                .entrySet()
+                .stream()
+                .map(branchOrders -> computePathesForLayer(branchOrders.getKey(),branchOrders.getValue(),"Linear"))
+                .reduce(this::merge)
+                .orElse(new HashMap<>() );
+    }
+
+    //@Benchmark
+    public HashMap<Node,List<Node>> getShortestForAllOrdersParallel()
+    {
+        System.out.println("Parallel");
+        return byBranchCodeLayer.getLayers()
+                .entrySet()
+                .parallelStream()
+                .map(branchOrders -> computePathesForLayer(branchOrders.getKey(),branchOrders.getValue(),"Parallel"))
+                .reduce(this::merge)
+                .orElse(new HashMap<>() );
+    }
+
+    private HashMap<Node,List<Node>> merge(HashMap<Node,List<Node>> x,HashMap<Node,List<Node>> y)
+    {
+        x.putAll(y);
+        return x;
+    }
+
+    private HashMap<Node,List<Node>> computePathesForLayer(String branch,List<Order> branchOrders,String type)
+    {
         HashMap<Node,List<Node>> shortPathes = new HashMap<>();
-        HashMap<Node,List<Node>> shortPathesTime = new HashMap<>();
+        NodeWorker nodeWorker = new NodeWorker(nodes);
+        BranchWorker branchWorker = new BranchWorker(branches);
 
-        System.out.println("Orders size = " + orders.size());
+        branchNodes = branchWorker.toBranchNodeHashMap(nodeWorker);
+        Dijkstra dijkstra = new Dijkstra();
 
-        getBranchNodeMap();
+        GraphCreator graphBuilder = new GraphCreator(nodes,edges);
+        HashMap<Long, Node> graph = graphBuilder.createGraph();
+        dijkstra.setNodesHashMap(graph);
 
-        for(Map.Entry<String,List<Order>> branchOrdersMap : ordersHashMapByBranch.entrySet())
-        {
+        Node branchNode = branchNodes.get(branch);
+        System.out.println("Layer of " + branchNode);
+        System.out.println("____________________________________________________________");
 
-            //System.out.println(branchOrdersMap.getKey());
-            Dijkstra dijkstra = new Dijkstra();
-            dijkstra.setNodesHashMap(nodesHashMap);
-            Dijkstra dijkstraTime = new Dijkstra();
-            dijkstraTime.setNodesHashMap(nodesHashMap);
-            System.out.println("____________________|______|____|____|__|__|___|_______|____________________");
-            Node branchNode = branchNodes.get("BK");
-            dijkstra.computePathesFrom(branchNode);
-            System.out.println("distance");
-            dijkstra.printNodes();
-            dijkstraTime.computePathesFromByTime(branchNode);
-            System.out.println("time");
-            dijkstraTime.printNodes();
+        dijkstra.computePathesFrom(branchNode);
+        String fileName = branch + type + ".txt";
+        NodesToFileWriter.createFile(fileName);
 
-            List<Order> branchOrders = branchOrdersMap.getValue();
-            System.out.println(branchOrdersMap.getKey());
-            branchOrders.forEach(order ->{
-                Node nodeTo = Getters.getNodeByCoordinates(order.getLatitude(),order.getLongtitude(),nodes);
-                if(nodeTo.getId() != 0) {
-                    System.out.println("\n Current " + nodeTo);
-                    List<Node> pathDistance = dijkstra.getShortestPathTo(nodeTo);
-                    shortPathes.put(nodeTo, pathDistance);
+        branchOrders.forEach(order ->{
+            Node nodeTo = nodeWorker.getNodeByCoordinates(order.getLatitude(),order.getLongtitude());
+            if(nodeTo.getId() != 0 && nodeTo.getMinDistance() < 1000000000) {
+                System.out.println("\n Current node : " + nodeTo);
+                List<Node> pathToCurrentNode = dijkstra.getShortestPathTo(nodeTo);
+                if(!pathToCurrentNode.isEmpty())
+                {
+                    double datasetDistanceToInMetres = order.getDistanceTo() * 1000;
+                    double epsilon = nodeTo.getMinDistance() - datasetDistanceToInMetres ;
 
-                    List<Node> pathTime = dijkstra.getShortestPathTo(nodeTo);
-                    shortPathesTime.put(nodeTo, pathTime);
+                    nodeTo.setEpsilon(epsilon);
+                    shortPathes.put(nodeTo, pathToCurrentNode);
 
-                    System.out.println(" distance" + pathDistance + "\n time" + pathTime + "\n equals = "+ pathTime.equals(pathDistance));
+                    NodesToFileWriter.writeResultInFile(fileName,nodeTo,pathToCurrentNode,datasetDistanceToInMetres,nodeTo.getMinDistance(),epsilon);
                 }
-
-            });
-        }
-        return shortPathes;
-    }
-
-    private void getBranchNodeMap()
-    {
-        branchNodes = new HashMap<>();
-        branches.forEach(branch ->
-        {
-            Node branchNode = Getters.getNodeByCoordinates(branch.getLatitude(),branch.getLongtitude(),nodes);
-            branchNodes.put(branch.getBranchCode(),branchNode);
+            }
         });
-        System.out.println(branchNodes);
-
-    }
-
-
-
-    public HashMap<Node,List<Node>> getShortestToOrderLinearMap()
-    {
-        HashMap<Node,List<Node>> shortPathes = new HashMap<>();
-
+        dijkstra.clearGraph();
         return shortPathes;
     }
-
-    public HashMap<Node,List<Node>> getShortestForAllOrdersSplitted()
-    {
-        HashMap<Node,List<Node>> shortPathes = new HashMap<>();
-
-        return shortPathes;
-    }
-
-
-
-
 }

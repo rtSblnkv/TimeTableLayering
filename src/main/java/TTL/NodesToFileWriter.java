@@ -2,10 +2,13 @@ package TTL;
 
 import TTL.models.Node;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NodesToFileWriter {
 
@@ -23,17 +26,41 @@ public class NodesToFileWriter {
         }
     }
 
-    public static void writeNodesInFile(String fileName, List<Node> nodes_)
+    public static void writeResultInFile(String fileName,Node curNode, List<Node> nodes,double datasetDistance,double calcDistance,double epsilon)
+    {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName,true)))
+        {
+            int  i = 0;
+            writer.write(" " +
+                    curNode.toString() +
+                    "\n Path :: " + nodes.toString() +
+                    "\n Distance: Calculated -> " +
+                    calcDistance + " In Dataset -> " +
+                    datasetDistance + " Epsilon -> " +
+                    epsilon);
+
+            writer.append("\n\n");
+            i++;
+            System.out.println(i);
+            System.out.println("Nodes have been written");
+        }
+        catch(IOException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void writeShortPathesInFile(String fileName, HashMap<Node,List<Node>> shortPathes)
     {
         createFile(fileName);
         try (FileWriter writer = new FileWriter(fileName,false))
         {
             int  i = 0;
-            for (Node node:nodes_)
+            for(Map.Entry<Node,List<Node>> entry : shortPathes.entrySet())
             {
-                writer.write(node.toString());
+                writer.write(entry.getKey().toString() + " path ::" + entry.getValue().toString());
+                writer.write(" Epsilon :: " + entry.getKey().getEpsilon());
                 writer.append("\n");
-                i++;
             }
             System.out.println(i);
             System.out.println("Nodes have been written");
@@ -44,10 +71,12 @@ public class NodesToFileWriter {
         }
     }
 
+
+
     public static void writeNodesInFile(String fileName,List<Node> nodes_,String marker,String colour)
     {
         createFile(fileName);
-        try (FileWriter writer = new FileWriter(fileName,false))
+        try (FileWriter writer = new FileWriter(fileName))
         {
             int  i = 0;
             for (Node node:nodes_)

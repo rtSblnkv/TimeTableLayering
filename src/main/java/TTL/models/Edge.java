@@ -4,6 +4,7 @@ import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvIgnore;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Edge implements Serializable {
 
@@ -25,7 +26,6 @@ public class Edge implements Serializable {
     @CsvIgnore
     private double dist_on_limit;
 
-    private double rangeTime;
 
     public Edge(){ }
 
@@ -47,18 +47,29 @@ public class Edge implements Serializable {
 
     public void setSpeedLimit(int speedLimit) { this.speedLimit = speedLimit; }
 
-    public double getRangeTime() { return rangeTime; }
-
-    public void setRangeTime() {
-        rangeTime = distance * 3.6 / speedLimit;
-    }
 
     @Override
     public String toString() {
         return "from: " + from +
                 ", to: " + to +
-                ", distance: " + distance +
-                ", rangeTime: " + rangeTime +
-                ", speedLimit: " + speedLimit;
+                ", distance: " + distance +"\n";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Edge edge = (Edge) o;
+        return from == edge.from &&
+                to == edge.to &&
+                Double.compare(edge.distance, distance) == 0 &&
+                Double.compare(edge.speedLimit, speedLimit) == 0 &&
+                street_type == edge.street_type &&
+                Double.compare(edge.dist_on_limit, dist_on_limit) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(from, to, distance, speedLimit, street_type, dist_on_limit);
     }
 }

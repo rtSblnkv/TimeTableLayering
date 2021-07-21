@@ -5,6 +5,7 @@ import com.opencsv.bean.CsvBindByName;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Node implements Serializable,Comparable<Node> {
     @CsvBindByName(column="node")
@@ -20,7 +21,10 @@ public class Node implements Serializable,Comparable<Node> {
 
     private boolean visited;
 
+    private double epsilon;
+
     private double minDistance = Double.MAX_VALUE;
+
 
     public Node(){}
 
@@ -60,6 +64,10 @@ public class Node implements Serializable,Comparable<Node> {
 
     public void setEdges(List<Edge> edges) { this.edges = edges; }
 
+    public double getEpsilon() { return epsilon; }
+
+    public void setEpsilon(double epsilon) { this.epsilon = epsilon; }
+
     public Node getPreviousNode() { return previousNode;}
 
     public void setPreviousNode(Node previousNode) { this.previousNode = previousNode; }
@@ -74,17 +82,32 @@ public class Node implements Serializable,Comparable<Node> {
 
     @Override
     public String toString() {
-        /*return " id = " + id +
-                ", latitude = " + latitude +
-                ", longtitude = " + longtitude +
-                ", visited = " + visited +
-                ", minDistance = " + minDistance +
-                ", edges = " + edges + "\n";*/
-        return latitude + "\t" + longtitude;
+        return "[" + latitude +
+                "," + longtitude + "] ";
     }
 
     public int compareTo(Node secondNode)
     {
         return Double.compare(this.minDistance,secondNode.minDistance);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Node node = (Node) o;
+        return id == node.id &&
+                Double.compare(node.latitude, latitude) == 0 &&
+                Double.compare(node.longtitude, longtitude) == 0 &&
+                visited == node.visited &&
+                Double.compare(node.epsilon, epsilon) == 0 &&
+                Double.compare(node.minDistance, minDistance) == 0 &&
+                Objects.equals(edges, node.edges) &&
+                Objects.equals(previousNode, node.previousNode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, latitude, longtitude, edges, previousNode, visited, epsilon, minDistance);
     }
 }

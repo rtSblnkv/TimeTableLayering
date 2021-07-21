@@ -5,5 +5,5 @@ import TTL.models.Order;
 import java.util.List;
 
 public interface LabelEncoder {
-    int[] labelEncode(List<Order> orders);
+    double[] labelEncode(List<Order> orders);
 }

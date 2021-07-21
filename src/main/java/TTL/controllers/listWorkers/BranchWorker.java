@@ -1,9 +1,8 @@
-package TTL.controllers.Lists;
+package TTL.controllers.listWorkers;
 
 import TTL.models.Branch;
 import TTL.models.Node;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

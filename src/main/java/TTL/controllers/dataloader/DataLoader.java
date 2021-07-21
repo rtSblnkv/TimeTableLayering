@@ -1,9 +1,7 @@
 package TTL.controllers.dataloader;
 
-import TTL.models.Branch;
-import TTL.models.Edge;
-import TTL.models.Node;
-import TTL.models.Order;
+import TTL.models.*;
+
 import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.exceptions.CsvException;
@@ -12,6 +10,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+
 
 public class DataLoader {
 
@@ -22,72 +21,28 @@ public class DataLoader {
         put("orders","C:\\Users\\роппг\\IdeaProjects\\magentaTTL\\src\\main\\resources\\orders.csv");
     }};
 
-    public static List<Branch> branchesToList()
+    private static final HashMap<String,Class> classes = new HashMap<String,Class>(){{
+        put("branches",Branch.class);
+        put("edges",Edge.class);
+        put("nodes",Node.class);
+        put("orders",Order.class);
+    }};
+
+    //???????
+    public List csvToListGeneric(String tableName)
     {
-        List<Branch> branches = null;
+        List data = null;
         try{
-            branches = new CsvToBeanBuilder(new FileReader(csvPaths.get("branches")))
-                    .withType(Branch.class)
+            data = new CsvToBeanBuilder(new FileReader(csvPaths.get(tableName)))
+                    .withType(classes.get(tableName))
                     .build()
                     .parse();
         }
-        catch(IOException ex)
+        catch(Exception ex)
         {
             System.out.println(ex.getMessage());
         }
-        return branches;
-    }
-
-    public static List<Edge> edgesToList()
-    {
-        List<Edge> edges = null;
-        try{
-            edges = new CsvToBeanBuilder(new FileReader(csvPaths.get("edges")))
-                    .withType(Edge.class)
-                    .build()
-                    .parse();
-        }
-        catch(IOException ex)
-        {
-            System.out.println(ex.getMessage());
-        }
-        return edges;
-    }
-
-    public static List<Node> nodesToList()
-    {
-        List<Node> nodes = null;
-        try{
-            nodes = new CsvToBeanBuilder(new FileReader(csvPaths.get("nodes")))
-                    .withType(Node.class)
-                    .build()
-                    .parse();
-        }
-        catch(IOException ex)
-        {
-            System.out.println(ex.getMessage());
-        }
-        return nodes;
-    }
-
-    public static List<Order> ordersToList()
-    {
-        List<Order> orders = null;
-        try{
-            orders = new CsvToBeanBuilder(new FileReader(csvPaths.get("orders")))
-                    .withType(Order.class)
-                    .build()
-                    .parse();
-        }
-        catch(IOException ex)
-        {
-            System.out.println("DataLoader IOException: " + ex.getMessage());
-        }
-        catch(NullPointerException ex)
-        {
-            System.out.println("DataLoader NPException: " + ex.getMessage());
-        }
-        return orders;
+        return data;
     }
 
     //non-actual
@@ -99,11 +54,17 @@ public class DataLoader {
             reader = new CSVReader(new FileReader(csvPaths.get(key)));
             allRows = reader.readAll();
         }
-        catch(IOException |CsvException e)
+        catch(IOException|CsvException e)
         {
             System.out.println(e.getMessage());
         }
+
         return allRows;
+
+        //aaa(reader, CSVReader.class);
+    }
+
+    public <T> void aaa(T object, Class<T> tClass) {
     }
 
 }

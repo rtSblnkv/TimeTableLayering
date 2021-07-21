@@ -1,4 +1,4 @@
-package TTL.controllers.Lists;
+package TTL.controllers.listWorkers;
 
 import java.util.HashMap;
 

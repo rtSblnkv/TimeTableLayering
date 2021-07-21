@@ -1,16 +1,17 @@
 package TTL.controllers.datainspector.encoder;
 
-import TTL.controllers.Getters;
+import TTL.controllers.listWorkers.OrderWorker;
 import TTL.models.Order;
 
 import java.util.List;
 
 public class BranchCodeLabelEncoder implements LabelEncoder {
     @Override
-    public int[] labelEncode(List<Order> orders) {
-        List<String> branchCodes = Getters.getBranchCodes(orders);
+    public double[] labelEncode(List<Order> orders) {
+        OrderWorker ow = new OrderWorker(orders);
+        List<String> branchCodes = ow.getBranchCodes();
         int ordersSize = orders.size();
-        int[] branchCodeLE = new int[ordersSize];
+        double[] branchCodeLE = new double[ordersSize];
         int i = 0;
         for(Order order : orders)
         {
@@ -20,4 +21,5 @@ public class BranchCodeLabelEncoder implements LabelEncoder {
         System.out.println(ordersSize);
         return branchCodeLE;
     }
+
 }

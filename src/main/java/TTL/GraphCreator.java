@@ -1,25 +1,45 @@
 package TTL;
 
-import TTL.controllers.ToHashMap;
+import TTL.controllers.listWorkers.EdgeWorker;
+import TTL.controllers.listWorkers.NodeWorker;
 import TTL.models.Edge;
 import TTL.models.Node;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GraphCreator {
+
+    private List<Node> nodes;
+    private List<Edge> edges;
     //меньше 1 секунды
-    static HashMap<Long, Node> createGraph(List<Node> nodes, List<Edge> edges)
+    public GraphCreator(){}
+
+    public GraphCreator(List<Node> nodes, List<Edge> edges) {
+        this.nodes = new ArrayList<>(nodes);
+        this.edges = new ArrayList<>(edges);
+    }
+
+    public void setNodes(List<Node> nodes) {
+        this.nodes = nodes;
+    }
+
+    public void setEdges(List<Edge> edges) {
+        this.edges = edges;
+    }
+
+    public  HashMap<Long, Node> createGraph()
     {
-        HashMap<Long, Node> nodesHashMap;
+        EdgeWorker edgeWorker = new EdgeWorker(edges);
 
-        edges.forEach(edge -> edge.setRangeTime());
-
-        HashMap<Long,List<Edge>>  edgeHashMap = ToHashMap.edgesListToHashMapOnFromNodeId(edges);
-        nodes.forEach(node -> node.setEdges(edgeHashMap.get(node.getId())));
-
-        nodesHashMap = ToHashMap.nodesListToHashMap(nodes);
-        return nodesHashMap;
+        HashMap<Long,List<Edge>> edgeHashMap = edgeWorker.toHashMap();
+        NodeWorker nodeWorker = new NodeWorker(nodes);
+        HashMap<Long, Node> graph = nodeWorker.toHashMap();
+        graph.forEach((id,node) -> node.setEdges(edgeHashMap.get(node.getId())
+        ));
+        return graph;
     }
 
 

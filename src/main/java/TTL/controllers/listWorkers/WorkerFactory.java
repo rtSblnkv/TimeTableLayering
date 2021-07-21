@@ -1,6 +1,4 @@
-package TTL.controllers.Lists;
-
-import TTL.controllers.dataloader.*;
+package TTL.controllers.listWorkers;
 
 public class WorkerFactory {
 
