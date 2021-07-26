@@ -25,12 +25,12 @@ public class Main {
         DijkstraRunner dr = new DijkstraRunner();
         printTime();
         System.out.println("Linear");
-        HashMap<Node,List<Node>> pathes = dr.getShortestForAllOrdersLinear();
+        HashMap<Node,List<Node>> pathes = dr.getShortestForAllOrdersByBranchCodeLinear();
         printTime();
         pathes.forEach((node,path) -> System.out.println(node.getId() + "="+ path));
         System.out.println(pathes.keySet().size());
         System.out.println("Parallel");
-        HashMap<Node,List<Node>> pathesParallel = dr.getShortestForAllOrdersParallel();
+        HashMap<Node,List<Node>> pathesParallel = dr.getShortestForAllOrdersByBranchCodeParallel();
         printTime();
         pathesParallel.forEach((node,path) -> System.out.println(node.getId() + "="+ path));
     }

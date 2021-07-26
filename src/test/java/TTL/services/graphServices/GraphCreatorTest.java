@@ -1,4 +1,4 @@
-package TTL;
+package TTL.services.graphServices;
 
 import TTL.controllers.listWorkers.NodeWorker;
 import TTL.models.Edge;
