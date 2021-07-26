@@ -1,10 +1,16 @@
-package TTL;
+package TTL.services.graphServices;
 
-import TTL.controllers.layers.*;
-import TTL.controllers.listWorkers.*;
+import TTL.NodesToFileWriter;
 import TTL.controllers.dataloader.CsvLoader;
 import TTL.controllers.dataloader.CsvLoaderFactory;
-import TTL.models.*;
+import TTL.controllers.layers.ByBranchCodeLayers;
+import TTL.controllers.layers.ByOrderTypeLayers;
+import TTL.controllers.listWorkers.BranchWorker;
+import TTL.controllers.listWorkers.NodeWorker;
+import TTL.models.Branch;
+import TTL.models.Edge;
+import TTL.models.Node;
+import TTL.models.Order;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.ArrayList;
@@ -28,10 +34,10 @@ public class DijkstraRunner {
     private ByOrderTypeLayers byOrderTypeLayers;
 
     private static final HashMap<String,String> csvPaths = new HashMap<>(){{
-        put("branches","C:\\Users\\роппг\\IdeaProjects\\magentaTTL\\src\\main\\resources\\branches.csv");
-        put("edges","C:\\Users\\роппг\\IdeaProjects\\magentaTTL\\src\\main\\resources\\edges.csv");
-        put("nodes","C:\\Users\\роппг\\IdeaProjects\\magentaTTL\\src\\main\\resources\\nodes.csv");
-        put("orders","C:\\Users\\роппг\\IdeaProjects\\magentaTTL\\src\\main\\resources\\orders.csv");
+        put("branches","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\branches.csv");
+        put("edges","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\edges.csv");
+        put("nodes","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\nodes.csv");
+        put("orders","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\orders.csv");
     }};
 
     /**
@@ -48,14 +54,9 @@ public class DijkstraRunner {
         uploadDataFromCsvFiles();
         byBranchCodeLayer = new ByBranchCodeLayers(orders);
         byOrderTypeLayers = new ByOrderTypeLayers(orders);
-
-        NodeWorker nodeWorker = new NodeWorker(nodes);
-        BranchWorker branchWorker = new BranchWorker(branches);
-
-        branchNodes = branchWorker.toBranchNodeHashMap(nodeWorker);
     }
 
-    @Benchmark
+    //@Benchmark
     private void uploadDataFromCsvFiles()
     {
         CsvLoaderFactory loaderFactory = new CsvLoaderFactory();
@@ -124,8 +125,15 @@ public class DijkstraRunner {
         HashMap<Node,List<Node>> shortPathes = new HashMap<>();
 
         List<Node> nodesClone = new ArrayList<>();
+        for(Node node: nodes)
+        {
+            nodesClone.add(node.clone());
+        }
 
-        NodeWorker nodeWorker  = new NodeWorker(nodesClone);
+        NodeWorker nodeWorker = new NodeWorker(nodesClone);
+        BranchWorker branchWorker = new BranchWorker(branches);
+
+        branchNodes = branchWorker.toBranchNodeHashMap(nodeWorker);
 
         Dijkstra dijkstra = new Dijkstra();
 
@@ -138,12 +146,12 @@ public class DijkstraRunner {
         System.out.println("____________________________________________________________");
 
         dijkstra.computeMinDistancesfrom(branchNode);
-        String fileName = "resources/"+ branch + type + ".txt";
+        String fileName = branch + type + ".txt";
         NodesToFileWriter.createFile(fileName);
 
         orders.forEach(order ->{
             Node nodeTo = nodeWorker.getNodeByCoordinates(order.getLatitude(),order.getLongtitude());
-            if(nodeTo.getId() != 0) {
+            if(!nodeTo.equals(new Node())) {
                 System.out.println("\n Current node : " + nodeTo);
                 List<Node> pathToCurrentNode = dijkstra.getShortestPathTo(nodeTo);
                 if(!pathToCurrentNode.isEmpty())
@@ -160,11 +168,15 @@ public class DijkstraRunner {
                         NodesToFileWriter.writeResultInFile(fileName,nodeTo,pathToCurrentNode,datasetDistanceToInMetres,nodeTo.getMinDistance(),epsilon);
                     }
                 }
+                else
+                {
+                    System.out.println(nodeTo + "Short path doesn't exist");
+                }
             }
             else
             {
-                System.out.println(nodeTo + " Short path doesn't exist.");
-                NodesToFileWriter.writeResultInFile(fileName,nodeTo,null,Double.NaN,nodeTo.getMinDistance(),Double.NaN);
+                System.out.println(nodeTo + " Node doesn't exist.");
+                NodesToFileWriter.writeResultInFile(fileName,nodeTo,new ArrayList<>(),Double.NaN,nodeTo.getMinDistance(),Double.NaN);
             }
         });
         return shortPathes;

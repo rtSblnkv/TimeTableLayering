@@ -4,8 +4,6 @@ import TTL.models.OrderItem;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class TextToOrderItemsTest {
 
     // На вход данному методу поступают [('Steak', 3   ;   'Chicken', 6 или 'Burger', 8)]

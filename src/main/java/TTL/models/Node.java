@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Node implements Serializable,Comparable<Node> {
+public class Node implements Serializable,Comparable<Node>,Cloneable {
     @CsvBindByName(column="node")
     private long id;
     @CsvBindByName(column="lat")
@@ -109,5 +109,16 @@ public class Node implements Serializable,Comparable<Node> {
     @Override
     public int hashCode() {
         return Objects.hash(id, latitude, longtitude, edges, previousNode, visited, epsilon, minDistance);
+    }
+
+    @Override
+    public Node clone()
+    {
+        Node node = new Node();
+        node.setId(id);
+        node.setLongtitude(longtitude);
+        node.setLatitude(latitude);
+        return node;
+
     }
 }

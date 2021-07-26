@@ -7,7 +7,7 @@ public class BenchMarkRunner {
 }
 
 /*
-Result "TTL.DijkstraRunner.getShortestForAllOrdersParallel":
+Result "TTL.services.graphServices.DijkstraRunner.getShortestForAllOrdersParallel":
   7,749 ±(99.9%) 1,611 ops/s [Average]
   (min, avg, max) = (4,458, 7,749, 10,116), stdev = 1,918
   CI (99.9%): [6,138, 9,360] (assumes normal distribution)
@@ -22,5 +22,5 @@ the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from th
 Do not assume the numbers tell you what you want them to tell.
 
 Benchmark                                            Mode  Cnt  Score   Error  Units
-TTL.DijkstraRunner.getShortestForAllOrdersParallel  thrpt   21  7,749 ± 1,611  ops/s
+TTL.services.graphServices.DijkstraRunner.getShortestForAllOrdersParallel  thrpt   21  7,749 ± 1,611  ops/s
 */

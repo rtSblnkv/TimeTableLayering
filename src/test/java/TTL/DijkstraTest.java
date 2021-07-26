@@ -2,6 +2,8 @@ package TTL;
 
 import TTL.models.Edge;
 import TTL.models.Node;
+import TTL.services.graphServices.Dijkstra;
+import TTL.services.graphServices.GraphCreator;
 import org.junit.Assert;
 import org.junit.Test;
 

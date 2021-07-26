@@ -1,16 +1,14 @@
 package TTL;
 
 import TTL.controllers.listWorkers.NodeWorker;
-import TTL.models.Branch;
 import TTL.models.Edge;
 import TTL.models.Node;
-import org.junit.Assert;
+import TTL.services.graphServices.GraphCreator;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 

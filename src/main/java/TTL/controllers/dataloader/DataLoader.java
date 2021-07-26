@@ -1,7 +1,9 @@
 package TTL.controllers.dataloader;
 
-import TTL.models.*;
-
+import TTL.models.Branch;
+import TTL.models.Edge;
+import TTL.models.Node;
+import TTL.models.Order;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.exceptions.CsvException;
