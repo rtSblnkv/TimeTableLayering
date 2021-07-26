@@ -60,7 +60,7 @@ public class OrderWorker implements Worker {
     }
 
     /**
-     * Delete list of orders orders which Node.computed by latitude and longtitude are not exist in List of nodes.
+     * Delete list of orders orders which Node computed by order latitude and longtitude are not exist in List of nodes.
      * @param nw - handler of list of nodes
      */
     public void deleteOrdersWithIncorrectNodes(NodeWorker nw )

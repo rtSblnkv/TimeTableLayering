@@ -146,7 +146,7 @@ public class DijkstraRunner {
         System.out.println("____________________________________________________________");
 
         dijkstra.computeMinDistancesfrom(branchNode);
-        String fileName = branch + type + ".txt";
+        String fileName = "results\\"+branch + type + ".txt";
         NodesToFileWriter.createFile(fileName);
 
         orders.forEach(order ->{
@@ -161,7 +161,7 @@ public class DijkstraRunner {
                     if( nodeTo.getMinDistance() > 1000000)
                     {
                         NodesToFileWriter.writeResultInFile(
-                                "strange.txt",
+                                "results\\strange.txt",
                                 nodeTo,
                                 pathToCurrentNode,
                                 datasetDistanceToInMetres,
