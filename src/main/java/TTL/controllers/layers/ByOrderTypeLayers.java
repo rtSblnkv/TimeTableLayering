@@ -23,17 +23,6 @@ public class ByOrderTypeLayers extends Layers {
                         .map(Order::getOrderType)
                         .collect(Collectors.toSet())
         ));
-
-        /*ArrayList<String> orderTypes = new ArrayList<String>();
-        for (Order order: super.getOrders())
-        {
-            String orderType = order.getOrderType();
-            if (! orderTypes.contains(orderType))
-            {
-                orderTypes.add(orderType);
-            }
-        }
-        super.setSplitters(orderTypes);*/
     }
 
     @Override

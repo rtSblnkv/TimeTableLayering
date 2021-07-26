@@ -28,16 +28,6 @@ public class OrderWorker implements Worker {
                 .map(Order::getBranchCode)
                 .collect(Collectors.toList()
                 );
-        /*List<String> branchCodes = new ArrayList<String>();
-        for (Branch branch: branches)
-        {
-            String branchCode = branch.getBranchCode();
-            if (! branchCodes.contains(branchCode))
-            {
-                branchCodes.add(branchCode);
-            }
-        }
-        return branchCodes;*/
     }
 
     public List<Double> getOrdersDistancesTo()
@@ -57,16 +47,6 @@ public class OrderWorker implements Worker {
                         .map(Order::getOrderType)
                         .collect(Collectors.toList()
                         );
-        /*ArrayList<String> orderTypes = new ArrayList<String>();
-        for (Order order: orders)
-        {
-            String orderType = order.getOrderType();
-            if (! orderTypes.contains(orderType))
-            {
-                orderTypes.add(orderType);
-            }
-        }
-        return orderTypes;*/
     }
 
     public void deleteOrdersWithIncorrectNodes(NodeWorker nw )

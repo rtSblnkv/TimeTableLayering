@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
-
 public class DijkstraTest {
 
     Node startNode;
@@ -99,7 +97,7 @@ public class DijkstraTest {
         HashMap<Long,Node> graph = gc.createGraph();
 
         Dijkstra dijkstra = new Dijkstra(graph);
-        dijkstra.computePathesFrom(startNode);
+        dijkstra.computeMinDistancesfrom(startNode);
 
         List minDistancesTest = Arrays.asList(0.0,5.0,6.0,10.0);
         List<Double> minDistances = nodes
@@ -108,7 +106,6 @@ public class DijkstraTest {
                 .collect(Collectors.toList());
 
         Assert.assertEquals(minDistances,minDistancesTest);
-        dijkstra.clearGraph();
     }
 
     @Test
@@ -119,7 +116,7 @@ public class DijkstraTest {
         HashMap<Long,Node> graph = gc.createGraph();
 
         Dijkstra dijkstra = new Dijkstra(graph);
-        dijkstra.computePathesFrom(startNode);
+        dijkstra.computeMinDistancesfrom(startNode);
         List<Node> path = dijkstra.getShortestPathTo(finishNode);
         List<Node> determinatePath = new ArrayList<>();
         determinatePath.add(nodes.get(0));
@@ -138,10 +135,9 @@ public class DijkstraTest {
         GraphCreator gc = new GraphCreator(nodes,edges);
         HashMap<Long,Node> graph = gc.createGraph();
         Dijkstra dijkstra = new Dijkstra(graph);
-        dijkstra.computePathesFrom(startNode);
-        dijkstra.clearGraph();
+        dijkstra.computeMinDistancesfrom(startNode);
 
-        Assert.assertEquals(graphClean,dijkstra.getNodesHashMap());
+        Assert.assertEquals(graphClean,dijkstra.getGraph());
     }
 
 

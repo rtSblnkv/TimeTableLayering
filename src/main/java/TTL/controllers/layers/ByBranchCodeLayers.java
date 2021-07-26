@@ -23,17 +23,6 @@ public class ByBranchCodeLayers extends Layers {
                         .map(Order::getBranchCode)
                         .collect(Collectors.toSet())
         ));
-
-        /*ArrayList<String> orderTypes = new ArrayList<String>();
-        for (Order order: super.getOrders())
-        {
-            String orderType = order.getBranchCode();
-            if (! orderTypes.contains(orderType))
-            {
-                orderTypes.add(orderType);
-            }
-        }
-        super.setSplitters(orderTypes);*/
     }
 
     @Override

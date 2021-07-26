@@ -8,25 +8,29 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 public class Dijkstra {
 
-    private HashMap<Long,Node> nodesHashMap;
+    private HashMap<Long,Node> graph;
 
     public Dijkstra(){}
 
     public Dijkstra(HashMap<Long, Node> nodesHashMap) {
-        this.nodesHashMap = nodesHashMap;
+        this.graph = nodesHashMap;
     }
 
-    public void setNodesHashMap(HashMap<Long, Node> nodesHashMap) {
-        this.nodesHashMap = nodesHashMap;
+    public void setGraph(HashMap<Long, Node> nodesHashMap) {
+        this.graph = nodesHashMap;
     }
-    public HashMap<Long,Node> getNodesHashMap() {
-        return nodesHashMap;
+    public HashMap<Long,Node> getGraph() {
+        return graph;
     }
 
-    // linear algorithm
-    public void computePathesFrom(Node nodeFrom)
+    /**
+     * compute minDistances and set previous Node,
+     * where the distance is the shortest for each Node in Graph.
+     * @param nodeFrom - Node from which min distances will be computing
+     */
+    public void computeMinDistancesfrom(Node nodeFrom)
     {
-        if(nodesHashMap == null)
+        if(graph == null)
         {
             System.out.println("nodesHashMap is empty");
             return;
@@ -41,7 +45,7 @@ public class Dijkstra {
                 List<Edge> curNodeEdges = curNode.getEdges();
                 if(curNodeEdges != null) {
                     curNodeEdges.forEach(edge -> {
-                        Node nodeTo = nodesHashMap.get(edge.getTo());
+                        Node nodeTo = graph.get(edge.getTo());
                         double minDistance = curNode.getMinDistance() + edge.getDistance();
                         if (minDistance < nodeTo.getMinDistance()) {
                             priorityQueue.remove(curNode);
@@ -59,23 +63,14 @@ public class Dijkstra {
         }
     }
 
-    public void printNodes(){
-
-        if(nodesHashMap == null)
-        {
-            System.out.println("nodesHashMap is empty");
-            return;
-        }
-        nodesHashMap
-                .entrySet()
-                .stream()
-                .limit(2)
-                .forEach(System.out::println);
-    }
-
+    /**
+     * Get shortest path to Node nodeTo from Node, for which computeMinDistancesFrom was launched
+     * @param nodeTo - The final point to compute short path for
+     * @return list of nodes, which contains the shortest path to nodeTo
+     */
     public List<Node> getShortestPathTo(Node nodeTo)
     {
-        if(nodesHashMap == null)
+        if(graph == null)
         {
             System.out.println("nodesHashMap is empty");
             return new ArrayList<>();
@@ -86,18 +81,5 @@ public class Dijkstra {
         }
         Collections.reverse(path);
         return path;
-    }
-
-    public void clearGraph()
-    {
-        nodesHashMap.forEach((hash,node) -> clearNode(node));
-    }
-
-    public Node clearNode(Node node)
-    {
-        node.setMinDistance(Double.MAX_VALUE);
-        node.setEdges(new ArrayList<>());
-        node.setPreviousNode(null);
-        return node;
     }
 }

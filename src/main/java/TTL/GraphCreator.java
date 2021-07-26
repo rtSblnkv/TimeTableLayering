@@ -11,24 +11,46 @@ import java.util.List;
 
 public class GraphCreator {
 
+
     private List<Node> nodes;
     private List<Edge> edges;
     //меньше 1 секунды
+
+    /**
+     * Empty constructor
+     */
     public GraphCreator(){}
 
+    /**
+     * Constructor. Initialize nodes and edges
+     * @param nodes - list of Nodes
+     * @param edges - list of Edges
+     */
     public GraphCreator(List<Node> nodes, List<Edge> edges) {
         this.nodes = new ArrayList<>(nodes);
         this.edges = new ArrayList<>(edges);
     }
 
+    /**
+     * set the value of nodes
+     * @param nodes - list of Nodes
+     */
     public void setNodes(List<Node> nodes) {
         this.nodes = nodes;
     }
 
+    /**
+     * set the value of edges
+     * @param edges - list of edges
+     */
     public void setEdges(List<Edge> edges) {
         this.edges = edges;
     }
 
+    /**
+     * create graph structure from Nodes and edges lists by adding list of edges for each node
+     * @return Map(node id , node)
+     */
     public  HashMap<Long, Node> createGraph()
     {
         EdgeWorker edgeWorker = new EdgeWorker(edges);

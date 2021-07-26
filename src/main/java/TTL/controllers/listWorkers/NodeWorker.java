@@ -42,14 +42,6 @@ public class NodeWorker implements Worker {
                 .filter(node -> lat == node.getLatitude() && lon == node.getLongtitude())
                 .findFirst()
                 .orElse(new Node());
-        /*for (Node node : nodes)
-        {
-            if (lat == node.getLatitude() && lon == node.getLongtitude())
-            {
-                return node;
-            }
-        }
-        return new Node();*/
     }
 
     Boolean checkNodesInEdgeExist(long nodeStartId, long nodeEndId)
