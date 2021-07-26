@@ -4,6 +4,12 @@ import TTL.models.OrderItem;
 import com.opencsv.bean.AbstractCsvConverter;
 
 public class TextToOrderItems extends AbstractCsvConverter {
+    /**
+     * Convert list in column order_items of orders.csv into OrderItem
+     * Used in parsing of orders.csv
+     * @param orders - element of order_items
+     * @return OrderItem vaue contains Dish(string) and count(Integer)
+     */
     public Object convertToRead(String orders) {
         OrderItem oi = new OrderItem();
         //[('Steak', 3), ('Salad', 1), ('Chicken', 6), ('Fries', 4), ('Burger', 8)] - Поступает CsvToBeanReader

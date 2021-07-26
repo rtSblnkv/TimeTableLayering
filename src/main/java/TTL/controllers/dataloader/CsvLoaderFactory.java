@@ -2,7 +2,11 @@ package TTL.controllers.dataloader;
 
 
 public class CsvLoaderFactory {
-
+    /**
+     * fabric method
+     * @param tableName - name of table for parse
+     * @return CsvLoader class
+     */
     public CsvLoader createCsvLoader(String tableName)
     {
         switch(tableName)

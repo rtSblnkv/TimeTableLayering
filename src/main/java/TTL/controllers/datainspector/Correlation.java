@@ -7,7 +7,12 @@ import TTL.models.Order;
 import java.util.List;
 
 public class Correlation {
-
+    /**
+     * Returns correlation of elements of 2 double arrays
+     * @param x - first array
+     * @param y - second array
+     * @return - double correlation value
+     */
     private static float correlationCoefficient(double x[], double y[])
     {
         double sum_X = 0, sum_Y = 0, sum_XY = 0,n = x.length;
@@ -36,6 +41,11 @@ public class Correlation {
                         sum_Y * sum_Y)));
     }
 
+    /**
+     * Returns correlation coefficient between branch codes and order types of orders in orders list
+     * @param orders - list of orders
+     * @return double correlation coefficient
+     */
     public static float getCorrelationOfOrderTypesAndBranchCodes(List<Order> orders)
     {
         BranchCodeLabelEncoder bcle = new BranchCodeLabelEncoder();

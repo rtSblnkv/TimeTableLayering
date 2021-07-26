@@ -8,6 +8,11 @@ import java.io.IOException;
 import java.util.List;
 
 public class BranchCsvLoader implements CsvLoader {
+    /**
+     * Uploads data from branches.csv
+     * @param path - path to branches.csv in resources directory
+     * @return List of Branch type
+     */
     @Override
     public List<Branch> csvToList(String path) {
         List<Branch> data = null;

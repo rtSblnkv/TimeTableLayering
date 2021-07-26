@@ -8,6 +8,11 @@ import java.io.IOException;
 import java.util.List;
 
 public class OrderCsvLoader implements CsvLoader {
+    /**
+     * Uploads data from orders.csv
+     * @param path - path to orders.csv in resources directory
+     * @return List of Order type
+     */
     @Override
     public List<Order> csvToList(String path) {
         List<Order> orders = null;

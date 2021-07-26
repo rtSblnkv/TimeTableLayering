@@ -1,6 +1,6 @@
 package TTL.services.graphServices;
 
-import TTL.NodesToFileWriter;
+import TTL.services.NodesToFileWriter;
 import TTL.controllers.dataloader.CsvLoader;
 import TTL.controllers.dataloader.CsvLoaderFactory;
 import TTL.controllers.layers.ByBranchCodeLayers;
@@ -160,12 +160,24 @@ public class DijkstraRunner {
                     double epsilon = nodeTo.getMinDistance() - datasetDistanceToInMetres ;
                     if( nodeTo.getMinDistance() > 1000000)
                     {
-                        NodesToFileWriter.writeResultInFile("strange.txt",nodeTo,pathToCurrentNode,datasetDistanceToInMetres,nodeTo.getMinDistance(),epsilon);
+                        NodesToFileWriter.writeResultInFile(
+                                "strange.txt",
+                                nodeTo,
+                                pathToCurrentNode,
+                                datasetDistanceToInMetres,
+                                nodeTo.getMinDistance(),
+                                epsilon);
                     }
                     else{
                         nodeTo.setEpsilon(epsilon);
                         shortPathes.put(nodeTo, pathToCurrentNode);
-                        NodesToFileWriter.writeResultInFile(fileName,nodeTo,pathToCurrentNode,datasetDistanceToInMetres,nodeTo.getMinDistance(),epsilon);
+                        NodesToFileWriter.writeResultInFile(
+                                fileName,
+                                nodeTo,
+                                pathToCurrentNode,
+                                datasetDistanceToInMetres,
+                                nodeTo.getMinDistance(),
+                                epsilon);
                     }
                 }
                 else
@@ -176,7 +188,13 @@ public class DijkstraRunner {
             else
             {
                 System.out.println(nodeTo + " Node doesn't exist.");
-                NodesToFileWriter.writeResultInFile(fileName,nodeTo,new ArrayList<>(),Double.NaN,nodeTo.getMinDistance(),Double.NaN);
+                NodesToFileWriter.writeResultInFile(
+                        fileName,
+                        nodeTo,
+                        new ArrayList<>(),
+                        Double.NaN,
+                        nodeTo.getMinDistance(),
+                        Double.NaN);
             }
         });
         return shortPathes;

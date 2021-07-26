@@ -6,12 +6,20 @@ public class DeviationCalculator {
     List<Double> epsilons;
     double size;
 
+    /**
+     * Constructor.Initialize epsilons value
+     * @param epsilons - List of Double
+     */
     public DeviationCalculator(List<Double> epsilons)
     {
         this.epsilons = epsilons;
         size = epsilons.size();
     }
 
+    /**
+     * returns average value of epsilons
+     * @return double average value
+     */
     public double getAverage()
     {
         if (size == 0) return Double.NaN;
@@ -19,6 +27,10 @@ public class DeviationCalculator {
         return sum/size;
     }
 
+    /**
+     * Returns standart deviation
+     * @return double standart deviation value
+     */
     public double getStandartDeviation()
     {
         if (size == 0) return Double.NaN;
