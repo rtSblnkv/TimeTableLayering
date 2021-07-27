@@ -4,6 +4,9 @@ import com.opencsv.bean.CsvBindByName;
 
 import java.io.Serializable;
 
+/**
+ * branches.csv Data Object
+ */
 public class Branch implements Serializable {
 
     @CsvBindByName(column = "lon")
@@ -22,13 +25,9 @@ public class Branch implements Serializable {
 
     public Branch() {}
 
-    public long getNodeId() {
-        return nodeId;
-    }
+    public long getNodeId() { return nodeId; }
 
-    public void setNodeId(int nodeId) {
-        this.nodeId = nodeId;
-    }
+    public void setNodeId(int nodeId) { this.nodeId = nodeId; }
 
     public double getLongtitude() { return longtitude; }
 
@@ -38,24 +37,20 @@ public class Branch implements Serializable {
 
     public void setLatitude(double latitude) { this.latitude = latitude; }
 
-    public String getBranchCode() {
-        return branchCode;
-    }
+    public String getBranchCode() { return branchCode; }
 
-    public void setBranchCode(String branchCode) {
-        this.branchCode = branchCode;
-    }
+    public void setBranchCode(String branchCode) { this.branchCode = branchCode; }
 
     public String getBranchName() { return branchName; }
 
     public void setBranchName(String branchName) { this.branchName = branchName; }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Branch code: " + branchCode +
                 ", name:" + branchName +
-                "location: " + latitude + "." + longtitude + "\n";
+                "location: " + latitude +
+                "." + longtitude + "\n";
     }
 
 }

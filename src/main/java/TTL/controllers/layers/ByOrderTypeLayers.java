@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class,which realises splitting the list of orders on sublists,
+ * or layers, by order type
+ */
 public class ByOrderTypeLayers extends Layers {
 
     public ByOrderTypeLayers(List<Order> orders)
@@ -20,34 +24,21 @@ public class ByOrderTypeLayers extends Layers {
         super.setSplitters(new ArrayList<>(
                 super.getOrders()
                         .stream()
+                        .distinct()
                         .map(Order::getOrderType)
-                        .collect(Collectors.toSet())
+                        .collect(Collectors.toList())
         ));
-
-        /*ArrayList<String> orderTypes = new ArrayList<String>();
-        for (Order order: super.getOrders())
-        {
-            String orderType = order.getOrderType();
-            if (! orderTypes.contains(orderType))
-            {
-                orderTypes.add(orderType);
-            }
-        }
-        super.setSplitters(orderTypes);*/
     }
 
     @Override
     public void splitOnLayers() {
-        super
-                .getSplitters()
-                .forEach(orderType -> super
-                        .getLayers()
+        super.getSplitters()
+                .forEach(orderType ->
+                        super.getLayers()
                         .put(orderType,new ArrayList<Order>()));
 
-        super
-                .getOrders()
-                .forEach(order -> super
-                        .getLayers()
+        super.getOrders().forEach(order ->
+                super.getLayers()
                         .get(order.getOrderType())
                         .add(order));
     }

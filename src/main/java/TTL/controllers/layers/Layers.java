@@ -1,6 +1,6 @@
 package TTL.controllers.layers;
 
-import TTL.controllers.listWorkers.NodeWorker;
+import TTL.services.listWorkers.NodeWorker;
 import TTL.models.Node;
 import TTL.models.Order;
 
@@ -15,7 +15,6 @@ public abstract class Layers {
     private HashMap<String,List<Order>> layers;
     private ArrayList<String> splitters;
 
-
     public Layers() { }
 
     public Layers(List<Order> orders) {
@@ -24,6 +23,9 @@ public abstract class Layers {
         splitters = new ArrayList<>();
         layers = new HashMap<>();
     }
+
+    public abstract void setSplitter();
+    public abstract void splitOnLayers();
 
     public List<Order> getOrders() {
         return orders;
@@ -44,20 +46,5 @@ public abstract class Layers {
     public void setSplitters(ArrayList<String> splitters) {
         this.splitters = splitters;
     }
-
-
-    private static List<Node> getListOfOrderNodes(List<Order> ordersGroupedBySplitter,List<Node> nodes)
-    {
-        NodeWorker nodeWorker = new NodeWorker(nodes);
-
-        return ordersGroupedBySplitter
-                .stream()
-                .map(order -> nodeWorker.getNodeByCoordinates(order.getLatitude(),order.getLongtitude()))
-                .filter(order -> order.getLatitude() != 0)
-                .collect(Collectors.toList());
-    }
-
-    public abstract void setSplitter();
-    public abstract void splitOnLayers();
 
 }
