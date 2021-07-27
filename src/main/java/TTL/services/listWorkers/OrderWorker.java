@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class which operates with list of orders
+ */
 public class OrderWorker implements Worker {
 
     private List<Order> orders;

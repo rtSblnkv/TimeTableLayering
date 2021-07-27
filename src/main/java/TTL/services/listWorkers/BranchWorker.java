@@ -6,6 +6,9 @@ import TTL.models.Node;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Class which operates with list of branches
+ */
 public class BranchWorker implements Worker{
 
     private List<Branch> branches;

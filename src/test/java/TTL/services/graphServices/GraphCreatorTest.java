@@ -1,10 +1,8 @@
 package TTL.services.graphServices;
 
 import TTL.TestDataCreator;
-import TTL.services.listWorkers.NodeWorker;
 import TTL.models.Edge;
 import TTL.models.Node;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -17,11 +15,11 @@ public class GraphCreatorTest {
     @Test
     public void createGraph() {
 
-        List<Node> nodes = TestDataCreator.getNodes();
+        List<Node> nodes = TestDataCreator.getTestNodes();
         List<Edge> edges = TestDataCreator.getEdges();
         GraphCreator gc = new GraphCreator(nodes,edges);
         HashMap<Long, Node> graph = gc.createGraph();
-        HashMap<Long, Node> testGraph = TestDataCreator.testGraph();
+        HashMap<Long, Node> testGraph = TestDataCreator.getTestGraph();
 
         for (Long id : graph.keySet()) {
             Node node1 = graph.get(id);

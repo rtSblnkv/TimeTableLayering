@@ -9,9 +9,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Test data creator for DijkstraTest,DijkstraRunnerTest,GraphCreatorTest.
+ */
 public class TestDataCreator {
 
-    public static List<Node> getNodes()
+    public static List<Node> getTestNodes()
     {
         List<Node> nodes = new ArrayList<>();
         for(int i = 1; i<=7;i++) {
@@ -24,7 +27,7 @@ public class TestDataCreator {
         return nodes;
     }
 
-    public static List<Edge> getEdges()
+    public static List<Edge> getTestEdges()
     {
         Edge edge12 = new Edge();
         edge12.setDistance(5);
@@ -76,10 +79,10 @@ public class TestDataCreator {
 
     // nodes [1,2,3,4,5,6,7]
     // edges [12,13,23,24,34,35,45,46,57]
-    public static HashMap<Long, Node> testGraph()
+    public static HashMap<Long, Node> getTestGraph()
     {
-        List<Node> nodes = getNodes();
-        List<Edge> edges = getEdges();
+        List<Node> nodes = getTestNodes();
+        List<Edge> edges = getTestEdges();
 
         nodes.get(0).addEdge(edges.get(0));
         nodes.get(0).addEdge(edges.get(1));
@@ -95,7 +98,7 @@ public class TestDataCreator {
         return  nw.toHashMap();
     }
 
-    public static List<Order> getOrders()
+    public static List<Order> getTestOrders()
     {
         List<Order> orders = new ArrayList<>();
         for(int i = 1; i<=7;i++)

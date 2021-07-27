@@ -5,6 +5,9 @@ import TTL.models.Node;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Class which operates with list of nodes
+ */
 public class NodeWorker implements Worker {
     private List<Node> nodes;
 

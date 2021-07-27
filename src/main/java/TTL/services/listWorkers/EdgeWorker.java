@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Class which operates with list of edges
+ */
 public class EdgeWorker implements Worker{
     private List<Edge> edges;
 

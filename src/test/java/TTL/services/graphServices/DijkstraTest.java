@@ -23,7 +23,7 @@ public class DijkstraTest {
     @Before
     public void initializeTestData()
     {
-        nodes = TestDataCreator.getNodes();
+        nodes = TestDataCreator.getTestNodes();
         startNode = nodes.get(0);
         finishNode = nodes.get(3);
         edges = TestDataCreator.getEdges();
