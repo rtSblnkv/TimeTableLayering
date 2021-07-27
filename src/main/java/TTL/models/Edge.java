@@ -6,6 +6,9 @@ import com.opencsv.bean.CsvIgnore;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * edges.csv Data Object
+ */
 public class Edge implements Serializable {
 
     @CsvBindByName(column = "u")
@@ -26,27 +29,29 @@ public class Edge implements Serializable {
     @CsvIgnore
     private double dist_on_limit;
 
-
     public Edge(){ }
 
     public long getFrom() { return from; }
 
     public void setFrom(long from) { this.from = from; }
 
-    public long getTo() { return to; }
+    public long getTo() {
+        return to;
+    }
 
-    public void setTo(long to) { this.to = to; }
-
-    public void setTo(int to) { this.to = to; }
+    public void setTo(long to) {
+        this.to = to;
+    }
 
     public double getDistance() { return distance; }
 
-    public void setDistance(double distance) { this.distance = distance; }
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
 
-    public double getSpeedLimit() { return speedLimit;}
+    public double getSpeedLimit() { return speedLimit; }
 
     public void setSpeedLimit(int speedLimit) { this.speedLimit = speedLimit; }
-
 
     @Override
     public String toString() {

@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * nodes.csv Data Object
+ */
 public class Node implements Serializable,Comparable<Node>,Cloneable {
     @CsvBindByName(column="node")
     private long id;
@@ -15,7 +18,7 @@ public class Node implements Serializable,Comparable<Node>,Cloneable {
     @CsvBindByName(column="lon")
     private double longtitude;
 
-    private List<Edge> edges = new ArrayList<Edge>();
+    private List<Edge> edges = new ArrayList<>();
 
     private Node previousNode;
 
@@ -25,69 +28,77 @@ public class Node implements Serializable,Comparable<Node>,Cloneable {
 
     private double minDistance = Double.MAX_VALUE;
 
-
     public Node(){}
 
-    public void addEdge(Edge edge)
-    {
+    public void addEdge(Edge edge) {
         edges.add(edge);
     }
 
     public long getId() { return id; }
 
-    public void setId(long id)
-    {
-        this.id=id;
-    }
+    public void setId(long id) { this.id=id; }
 
-    public double getLongtitude()
-    {
+    public double getLongtitude() {
         return longtitude;
     }
 
-    public void setLongtitude(double longtitude)
-    {
+    public void setLongtitude(double longtitude) {
         this.longtitude = longtitude;
     }
 
-    public double getLatitude()
-    {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude)
-    {
-        this.latitude  = latitude ;
+    public void setLatitude(double latitude) { this.latitude  = latitude ; }
+
+    public List<Edge> getEdges() {
+        return edges;
     }
 
-    public List<Edge> getEdges() { return edges; }
+    public void setEdges(List<Edge> edges) {
+        this.edges = edges;
+    }
 
-    public void setEdges(List<Edge> edges) { this.edges = edges; }
+    public double getEpsilon() {
+        return epsilon;
+    }
 
-    public double getEpsilon() { return epsilon; }
+    public void setEpsilon(double epsilon) {
+        this.epsilon = epsilon;
+    }
 
-    public void setEpsilon(double epsilon) { this.epsilon = epsilon; }
+    public Node getPreviousNode() {
+        return previousNode;
+    }
 
-    public Node getPreviousNode() { return previousNode;}
+    public void setPreviousNode(Node previousNode) {
+        this.previousNode = previousNode;
+    }
 
-    public void setPreviousNode(Node previousNode) { this.previousNode = previousNode; }
+    public boolean isVisited() {
+        return visited;
+    }
 
-    public boolean isVisited() { return visited; }
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
 
-    public void setVisited(boolean visited) { this.visited = visited; }
+    public double getMinDistance() {
+        return minDistance;
+    }
 
-    public double getMinDistance() { return minDistance; }
-
-    public void setMinDistance(double minDistance) { this.minDistance = minDistance; }
+    public void setMinDistance(double minDistance) {
+        this.minDistance = minDistance;
+    }
 
     @Override
     public String toString() {
-        return "[" + latitude +
-                "," + longtitude + "] ";
+        return  latitude +
+                "," + longtitude ;
     }
 
-    public int compareTo(Node secondNode)
-    {
+    public int compareTo(Node secondNode) {
         return Double.compare(this.minDistance,secondNode.minDistance);
     }
 
@@ -108,7 +119,8 @@ public class Node implements Serializable,Comparable<Node>,Cloneable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, latitude, longtitude, edges, previousNode, visited, epsilon, minDistance);
+        return Objects.hash(id, latitude, longtitude, edges,
+                previousNode, visited, epsilon, minDistance);
     }
 
     @Override

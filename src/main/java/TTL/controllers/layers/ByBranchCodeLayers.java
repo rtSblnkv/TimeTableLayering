@@ -27,16 +27,12 @@ public class ByBranchCodeLayers extends Layers {
 
     @Override
     public void splitOnLayers() {
-        super
-                .getSplitters()
-                .forEach(branchCode -> super
-                        .getLayers()
+        super.getSplitters()
+                .forEach(branchCode -> super.getLayers()
                         .put(branchCode,new ArrayList<Order>()));
 
-        super
-                .getOrders()
-                .forEach(order -> super
-                        .getLayers()
+        super.getOrders()
+                .forEach(order -> super.getLayers()
                         .get(order.getBranchCode())
                         .add(order));
     }

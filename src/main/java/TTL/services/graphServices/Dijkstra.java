@@ -9,27 +9,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.PriorityBlockingQueue;
 
+/**
+ * Dijkstra algorithm realization
+ * graph - variable, which contains graph structure
+ * methods : computeMinDistanceFrom , getShortestpathTo
+ */
 public class Dijkstra {
-
     private HashMap<Long,Node> graph;
 
     public Dijkstra(){}
 
-    public Dijkstra(HashMap<Long, Node> nodesHashMap) {
-        this.graph = nodesHashMap;
-    }
-
-    public void setGraph(HashMap<Long, Node> nodesHashMap) {
-        this.graph = nodesHashMap;
-    }
-    public HashMap<Long,Node> getGraph() {
-        return graph;
-    }
+    public Dijkstra(HashMap<Long, Node> nodesHashMap) { this.graph = nodesHashMap; }
 
     /**
      * compute minDistances and set previous Node,
-     * where the distance is the shortest for each Node in Graph.
-     * @param nodeFrom - Node from which min distances will be computing
+     * from which the distance is the shortest, for each Node in Graph.
+     * @param nodeFrom - Node from which min distances will be computed
      */
     public void computeMinDistancesfrom(Node nodeFrom)
     {
@@ -67,7 +62,8 @@ public class Dijkstra {
     }
 
     /**
-     * Get shortest path to Node nodeTo from Node, for which computeMinDistancesFrom was launched
+     * Returns shortest path to Node nodeTo from node,
+     * for which computeMinDistancesFrom was launched
      * @param nodeTo - The final point to compute short path for
      * @return list of nodes, which contains the shortest path to nodeTo
      */
@@ -75,7 +71,7 @@ public class Dijkstra {
     {
         if(graph == null)
         {
-            System.out.println("nodesHashMap is empty");
+            System.out.println("Graph is empty");
             return new ArrayList<>();
         }
         List<Node> path = new ArrayList<>();
@@ -85,4 +81,8 @@ public class Dijkstra {
         Collections.reverse(path);
         return path;
     }
+
+    public void setGraph(HashMap<Long, Node> nodesHashMap) { this.graph = nodesHashMap; }
+
+    public HashMap<Long,Node> getGraph() { return graph; }
 }

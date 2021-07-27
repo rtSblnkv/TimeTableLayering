@@ -1,7 +1,7 @@
 package TTL.models;
 
 
-import TTL.controllers.TextToOrderItems;
+import TTL.utils.TextToOrderItems;
 import com.opencsv.bean.CsvBindAndSplitByName;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
+/**
+ * orders.csv Data Object
+ */
 public class Order {
 
     @CsvBindByName(column="order_id")
@@ -41,7 +43,8 @@ public class Order {
     @CsvBindByName(column="customerHasloyalty?")
     private Boolean hasLoyality;
 
-    @CsvBindAndSplitByName(column="order_items",splitOn = "\\), \\(",elementType= OrderItem.class,converter = TextToOrderItems.class)
+    @CsvBindAndSplitByName(column="order_items",splitOn = "\\), \\(",
+            elementType= OrderItem.class,converter = TextToOrderItems.class)
     private List<OrderItem> orderItems;
 
     @CsvBindByName(column="distance_to_customer_KM")
@@ -52,80 +55,110 @@ public class Order {
 
     public Order(){}
 
-    public String getOrderId() { return orderId; }
+    public String getOrderId() {
+        return orderId;
+    }
 
-    public void setOrderId(String orderId) { this.orderId = orderId; }
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
 
-    public Date getDate() { return date; }
+    public Date getDate() {
+        return date;
+    }
 
-    public void setDate(Date date) { this.date = date; }
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-    public String getTime() { return time; }
+    public String getTime() {
+        return time;
+    }
 
-    public void setTime(String time) { this.time = time; }
+    public void setTime(String time) {
+        this.time = time;
+    }
 
-    public String getOrderType() { return orderType; }
+    public String getOrderType() {
+        return orderType;
+    }
 
-    public void setOrderType(String orderType) { this.orderType = orderType; }
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
+    }
 
-    public String getBranchCode() { return branchCode.toUpperCase(); }
+    public String getBranchCode() {
+        return branchCode.toUpperCase();
+    }
 
-    public void setBranchCode(String branchCode) { this.branchCode = branchCode; }
+    public void setBranchCode(String branchCode) {
+        this.branchCode = branchCode;
+    }
 
-    public double getOrderPrice() { return orderPrice; }
+    public double getOrderPrice() {
+        return orderPrice;
+    }
 
-    public void setOrderPrice(double orderPrice) { this.orderPrice = orderPrice; }
+    public void setOrderPrice(double orderPrice) {
+        this.orderPrice = orderPrice;
+    }
 
-    public double getLatitude() { return latitude; }
+    public double getLatitude() {
+        return latitude;
+    }
 
-    public void setLatitude(double latitude) { this.latitude = latitude; }
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
 
-    public double getLongtitude() { return longtitude; }
+    public double getLongtitude() {
+        return longtitude;
+    }
 
-    public void setLongtitude(double longtitude) { this.longtitude = longtitude; }
+    public void setLongtitude(double longtitude) {
+        this.longtitude = longtitude;
+    }
 
-    public Boolean getHasLoyality() { return hasLoyality; }
+    public Boolean getHasLoyality() {
+        return hasLoyality;
+    }
 
-    public void setHasLoyality(Boolean hasLoyality) { this.hasLoyality = hasLoyality; }
+    public void setHasLoyality(Boolean hasLoyality) {
+        this.hasLoyality = hasLoyality;
+    }
 
-    public List<OrderItem> getOrderItems() { return orderItems; }
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
 
-    public void setOrderItems(ArrayList<OrderItem> orderItems){ this.orderItems = orderItems; }
+    public void setOrderItems(ArrayList<OrderItem> orderItems){
+        this.orderItems = orderItems;
+    }
 
-    public double getDistanceTo() { return distanceTo; }
+    public double getDistanceTo() {
+        return distanceTo;
+    }
 
-    public void setDistanceTo(double distanceTo) { this.distanceTo = distanceTo; }
+    public void setDistanceTo(double distanceTo) {
+        this.distanceTo = distanceTo;
+    }
 
-    public double getDeliveryFee() { return deliveryFee; }
+    public double getDeliveryFee() {
+        return deliveryFee;
+    }
 
-    public void setDeliveryFee(double deliveryFee) { this.deliveryFee = deliveryFee; }
+    public void setDeliveryFee(double deliveryFee) {
+        this.deliveryFee = deliveryFee;
+    }
 
     @Override
     public String toString() {
-        if(orderItems != null)
-        {
-            return "order id = " + orderId +
-                    ", date = " + date +
-                    ", time = " + time +
-                    ", orderType = " + orderType  +
-                    ", branchCode = " + branchCode +
-                    ", orderPrice = " + orderPrice +
-                    ", latitude = " + latitude +
-                    ", longtude = " + longtitude +
-                    ", hasLoyality = " + hasLoyality +
-                    ", orderItems = " + orderItems +
-                    ", distanceTo = " + distanceTo +
-                    ", deliveryFee = " + deliveryFee + "\n";
-        }
         return "order id = " + orderId +
-                ", date = " + date +
-                ", time = " + time +
                 ", orderType = " + orderType  +
                 ", branchCode = " + branchCode +
                 ", orderPrice = " + orderPrice +
                 ", latitude = " + latitude +
                 ", longtude = " + longtitude +
-                ", hasLoyality = " + hasLoyality +
                 ", distanceTo = " + distanceTo +
                 ", deliveryFee = " + deliveryFee+ "\n";
     }
