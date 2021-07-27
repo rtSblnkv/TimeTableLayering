@@ -44,14 +44,13 @@ public class NodesToFileWriter {
     {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName,true)))
         {
-            writer.write(" "  +
-                    curNode.toString());
-                    /*"\n Path :: " + nodes.toString() +
+            writer.write(" ["  +
+                    curNode.toString()+ "]" +
+                    "\n Path :: " + nodes.toString() +
                     "\n Distance: Calculated -> " +
                     calcDistance + " In Dataset -> " +
                     datasetDistance + " Epsilon -> " +
-                    epsilon);*/
-
+                    epsilon);
             writer.append("\n");
         }
         catch(IOException ex)

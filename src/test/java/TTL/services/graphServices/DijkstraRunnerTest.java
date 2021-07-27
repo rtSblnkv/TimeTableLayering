@@ -12,6 +12,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 //@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+
+/**
+ * Test all the methods in DijkstraRunner class
+ * assert true if standart deviation < 2000
+ */
 public class DijkstraRunnerTest {
     private static DijkstraRunner runner;
      // По отдельности
