@@ -1,7 +1,7 @@
 package TTL.utils.encoders;
 
-import TTL.services.listWorkers.OrderWorker;
 import TTL.models.Order;
+import TTL.services.listWorkers.OrderWorker;
 
 import java.util.List;
 

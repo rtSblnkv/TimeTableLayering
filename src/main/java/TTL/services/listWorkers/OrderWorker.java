@@ -1,6 +1,9 @@
 package TTL.services.listWorkers;
 
 import TTL.models.Order;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,15 +12,12 @@ import java.util.stream.Collectors;
 /**
  * Class which operates with list of orders
  */
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderWorker implements Worker {
 
+    @Setter
     private List<Order> orders;
-
-    public OrderWorker(){}
-
-    public OrderWorker(List<Order> orders){
-        this.orders = orders;
-    }
 
     /**
      * Returns list of branch codes from list of orders (Order.BranchCode)
@@ -67,7 +67,4 @@ public class OrderWorker implements Worker {
         return ordersHashMap;
     }
 
-    public void setOrders(List<Order> orders){
-        this.orders = orders;
-    }
 }

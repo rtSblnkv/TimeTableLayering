@@ -1,6 +1,9 @@
 package TTL.services.listWorkers;
 
 import TTL.models.Edge;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,12 +12,12 @@ import java.util.List;
 /**
  * Class which operates with list of edges
  */
+@NoArgsConstructor
+@AllArgsConstructor
 public class EdgeWorker implements Worker{
+
+    @Setter
     private List<Edge> edges;
-
-    public EdgeWorker() { }
-
-    public EdgeWorker(List<Edge> edges) { this.edges = edges; }
 
     /**
      * for each edge check if start and finish Node exist in List of nodes.
@@ -41,5 +44,4 @@ public class EdgeWorker implements Worker{
         return edgesHashMap;
     }
 
-    public void setEdges(List<Edge> edges) { this.edges = edges; }
 }

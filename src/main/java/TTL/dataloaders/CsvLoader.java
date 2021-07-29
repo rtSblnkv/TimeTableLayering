@@ -1,8 +1,9 @@
 package TTL.dataloaders;
 
-import java.io.IOException;
+import TTL.exception_handlers.UploadDataException;
+
 import java.util.List;
 
 public interface CsvLoader {
-    List csvToList(String path) throws IOException;
+    List csvToList(String path) throws UploadDataException;
 }

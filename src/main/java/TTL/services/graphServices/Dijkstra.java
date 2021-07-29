@@ -1,7 +1,12 @@
 package TTL.services.graphServices;
 
+import TTL.exception_handlers.NoShortPathException;
 import TTL.models.Edge;
 import TTL.models.Node;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,12 +19,12 @@ import java.util.concurrent.PriorityBlockingQueue;
  * graph - variable, which contains graph structure
  * methods : computeMinDistanceFrom , getShortestpathTo
  */
+@NoArgsConstructor
+@AllArgsConstructor
 public class Dijkstra {
+
+    @Getter @Setter
     private HashMap<Long,Node> graph;
-
-    public Dijkstra(){}
-
-    public Dijkstra(HashMap<Long, Node> nodesHashMap) { this.graph = nodesHashMap; }
 
     /**
      * compute minDistances and set previous Node,
@@ -28,15 +33,10 @@ public class Dijkstra {
      */
     public void computeMinDistancesfrom(Node nodeFrom)
     {
-        if(graph == null)
-        {
-            System.out.println("nodesHashMap is empty");
-            return;
-        }
+        try{
         nodeFrom.setMinDistance(0);
         PriorityBlockingQueue<Node> priorityQueue = new PriorityBlockingQueue<>();
         priorityQueue.add(nodeFrom);
-        try {
 
             while (!priorityQueue.isEmpty()) {
                 Node curNode = priorityQueue.poll();
@@ -55,9 +55,9 @@ public class Dijkstra {
                 }
             }
         }
-        catch(Exception ex)
+        catch(RuntimeException ex)
         {
-            ex.printStackTrace();
+            System.out.println("Error: "+ex.getMessage());
         }
     }
 
@@ -67,22 +67,18 @@ public class Dijkstra {
      * @param nodeTo - The final point to compute short path for
      * @return list of nodes, which contains the shortest path to nodeTo
      */
-    public List<Node> getShortestPathTo(Node nodeTo)
+    public List<Node> getShortestPathTo(Node nodeTo) throws NoShortPathException
     {
-        if(graph == null)
-        {
-            System.out.println("Graph is empty");
-            return new ArrayList<>();
-        }
         List<Node> path = new ArrayList<>();
         for(Node node = nodeTo;node != null; node = node.getPreviousNode()){
             path.add(node);
         }
+        if(path.size() == 1)
+        {
+            String errMessage = "No short path for order with coordinates [" + nodeTo.getLatitude() + "," + nodeTo.getLongtitude() + "]";
+            throw new NoShortPathException(errMessage,nodeTo);
+        }
         Collections.reverse(path);
         return path;
     }
-
-    public void setGraph(HashMap<Long, Node> nodesHashMap) { this.graph = nodesHashMap; }
-
-    public HashMap<Long,Node> getGraph() { return graph; }
 }

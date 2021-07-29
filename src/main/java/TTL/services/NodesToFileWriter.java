@@ -1,11 +1,13 @@
 package TTL.services;
 
+import TTL.exception_handlers.WriteResultException;
 import TTL.models.Node;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.List;
 
 public class NodesToFileWriter {
@@ -14,39 +16,84 @@ public class NodesToFileWriter {
      * Create file by filename path if it doesn't exist
      * @param fileName - name of file for creating
      */
-    public static void createFile(String fileName)
+    public static void createFile(String fileName) throws FileAlreadyExistsException,WriteResultException
     {
+        boolean alreadyExists = false;
         try {
             File file = new File(fileName);
-            if (file.createNewFile()) {
-                System.out.println(fileName + ".txt файл создан в корневой директории проекта");
-            }
+            alreadyExists = file.createNewFile();
         }
         catch(IOException ex)
         {
-            ex.printStackTrace();
+            String errMessage = "Error while writing in " + fileName + ".txt :"  + ex.getMessage();
+            throw new WriteResultException(errMessage,ex);
+        }
+
+        if(alreadyExists)
+        {
+            throw new FileAlreadyExistsException(fileName + ".txt файл уже создан");
         }
     }
 
     /**
      * Write result for current Node in dijkstra runner algorithm
      * in file with name fileName
-     * @param fileName - Name for file to write
-     * @param curNode - Node for which info is written
-     * @param nodes - shortest path for curNode
+     * @param fileName - Name of the file to write
+     * @param nodeTo - current node
+     * @param path - shortest path for curNode
      * @param datasetDistance - The value of distance to Node from dataset
-     * @param calcDistance - The value of distance to Node computed by DijkstraRunner
+     * @param calculatedDistance - The value of distance to Node computed by DijkstraRunner
      * @param epsilon - difference between calcDistance and  datasetDistance
      */
-    public static void writeResultInFile(String fileName,Node curNode,
-                                         List<Node> nodes,double datasetDistance,
-                                         double calcDistance,double epsilon)
+    public static void writeResultInFile(String fileName, Node nodeTo, List<Node> path,
+                                          double datasetDistance, double calculatedDistance,double epsilon)
+    {
+        String lat = Double.toString( nodeTo.getLatitude());
+        String lon = Double.toString( nodeTo.getLongtitude());
+        String datasetDist = Double.toString(datasetDistance);
+        String calcDist = Double.toString(calculatedDistance);
+        String eps = Double.toString(epsilon);
+        try{
+            writeLineInFile(fileName, lat,lon,
+                    path.toString(),datasetDist ,
+                    calcDist, eps);
+        }
+        catch( WriteResultException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Write incorrect result for current Node in dijkstra runner algorithm
+     * in file of error nodes with name fileName
+     * @param fileName - Name of the file to write
+     * @param latitude - incorrect node latitude
+     * @param longtitude - incorrect node longtitude
+     */
+    public static void writeErrResultInFile(String fileName, double latitude, double longtitude)
+    {
+        String lat = Double.toString(latitude);
+        String lon = Double.toString(longtitude);
+        try {
+            writeLineInFile(fileName, lat, lon, "?", "?",
+                    "?", "?");
+        }
+        catch(WriteResultException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    private static void writeLineInFile(String fileName,String lat,String lon,
+                                        String nodesList,String datasetDistance,
+                                        String calcDistance, String epsilon) throws WriteResultException
     {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName,true)))
         {
             writer.write(" ["  +
-                    curNode.toString()+ "]" +
-                    "\n Path :: " + nodes.toString() +
+                    lat + "," + lon + "]" +
+                    "\n Path :: " + nodesList +
                     "\n Distance: Calculated -> " +
                     calcDistance + " In Dataset -> " +
                     datasetDistance + " Epsilon -> " +
@@ -55,7 +102,9 @@ public class NodesToFileWriter {
         }
         catch(IOException ex)
         {
-            ex.printStackTrace();
+            String errMessage = "Error while writing in " + fileName + ".txt :"  + ex.getMessage();
+            throw new WriteResultException(errMessage,ex);
         }
     }
+
 }

@@ -1,19 +1,19 @@
 package TTL.services.graphServices;
 
-import TTL.services.NodesToFileWriter;
-import TTL.dataloaders.CsvLoader;
-import TTL.dataloaders.CsvLoaderFactory;
-import TTL.controllers.layers.ByBranchCodeLayers;
-import TTL.controllers.layers.ByOrderTypeLayers;
-import TTL.services.listWorkers.BranchWorker;
-import TTL.services.listWorkers.NodeWorker;
+import TTL.exception_handlers.InvalidNodeException;
+import TTL.exception_handlers.NoShortPathException;
+import TTL.exception_handlers.WriteResultException;
 import TTL.models.Branch;
 import TTL.models.Edge;
 import TTL.models.Node;
 import TTL.models.Order;
+import TTL.services.NodesToFileWriter;
+import TTL.services.listWorkers.BranchWorker;
+import TTL.services.listWorkers.NodeWorker;
+import lombok.NoArgsConstructor;
 import org.openjdk.jmh.annotations.*;
 
-import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,263 +32,108 @@ import java.util.List;
 @BenchmarkMode(Mode.All)
 @Warmup(iterations = 2)
 @State(Scope.Benchmark)
+@NoArgsConstructor
 public class DijkstraRunner {
 
-    private List<Order> orders;
-    private List<Node> nodes;
-    private List<Edge> edges;
-    private List<Branch> branches;
+    private  List<Node> nodes;
+    private  List<Edge> edges;
+    private  List<Branch> branches;
 
-    private HashMap<String, Node> branchNodes;
+    private static HashMap<String, Node> branchNodes;
 
-    private ByBranchCodeLayers byBranchCodeLayers;
-    private ByOrderTypeLayers byOrderTypeLayers;
+    public DijkstraRunner( List<Node> nodes, List<Edge> edges, List<Branch> branches) {
+        this.nodes = nodes;
+        this.edges = edges;
+        this.branches = branches;
+    }
 
-    private static final HashMap<String,String> csvPaths = new HashMap<>(){{
-        put("branches","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\branches.csv");
-        put("edges","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\edges.csv");
-        put("nodes","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\nodes.csv");
-        put("orders","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\orders.csv");
-    }};
+    public HashMap<Node,List<Node>> computePathes(List<Order> orders,String splitter,String algorithmType) {
 
-    public DijkstraRunner(){ }
+        HashMap<Node,List<Node>> shortPathes = new HashMap<>();
+        String fileName = "results\\" + splitter + "_" + algorithmType + ".txt";
+        String noShortPathFileName = "results\\" + splitter + "_no_short_path.txt";
+        String nodeNotExistFileName = "results\\" + splitter + "_strange.txt";
 
-    /**
-     * Uploads data from dataset with csvToList methods
-     * initialize branches,edges,nodes,orders.
-     */
-    @Benchmark
-    public void uploadDataFromCsvFiles()
-    {
         try {
-            CsvLoaderFactory loaderFactory = new CsvLoaderFactory();
+            orders.forEach(order -> {
 
-            CsvLoader branchLoader = loaderFactory.createCsvLoader("branches");
-            branches = branchLoader.csvToList(csvPaths.get("branches"));
+                try{
+                    NodesToFileWriter.createFile(fileName);
+                    NodesToFileWriter.createFile(noShortPathFileName);
+                    NodesToFileWriter.createFile(nodeNotExistFileName);
+                }
+                catch(FileAlreadyExistsException ex)
+                {
+                    System.out.println(ex.getMessage());
+                }
 
-            System.out.println("branches " + branches.size());
+                List<Node> nodesClone = new ArrayList<>();
+                for (Node node : nodes) {
+                    nodesClone.add(node.clone());
+                }
 
-            CsvLoader edgeLoader = loaderFactory.createCsvLoader("edges");
-            edges = edgeLoader.csvToList(csvPaths.get("edges"));
+                NodeWorker nodeWorker = new NodeWorker(nodesClone);
+                BranchWorker branchWorker = new BranchWorker(branches);
 
-            System.out.println("edges " + edges.size());
+                branchNodes = branchWorker.toBranchNodeHashMap(nodeWorker);
+                Node startNode = branchNodes.get(order.getBranchCode().toUpperCase());
 
-            CsvLoader nodeLoader = loaderFactory.createCsvLoader("nodes");
-            nodes = nodeLoader.csvToList(csvPaths.get("nodes"));
+                GraphCreator graphBuilder = new GraphCreator(nodesClone, edges);
+                HashMap<Long, Node> graph = graphBuilder.createGraph();
 
-            System.out.println("nodes " + nodes.size());
+                Dijkstra dijkstra = new Dijkstra();
+                dijkstra.setGraph(graph);
+                dijkstra.computeMinDistancesfrom(startNode);
 
-            CsvLoader orderLoader = loaderFactory.createCsvLoader("orders");
-            orders = orderLoader.csvToList(csvPaths.get("orders"));
+                double datasetDistanceToInMetres = order.getDistanceTo() * 1000;
 
-            System.out.println("orders " + orders.size());
+                try {
+                    Node nodeTo = nodeWorker.getNodeByCoordinates(order.getLatitude(), order.getLongtitude());
+
+                    List<Node> pathToCurrentNode = dijkstra.getShortestPathTo(nodeTo);
+                    double epsilon = nodeTo.getMinDistance() - datasetDistanceToInMetres;
+                    nodeTo.setEpsilon(epsilon);
+
+                    shortPathes.put(nodeTo, pathToCurrentNode);
+                    NodesToFileWriter.writeResultInFile(fileName, nodeTo,
+                                    pathToCurrentNode, datasetDistanceToInMetres,
+                                    nodeTo.getMinDistance(), epsilon);
+                }
+                catch(InvalidNodeException ex)
+                {
+                    NodesToFileWriter.writeErrResultInFile(nodeNotExistFileName,ex.getLat(),ex.getLon());
+                }
+                catch(NoShortPathException ex)
+                {
+                    double errNodeLat = ex.getUnattainableNode().getLatitude();
+                    double errNodeLon = ex.getUnattainableNode().getLongtitude();
+                    NodesToFileWriter.writeErrResultInFile(noShortPathFileName,errNodeLat,errNodeLon);
+                }
+            });
         }
-        catch (IOException ex)
+        catch(WriteResultException ex)
         {
             ex.printStackTrace();
         }
-    }
-
-    /**
-     * Linear computing of shortest pathes and distances for each order in full list of orders
-     * @return Map(Node, lists,which contains shortest path to the Node from restaurant)
-     */
-    @Benchmark
-    public HashMap<Node,List<Node>> getShortestForAllOrders()
-    {
-        System.out.println("Linear All orders");
-        return computePathes(orders,"","orders");
-    }
-
-    /**
-     * Linear computing of shortest pathes and distances for each order in list orders splitted by order type
-     * @return Map(Node, lists,which contains shortest path to the Node from restaurant)
-     */
-    @Benchmark
-    public HashMap<Node,List<Node>> getShortestForAllOrdersByOrderTypeLinear()
-    {
-        byOrderTypeLayers = new ByOrderTypeLayers(orders);
-        System.out.println("Order Type Linear");
-        return byOrderTypeLayers.getLayers()
-                .entrySet()
-                .stream()
-                .map(branchOrders -> computePathes(branchOrders.getValue(),branchOrders.getKey(),"OrderTypeLinear"))
-                .reduce(this::merge)
-                .orElse(new HashMap<>() );
-    }
-
-    /**
-     * Parallel computing of shortest pathes and distances for each order in list orders splitted by order type
-     * @return Map(Node, lists,which contains shortest path to the Node from restaurant)
-     */
-    @Benchmark
-    public HashMap<Node,List<Node>> getShortestForAllOrdersByOrderTypeParallel()
-    {
-        byOrderTypeLayers = new ByOrderTypeLayers(orders);
-        System.out.println(" Order Type Parallel");
-        return byOrderTypeLayers.getLayers()
-                .entrySet()
-                .parallelStream()
-                .map(branchOrders -> computePathes(branchOrders.getValue(),branchOrders.getKey(),"OrderTypeParallel"))
-                .reduce(this::merge)
-                .orElse(new HashMap<>() );
-    }
-
-    /**
-     * Linear computing of shortest pathes and distances for each order in list orders splitted by branch code
-     * @return Map(Node, lists,which contains shortest path to the Node from restaurant)
-     */
-    @Benchmark
-    public HashMap<Node,List<Node>> getShortestForAllOrdersByBranchCodeLinear()
-    {
-        byBranchCodeLayers = new ByBranchCodeLayers(orders);
-        System.out.println("Branch Code Linear");
-        return byBranchCodeLayers.getLayers()
-                .entrySet()
-                .stream()
-                .map(branchOrders -> computePathes(branchOrders.getValue(),branchOrders.getKey(),"BranchCodeLinear"))
-                .reduce(this::merge)
-                .orElse(new HashMap<>() );
-    }
-
-    /**
-     * Parallel computing of shortest pathes and distances for each order in list orders splitted by branch code
-     * @return Map(Node, lists,which contains shortest path to the Node from restaurant)
-     */
-    @Benchmark
-    public HashMap<Node,List<Node>> getShortestForAllOrdersByBranchCodeParallel()
-    {
-        byBranchCodeLayers = new ByBranchCodeLayers(orders);
-        System.out.println("Branch Code Parallel");
-        return byBranchCodeLayers.getLayers()
-                .entrySet()
-                .parallelStream()
-                .map(branchOrders -> computePathes(branchOrders.getValue(),branchOrders.getKey(),"BranchCodeParallel"))
-                .reduce(this::merge)
-                .orElse(new HashMap<>() );
-    }
-
-    /**
-     * Linear computing of shortest pathes and distances for each order in list orders splitted by branch code
-     * Using computePathesForLayer method
-     * @return Map(Node, lists,which contains shortest path to the Node from restaurant)
-     */
-    @Benchmark
-    public HashMap<Node,List<Node>> getShortestForOrdersByBranchCodeLinear()
-    {
-        byBranchCodeLayers = new ByBranchCodeLayers(orders);
-        System.out.println("Branch Code Linear by Layer");
-        return byBranchCodeLayers.getLayers()
-                .entrySet()
-                .stream()
-                .map(branchOrders -> computePathesForLayer(branchOrders.getKey(),branchOrders.getValue(),"BranchCodeLinear"))
-                .reduce(this::merge)
-                .orElse(new HashMap<>() );
-    }
-
-    /**
-     * Parallel computing of shortest pathes and distances for each order in list orders splitted by branch code
-     * Using computePathesForLayer method
-     * @return Map(Node, lists,which contains shortest path to the Node from restaurant)
-     */
-    @Benchmark
-    public HashMap<Node,List<Node>> getShortestForOrdersByBranchCodeParallel() {
-        byBranchCodeLayers = new ByBranchCodeLayers(orders);
-        System.out.println("Branch Code Parallel by Layer");
-        return byBranchCodeLayers.getLayers()
-                .entrySet()
-                .parallelStream()
-                .map(branchOrders -> computePathesForLayer(branchOrders.getKey(),branchOrders.getValue(),"BranchCodeParallel"))
-                .reduce(this::merge)
-                .orElse(new HashMap<>() );
-    }
-
-    private HashMap<Node,List<Node>> merge(HashMap<Node,List<Node>> x,HashMap<Node,List<Node>> y) {
-        x.putAll(y);
-        return x;
-    }
-
-    private HashMap<Node,List<Node>> computePathes(List<Order> orders,String splitter,String algorithmType) {
-        HashMap<Node,List<Node>> shortPathes = new HashMap<>();
-
-        orders.forEach(order -> {
-
-            List<Node> nodesClone = new ArrayList<>();
-            for(Node node: nodes) {
-                nodesClone.add(node.clone());
-            }
-
-            NodeWorker nodeWorker = new NodeWorker(nodesClone);
-            BranchWorker branchWorker = new BranchWorker(branches);
-
-            branchNodes = branchWorker.toBranchNodeHashMap(nodeWorker);
-            Node startNode = branchNodes.get(order.getBranchCode().toUpperCase());
-
-            GraphCreator graphBuilder = new GraphCreator(nodesClone,edges);
-            HashMap<Long, Node> graph = graphBuilder.createGraph();
-
-            Dijkstra dijkstra = new Dijkstra();
-            dijkstra.setGraph(graph);
-            dijkstra.computeMinDistancesfrom(startNode);
-
-            String fileName = "results\\" + splitter +"_"+ algorithmType + ".txt";
-            String noShortPathFileName = "results\\"+ splitter +"_no_short_path.txt";
-            String nodeNotExistFileName = "results\\"+ splitter +"_strange.txt";
-
-            NodesToFileWriter.createFile(fileName);
-            NodesToFileWriter.createFile(noShortPathFileName);
-            NodesToFileWriter.createFile(nodeNotExistFileName);
-
-            Node nodeTo = nodeWorker.getNodeByCoordinates(order.getLatitude(),order.getLongtitude());
-
-            if(!nodeTo.equals(new Node())) {
-                List<Node> pathToCurrentNode = dijkstra.getShortestPathTo(nodeTo);
-
-                if(!pathToCurrentNode.isEmpty())
-                {
-                    double datasetDistanceToInMetres = order.getDistanceTo() * 1000;
-                    double epsilon = nodeTo.getMinDistance() - datasetDistanceToInMetres ;
-
-                    if( nodeTo.getMinDistance() > 1000000)
-                    {
-                        NodesToFileWriter.writeResultInFile(
-                                noShortPathFileName, nodeTo,
-                                pathToCurrentNode, datasetDistanceToInMetres,
-                                nodeTo.getMinDistance(), epsilon);
-                    } else{
-                        nodeTo.setEpsilon(epsilon);
-                        shortPathes.put(nodeTo, pathToCurrentNode);
-                        NodesToFileWriter.writeResultInFile(
-                                fileName, nodeTo,
-                                pathToCurrentNode, datasetDistanceToInMetres,
-                                nodeTo.getMinDistance(), epsilon);
-                    }
-                } else {
-                    System.out.println(nodeTo + "Short path doesn't exist");
-                }
-            } else {
-                nodeTo.setLongtitude(order.getLongtitude());
-                nodeTo.setLatitude(order.getLatitude());
-                NodesToFileWriter.writeResultInFile(
-                        nodeNotExistFileName, nodeTo,
-                        new ArrayList<>(), Double.NaN,
-                        nodeTo.getMinDistance(), Double.NaN);
-            }
-        });
         return shortPathes;
     }
 
-    private HashMap<Node,List<Node>> computePathesForLayer(String branch,List<Order> orders,String type) {
+
+    public HashMap<Node,List<Node>> computePathesForLayer(String branch,List<Order> orders,String type) {
         HashMap<Node,List<Node>> shortPathes = new HashMap<>();
 
         String fileName = "results\\"+branch +"_"+ type + ".txt";
         String noShortPathFileName = "results\\"+branch +"_"+ type +"_no_short_path.txt";
         String nodeNotExistFileName = "results\\"+branch +"_"+ type +"_strange.txt";
 
-        NodesToFileWriter.createFile(fileName);
-        NodesToFileWriter.createFile(noShortPathFileName);
-        NodesToFileWriter.createFile(nodeNotExistFileName);
-
+        try{
+            NodesToFileWriter.createFile(fileName);
+            NodesToFileWriter.createFile(noShortPathFileName);
+            NodesToFileWriter.createFile(nodeNotExistFileName);
+        }
+        catch(FileAlreadyExistsException ex) {
+            System.out.println(ex.getMessage());
+        }
 
         List<Node> nodesClone = new ArrayList<>();
         for(Node node: nodes) {
@@ -308,44 +153,35 @@ public class DijkstraRunner {
         dijkstra.setGraph(graph);
         dijkstra.computeMinDistancesfrom(branchNode);
 
-        orders.forEach(order ->{
-            Node nodeTo = nodeWorker.getNodeByCoordinates(order.getLatitude(),order.getLongtitude());
-            if(!nodeTo.equals(new Node())) {
-                List<Node> pathToCurrentNode = dijkstra.getShortestPathTo(nodeTo);
-                if(!pathToCurrentNode.isEmpty()) {
-
-                    double datasetDistanceToInMetres = order.getDistanceTo() * 1000;//in metres
+        try {
+            orders.forEach(order -> {
+                double datasetDistanceToInMetres = order.getDistanceTo() * 1000;//in metres
+                try {
+                    Node nodeTo = nodeWorker.getNodeByCoordinates(order.getLatitude(), order.getLongtitude());
+                    List<Node> pathToCurrentNode = dijkstra.getShortestPathTo(nodeTo);
                     double epsilon = nodeTo.getMinDistance() - datasetDistanceToInMetres;//difference between my result and dataset value
+                    nodeTo.setEpsilon(epsilon);
+                    shortPathes.put(nodeTo, pathToCurrentNode);
 
-                    if( nodeTo.getMinDistance() > 1000000)
-                    {
-                        NodesToFileWriter.writeResultInFile(
-                                noShortPathFileName, nodeTo,
-                                pathToCurrentNode, datasetDistanceToInMetres,
-                                nodeTo.getMinDistance(), epsilon);
-                    } else{
-                        nodeTo.setEpsilon(epsilon);
-                        shortPathes.put(nodeTo, pathToCurrentNode);
-
-                        NodesToFileWriter.writeResultInFile(
-                                fileName, nodeTo,
-                                pathToCurrentNode, datasetDistanceToInMetres,
-                                nodeTo.getMinDistance(), epsilon);
-                    }
-                } else {
-                    System.out.println(nodeTo + "Short path doesn't exist");
+                    NodesToFileWriter.writeResultInFile(fileName, nodeTo,
+                            pathToCurrentNode, datasetDistanceToInMetres,
+                            nodeTo.getMinDistance(), epsilon);
                 }
-            } else {
-                nodeTo.setLongtitude(order.getLongtitude());
-                nodeTo.setLatitude(order.getLatitude());
-                NodesToFileWriter.writeResultInFile(
-                        nodeNotExistFileName, nodeTo,
-                        new ArrayList<>(), Double.NaN,
-                        nodeTo.getMinDistance(), Double.NaN);
-            }
-        });
+                catch(InvalidNodeException ex) {
+                    NodesToFileWriter.writeErrResultInFile(nodeNotExistFileName,ex.getLat(),ex.getLon());
+                }
+                catch(NoShortPathException ex) {
+                    double errNodeLat = ex.getUnattainableNode().getLatitude();
+                    double errNodeLon = ex.getUnattainableNode().getLongtitude();
+                    NodesToFileWriter.writeErrResultInFile(noShortPathFileName, errNodeLat, errNodeLon);
+                }
+            });
+        }
+        catch(WriteResultException ex)
+        {
+            ex.printStackTrace();
+        }
         return shortPathes;
     }
 
-    public List<Order> getOrders() { return orders; }
 }

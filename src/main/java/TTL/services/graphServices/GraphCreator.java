@@ -1,9 +1,12 @@
 package TTL.services.graphServices;
 
-import TTL.services.listWorkers.EdgeWorker;
-import TTL.services.listWorkers.NodeWorker;
 import TTL.models.Edge;
 import TTL.models.Node;
+import TTL.services.listWorkers.EdgeWorker;
+import TTL.services.listWorkers.NodeWorker;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,17 +17,14 @@ import java.util.List;
  *  list of nodes (nodes)
  *  list of edges (edges)
  **/
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
 public class GraphCreator {
 
     private List<Node> nodes;
+
     private List<Edge> edges;
-
-    public GraphCreator(){}
-
-    public GraphCreator(List<Node> nodes, List<Edge> edges) {
-        this.nodes = new ArrayList<>(nodes);
-        this.edges = new ArrayList<>(edges);
-    }
 
     /**
      * Creates graph structure from Nodes and Edges lists by adding list of adjacent edges for each node
@@ -41,16 +41,4 @@ public class GraphCreator {
         ));
         return graph;
     }
-
-    public void setNodes(List<Node> nodes) {
-
-        this.nodes = nodes;
-    }
-
-    public void setEdges(List<Edge> edges) {
-
-        this.edges = edges;
-    }
-
-
 }

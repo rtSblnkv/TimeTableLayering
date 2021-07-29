@@ -1,5 +1,6 @@
 package TTL.dataloaders;
 
+import TTL.exception_handlers.UploadDataException;
 import TTL.models.Edge;
 import com.opencsv.bean.CsvToBeanBuilder;
 
@@ -14,15 +15,20 @@ public class EdgeCsvLoader implements CsvLoader {
      * @return List of Edge type
      */
     @Override
-    public List<Edge> csvToList(String path) throws IOException {
+    public List<Edge> csvToList(String path) throws UploadDataException, IllegalArgumentException {
         List<Edge> edges = null;
         try (FileReader reader = new FileReader(path)) {
             edges = new CsvToBeanBuilder(reader)
                     .withType(Edge.class)
                     .build()
                     .parse();
-        } catch (IOException ex) {
-            throw new IOException("Edge csvToList " + ex.getMessage());
+        } catch (IOException|NullPointerException ex) {
+            String errMessage = "edges.csv can't be parsed : " + ex.getMessage();
+            throw new UploadDataException( errMessage,ex);
+        }
+        if (edges == null || edges.isEmpty())
+        {
+            throw new IllegalArgumentException(" edges list is empty or null");
         }
         return edges;
     }

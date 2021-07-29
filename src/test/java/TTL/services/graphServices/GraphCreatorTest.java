@@ -16,7 +16,7 @@ public class GraphCreatorTest {
     public void createGraph() {
 
         List<Node> nodes = TestDataCreator.getTestNodes();
-        List<Edge> edges = TestDataCreator.getEdges();
+        List<Edge> edges = TestDataCreator.getTestEdges();
         GraphCreator gc = new GraphCreator(nodes,edges);
         HashMap<Long, Node> graph = gc.createGraph();
         HashMap<Long, Node> testGraph = TestDataCreator.getTestGraph();
