@@ -1,19 +1,17 @@
 package TTL.models;
 
 import com.opencsv.bean.CsvBindByName;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 
 /**
  * branches.csv Data Object
  */
-@ToString(exclude = "branchName")
 @NoArgsConstructor
 @Getter @Setter
+@ToString(exclude = "branchName")
+@EqualsAndHashCode
 public class Branch implements Serializable {
 
     @CsvBindByName(column ="branch_code")

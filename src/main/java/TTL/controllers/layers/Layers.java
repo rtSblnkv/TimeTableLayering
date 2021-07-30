@@ -17,7 +17,7 @@ public abstract class Layers {
 
     private ArrayList<String> splitters;
 
-    public Layers(List<Order> orders) {
+    Layers(List<Order> orders) {
         this.orders = orders;
         splitters = new ArrayList<>();
         layers = new HashMap<>();

@@ -16,6 +16,9 @@ import org.openjdk.jmh.annotations.State;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Uploads data from dataset in lists of appropriate Objects
+ */
 @State(Scope.Benchmark)
 @NoArgsConstructor
 @Getter
@@ -32,13 +35,14 @@ public class DataService {
     private static final HashMap<String,String> csvPaths = new HashMap<>(){{
         put("branches","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\branches.csv");
         put("edges","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\edges.csv");
-        put("nodes","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\nodes.csv");
+        put("nodes","C:\\Users\\роппг\\IdeaProject\\TimeTableLayering\\src\\main\\resources\\nodes.csv");
         put("orders","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\orders.csv");
     }};
 
     /**
      * Uploads data from dataset with csvToList methods
      * initialize branches,edges,nodes,orders.
+     * @throws UploadDataException
      */
     @Benchmark
     public void uploadDataFromCsvFiles() throws UploadDataException

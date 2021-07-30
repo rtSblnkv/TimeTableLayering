@@ -25,7 +25,7 @@ public class BranchCsvLoader implements CsvLoader {
         }
         catch(IOException|NullPointerException ex)
         {
-            String errMessage = "branches.csv can't be parsed : " + ex.getMessage();
+            String errMessage = "Can't be parsed : " + ex.getMessage();
             throw new UploadDataException( errMessage,ex);
         }
         if (branches == null || branches.isEmpty())

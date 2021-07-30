@@ -18,16 +18,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 /**
- * Class which runs dijkstra algorithm for list of orders
- * in different variations:
- * for full list of orders
- * linear and parallel for splitted by
- *  - order type
- *  - branch code
- *  linear and parallel for splitted on branch code orders
- *  with preliminary launching of the dijkstra algorithm for each branch location
+ * Computes short pathes for list of orders in 2 variations
+ * 1. Making recalculating of dijkstra algorithm for each
+ * order
+ * 2. Calculating dijkstra for branch codes location
+ * for splitting by bracnh codes order sublists
  */
 @BenchmarkMode(Mode.All)
 @Warmup(iterations = 2)
@@ -47,6 +43,13 @@ public class DijkstraRunner {
         this.branches = branches;
     }
 
+    /**
+     * computes pathes for list of orders with claculating of dijkstra for each order
+     * @param orders - order list
+     * @param splitter - splitter (if exists) for which whole order list are divided into order sublists (used for creating file name)
+     * @param algorithmType - type of started algorithm (used for creating file name)
+     * @return map of node and list of nodes as the shortest path to it from departure node
+     */
     public HashMap<Node,List<Node>> computePathes(List<Order> orders,String splitter,String algorithmType) {
 
         HashMap<Node,List<Node>> shortPathes = new HashMap<>();

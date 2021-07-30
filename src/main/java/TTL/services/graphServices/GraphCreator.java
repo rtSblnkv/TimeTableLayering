@@ -23,7 +23,6 @@ import java.util.List;
 public class GraphCreator {
 
     private List<Node> nodes;
-
     private List<Edge> edges;
 
     /**

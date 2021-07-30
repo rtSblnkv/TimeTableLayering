@@ -5,10 +5,7 @@ import TTL.utils.TextToOrderItems;
 import com.opencsv.bean.CsvBindAndSplitByName;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,58 +14,59 @@ import java.util.List;
 /**
  * orders.csv Data Object
  */
-@ToString
 @NoArgsConstructor
+@Setter
+@ToString
+@EqualsAndHashCode
 public class Order {
 
     @CsvBindByName(column="order_id")
-    @Getter @Setter
+    @Getter
     private String orderId;
 
     @CsvBindByName
-    @Getter @Setter
+    @Getter
     @CsvDate("YYYY-MM-DD")
     private Date date;
 
     @CsvBindByName
-    @Getter @Setter
+    @Getter
     private String time;
 
     @CsvBindByName(column="order_type")
-    @Getter @Setter
+    @Getter
     private String orderType;
 
     @CsvBindByName(column="branch_code")
-    @Setter
     private String branchCode;
 
     @CsvBindByName(column="order_price")
-    @Getter @Setter
+    @Getter
     private double orderPrice;
 
     @CsvBindByName(column="customer_lat")
-    @Getter @Setter
+    @Getter
     private double latitude;
 
     @CsvBindByName(column="customer_lon")
-    @Getter @Setter
+    @Getter
     private double longtitude;
 
     @CsvBindByName(column="customerHasloyalty?")
-    @Getter @Setter
+    @Getter
     private Boolean hasLoyality;
 
     @CsvBindAndSplitByName(column="order_items",splitOn = "\\), \\(",
             elementType= OrderItem.class,converter = TextToOrderItems.class)
-    @Getter @Setter
+    @Getter
     private List<OrderItem> orderItems;
 
     @CsvBindByName(column="distance_to_customer_KM")
-    @Getter @Setter
+    @Getter
     private double distanceTo;
 
     @CsvBindByName(column="delivery_fee")
-    @Getter @Setter
+    @Getter
     private double deliveryFee;
 
     public String getBranchCode() {

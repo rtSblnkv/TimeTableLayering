@@ -17,12 +17,13 @@ public class TestDataCreator {
     public static List<Node> getTestNodes()
     {
         List<Node> nodes = new ArrayList<>();
-        for(int i = 1; i<=7;i++) {
+        for(int i = 1; i<=8;i++) {
             Node node = new Node();
             node.setLatitude(-i);
             node.setLongtitude(i);
             node.setId(i);
-            i++;
+
+            nodes.add(node);
         }
         return nodes;
     }

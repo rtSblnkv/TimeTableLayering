@@ -25,13 +25,14 @@ public class OrderCsvLoader implements CsvLoader {
         }
         catch(IOException|NullPointerException ex)
         {
-            String errMessage = "orders.csv can't be parsed : " + ex.getMessage();
+            String errMessage = "Can't be parsed : " + ex.getMessage();
             throw new UploadDataException( errMessage,ex);
         }
         if (orders == null || orders.isEmpty())
         {
             throw new IllegalArgumentException(" orders list is empty or null");
         }
+
         return orders;
     }
 }

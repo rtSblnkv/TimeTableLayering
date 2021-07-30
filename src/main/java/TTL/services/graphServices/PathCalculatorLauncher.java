@@ -6,6 +6,7 @@ import TTL.models.Branch;
 import TTL.models.Edge;
 import TTL.models.Node;
 import TTL.models.Order;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Scope;
@@ -14,17 +15,24 @@ import org.openjdk.jmh.annotations.State;
 import java.util.HashMap;
 import java.util.List;
 
+
+/**
+ * Class which calculates short pathes for list of orders
+ * in different variations:
+ * for full list of orders
+ * linear and parallel versions for splitted by
+ *  - order type
+ *  - branch code
+ *  linear and parallel for splitted on branch code orders
+ *  with preliminary launching of the dijkstra algorithm for each branch location
+ */
 @State(Scope.Benchmark)
+@NoArgsConstructor
+@AllArgsConstructor
 public class PathCalculatorLauncher {
+
     private DijkstraRunner runner;
     private List<Order> orders;
-
-    public PathCalculatorLauncher (){}
-
-    public PathCalculatorLauncher(DijkstraRunner runner,List<Order> orders) {
-        this.runner = runner;
-        this.orders = orders;
-    }
 
     /**
      * Linear computing of shortest pathes and distances for each order in full list of orders
@@ -111,7 +119,7 @@ public class PathCalculatorLauncher {
      * @return Map(Node, lists,which contains shortest path to the Node from restaurant)
      */
     @Benchmark
-    public HashMap<Node,List<Node>> getShortestForOrdersByBranchCodeLinear()
+    public HashMap<Node,List<Node>> getShortestForOrdersByBranchCodeLinearPreliminary()
     {
         ByBranchCodeLayers byBranchCodeLayers = new ByBranchCodeLayers(orders);
         System.out.println("Branch Code Linear by Layer");
@@ -129,7 +137,7 @@ public class PathCalculatorLauncher {
      * @return Map(Node, lists,which contains shortest path to the Node from restaurant)
      */
     @Benchmark
-    public HashMap<Node,List<Node>> getShortestForOrdersByBranchCodeParallel() {
+    public HashMap<Node,List<Node>> getShortestForOrdersByBranchCodeParallelPreliminary() {
         ByBranchCodeLayers byBranchCodeLayers = new ByBranchCodeLayers(orders);
         System.out.println("Branch Code Parallel by Layer");
         return byBranchCodeLayers.getLayers()

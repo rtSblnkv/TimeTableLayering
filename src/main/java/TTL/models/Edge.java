@@ -10,9 +10,9 @@ import java.util.Objects;
 /**
  * edges.csv Data Object
  */
+@NoArgsConstructor
 @ToString(exclude = {"speedLimit","street_type","dist_on_limit"})
 @EqualsAndHashCode(exclude = {"speedLimit","street_type","dist_on_limit"})
-@NoArgsConstructor
 public class Edge implements Serializable {
 
     @CsvBindByName(column = "u")

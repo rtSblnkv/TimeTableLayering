@@ -18,20 +18,19 @@ public class NodesToFileWriter {
      */
     public static void createFile(String fileName) throws FileAlreadyExistsException,WriteResultException
     {
-        boolean alreadyExists = false;
+        boolean alreadyExists;
         try {
             File file = new File(fileName);
             alreadyExists = file.createNewFile();
+            if(alreadyExists)
+            {
+                throw new FileAlreadyExistsException(fileName + ".txt файл уже создан");
+            }
         }
         catch(IOException ex)
         {
             String errMessage = "Error while writing in " + fileName + ".txt :"  + ex.getMessage();
             throw new WriteResultException(errMessage,ex);
-        }
-
-        if(alreadyExists)
-        {
-            throw new FileAlreadyExistsException(fileName + ".txt файл уже создан");
         }
     }
 
@@ -85,6 +84,18 @@ public class NodesToFileWriter {
         }
     }
 
+    /**
+     * write line in file with path fileName
+     * all data in string format
+     * @param fileName - file path
+     * @param lat - Node latitude
+     * @param lon - Node longtitude
+     * @param nodesList - list of nodes
+     * @param datasetDistance - value of min distance in dataset
+     * @param calcDistance - value of min distance
+     * @param epsilon - difference between datasetDistance and calcDistance
+     * @throws WriteResultException - is throwed when result writing failed
+     */
     private static void writeLineInFile(String fileName,String lat,String lon,
                                         String nodesList,String datasetDistance,
                                         String calcDistance, String epsilon) throws WriteResultException

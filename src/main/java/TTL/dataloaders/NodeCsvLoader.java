@@ -15,7 +15,7 @@ public class NodeCsvLoader implements CsvLoader {
      * @return List of Node type
      */
     @Override
-    public List csvToList(String path) throws UploadDataException,IllegalArgumentException {
+    public List csvToList(String path) throws UploadDataException,IllegalArgumentException{
         List<Node> nodes = null;
         try(FileReader reader = new FileReader(path)){
             nodes = new CsvToBeanBuilder(reader)
@@ -25,13 +25,14 @@ public class NodeCsvLoader implements CsvLoader {
         }
         catch(IOException|NullPointerException ex)
         {
-            String errMessage = "nodes.csv can't be parsed : " + ex.getMessage();
+            String errMessage = "Can't be parsed : " + ex.getMessage();
             throw new UploadDataException( errMessage,ex);
         }
         if (nodes == null || nodes.isEmpty())
         {
             throw new IllegalArgumentException(" nodes list is empty or null");
         }
+
         return nodes;
     }
 }

@@ -1,5 +1,14 @@
 package TTL.exception_handlers;
 
+import lombok.Getter;
+
+/**
+ * Incorrect node exception handler
+ * Thrown when can't find node with
+ * that coordinates or id in list of nodes
+ * params - latitude and longtitude of node which is not find
+ */
+@Getter
 public class InvalidNodeException extends RuntimeException {
 
     private double lat;
@@ -11,13 +20,4 @@ public class InvalidNodeException extends RuntimeException {
         this.lat = lat;
         this.lon = lon;
     }
-
-    public double getLat() {
-        return lat;
-    }
-
-    public double getLon() {
-        return lon;
-    }
-
 }
