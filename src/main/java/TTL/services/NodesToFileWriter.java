@@ -22,15 +22,15 @@ public class NodesToFileWriter {
         try {
             File file = new File(fileName);
             alreadyExists = file.createNewFile();
-            if(alreadyExists)
-            {
-                throw new FileAlreadyExistsException(fileName + ".txt файл уже создан");
-            }
         }
         catch(IOException ex)
         {
             String errMessage = "Error while writing in " + fileName + ".txt :"  + ex.getMessage();
             throw new WriteResultException(errMessage,ex);
+        }
+        if(alreadyExists)
+        {
+            throw new FileAlreadyExistsException(fileName + ".txt файл уже создан");
         }
     }
 

@@ -35,7 +35,7 @@ public class DataService {
     private static final HashMap<String,String> csvPaths = new HashMap<>(){{
         put("branches","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\branches.csv");
         put("edges","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\edges.csv");
-        put("nodes","C:\\Users\\роппг\\IdeaProject\\TimeTableLayering\\src\\main\\resources\\nodes.csv");
+        put("nodes","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\nodes.csv");
         put("orders","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\orders.csv");
     }};
 
