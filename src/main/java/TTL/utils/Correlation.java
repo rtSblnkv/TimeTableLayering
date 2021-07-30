@@ -1,8 +1,8 @@
 package TTL.utils;
 
+import TTL.models.Order;
 import TTL.utils.encoders.BranchCodeLabelEncoder;
 import TTL.utils.encoders.OrderTypeLabelEncoder;
-import TTL.models.Order;
 
 import java.util.List;
 

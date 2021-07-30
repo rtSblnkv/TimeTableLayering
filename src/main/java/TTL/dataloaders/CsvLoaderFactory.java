@@ -15,9 +15,9 @@ public class CsvLoaderFactory {
 
             case"orders": return new OrderCsvLoader();
 
-            case"edges":return new EdgeCsvLoader();
+            case"edges": return new EdgeCsvLoader();
 
-            case"nodes":return new NodeCsvLoader();
+            case"nodes": return new NodeCsvLoader();
 
             default: return null;
         }

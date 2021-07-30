@@ -1,6 +1,10 @@
 package TTL.services.listWorkers;
 
+import TTL.exception_handlers.InvalidNodeException;
 import TTL.models.Node;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,14 +12,12 @@ import java.util.List;
 /**
  * Class which operates with list of nodes
  */
+@NoArgsConstructor
+@AllArgsConstructor
 public class NodeWorker implements Worker {
+
+    @Setter
     private List<Node> nodes;
-
-    public NodeWorker (){}
-
-    public NodeWorker (List<Node> nodes){
-        this.nodes = nodes;
-    }
 
     /**
      * Returns the nodeId of node with latitude = lat and longtitude = lon
@@ -24,14 +26,20 @@ public class NodeWorker implements Worker {
      * @param lon - node longtitude
      * @return node id
      */
-    public long getNodeId(double lat, double lon)
+    public long getNodeId(double lat, double lon) throws InvalidNodeException
     {
-        return nodes
+        Long nodeId = nodes
                 .stream()
                 .filter(node -> lat == node.getLatitude() && lon == node.getLongtitude())
                 .map(Node::getId)
                 .findFirst()
                 .orElse(0L);
+
+        if (nodeId == 0L){
+            String errMessage = "No Nodes with [" + lat + "," + lon +"] coordinates in the Dataset";
+            throw new InvalidNodeException(lat,lon,errMessage);
+        }
+        return nodeId;
     }
 
     /**
@@ -41,13 +49,19 @@ public class NodeWorker implements Worker {
      * @param lon - node longtitude
      * @return Node
      */
-    public Node getNodeByCoordinates(double lat, double lon)
+    public Node getNodeByCoordinates(double lat, double lon) throws InvalidNodeException
     {
-        return nodes
+        Node node = nodes
                 .stream()
-                .filter(node -> lat == node.getLatitude() && lon == node.getLongtitude())
+                .filter(curNode -> lat == curNode.getLatitude() && lon == curNode.getLongtitude())
                 .findFirst()
                 .orElse(new Node());
+
+        if (node.equals(new Node())){
+            String errMessage = "No Nodes with [" + lat + "," + lon +"] coordinates in the Dataset";
+            throw new InvalidNodeException(lat,lon,errMessage);
+        }
+        return node;
     }
 
     /**
@@ -88,7 +102,4 @@ public class NodeWorker implements Worker {
         return nodesHashMap;
     }
 
-    public void setNodes(List<Node> nodes){
-        this.nodes = nodes;
-    }
 }

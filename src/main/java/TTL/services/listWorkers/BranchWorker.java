@@ -2,6 +2,9 @@ package TTL.services.listWorkers;
 
 import TTL.models.Branch;
 import TTL.models.Node;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,15 +12,12 @@ import java.util.List;
 /**
  * Class which operates with list of branches
  */
+@NoArgsConstructor
+@AllArgsConstructor
 public class BranchWorker implements Worker{
 
+    @Setter
     private List<Branch> branches;
-
-    public BranchWorker(){}
-
-    public BranchWorker(List<Branch> branches) {
-        this.branches = branches;
-    }
 
     /**
      * Converts List of branches into HashMap
@@ -44,9 +44,5 @@ public class BranchWorker implements Worker{
         HashMap<String,Branch> branchesHashMap = new HashMap<>();
         branches.forEach(branch -> branchesHashMap.put(branch.getBranchCode(),branch));
         return branchesHashMap;
-    }
-
-    public void setBranches(List<Branch> branches) {
-        this.branches = branches;
     }
 }

@@ -1,5 +1,6 @@
 package TTL.dataloaders;
 
+import TTL.exception_handlers.UploadDataException;
 import TTL.models.Node;
 import com.opencsv.bean.CsvToBeanBuilder;
 
@@ -14,7 +15,7 @@ public class NodeCsvLoader implements CsvLoader {
      * @return List of Node type
      */
     @Override
-    public List csvToList(String path) {
+    public List csvToList(String path) throws UploadDataException,IllegalArgumentException{
         List<Node> nodes = null;
         try(FileReader reader = new FileReader(path)){
             nodes = new CsvToBeanBuilder(reader)
@@ -22,10 +23,16 @@ public class NodeCsvLoader implements CsvLoader {
                     .build()
                     .parse();
         }
-        catch(IOException ex)
+        catch(IOException|NullPointerException ex)
         {
-            System.out.println(ex.getMessage());
+            String errMessage = "Can't be parsed : " + ex.getMessage();
+            throw new UploadDataException( errMessage,ex);
         }
+        if (nodes == null || nodes.isEmpty())
+        {
+            throw new IllegalArgumentException(" nodes list is empty or null");
+        }
+
         return nodes;
     }
 }

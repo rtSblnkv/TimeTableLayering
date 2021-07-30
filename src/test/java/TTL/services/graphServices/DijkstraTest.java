@@ -1,6 +1,7 @@
 package TTL.services.graphServices;
 
 import TTL.TestDataCreator;
+import TTL.exception_handlers.NoShortPathException;
 import TTL.models.Edge;
 import TTL.models.Node;
 import org.junit.Assert;
@@ -26,7 +27,7 @@ public class DijkstraTest {
         nodes = TestDataCreator.getTestNodes();
         startNode = nodes.get(0);
         finishNode = nodes.get(3);
-        edges = TestDataCreator.getEdges();
+        edges = TestDataCreator.getTestEdges();
     }
 
     @Test
@@ -58,6 +59,17 @@ public class DijkstraTest {
         List<Node> determinatePath = new ArrayList<>(List.of(nodes.get(0), nodes.get(1), nodes.get(3)));
 
         Assert.assertEquals(path,determinatePath);
+    }
+
+    @Test(expected = NoShortPathException.class)
+    public void getShortestPathToCatchNoShortestPathException()
+    {
+        GraphCreator gc = new GraphCreator(nodes,edges);
+        HashMap<Long,Node> graph = gc.createGraph();
+
+        Dijkstra dijkstra = new Dijkstra(graph);
+        dijkstra.computeMinDistancesfrom(startNode);
+        List<Node> path = dijkstra.getShortestPathTo(nodes.get(7));
     }
 
 }
