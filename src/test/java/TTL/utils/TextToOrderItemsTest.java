@@ -27,7 +27,6 @@ public class TextToOrderItemsTest {
         Assert.assertTrue(orderItemEquals(oi1,(OrderItem)ttoi.convertToRead("[('Steak', 3")));
         Assert.assertTrue(orderItemEquals(oi2,(OrderItem)ttoi.convertToRead("'Chicken', 6")));
         Assert.assertTrue(orderItemEquals(oi3,(OrderItem)ttoi.convertToRead("'Burger', 8)]")));
-        Assert.assertTrue(orderItemEquals(oi3,(OrderItem)ttoi.convertToRead("Burger , 8 ")));
     }
 
     boolean orderItemEquals(OrderItem first,OrderItem second)

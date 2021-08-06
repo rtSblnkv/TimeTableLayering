@@ -2,6 +2,7 @@ package TTL.dataloaders;
 
 import TTL.exception_handlers.UploadDataException;
 import TTL.models.Node;
+import TTL.utils.FileURLDecoder;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,7 +16,8 @@ public class NodeCsvLoaderTest {
     @Test
     public void csvToList() {
         CsvLoader loader = new NodeCsvLoader();
-        List<Node> nodesActual = loader.csvToList("C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\TestCsv\\nodesTest.csv");
+        String path = FileURLDecoder.getPathToResource("TestCsv/nodesTest.csv");
+        List<Node> nodesActual = loader.csvToList(path);
         Node node = new Node();
         node.setId(711327755L);
         node.setLatitude(-37.807675);
@@ -29,12 +31,14 @@ public class NodeCsvLoaderTest {
     @Test(expected = UploadDataException.class)
     public void csvToListCatchUploadDataException() {
         CsvLoader loader = new NodeCsvLoader();
-        List<Node> nodes = loader.csvToList("C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\TestCsv\\node.csv");
+        String path = FileURLDecoder.getPathToResource("node.csv");
+        List<Node> nodes = loader.csvToList(path);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void csvToListCatchIllegalArgumentException() {
         CsvLoader loader = new NodeCsvLoader();
-        List<Node> nodes = loader.csvToList("C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\TestCsv\\nodeTestEmpty.csv");
+        String path = FileURLDecoder.getPathToResource("nodeTestEmpty.csv");
+        List<Node> nodes = loader.csvToList(path);
     }
 }

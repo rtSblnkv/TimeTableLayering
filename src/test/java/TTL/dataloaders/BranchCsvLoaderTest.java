@@ -3,6 +3,7 @@ package TTL.dataloaders;
 import TTL.exception_handlers.UploadDataException;
 import TTL.models.Branch;
 import TTL.models.Edge;
+import TTL.utils.FileURLDecoder;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,7 +16,8 @@ public class BranchCsvLoaderTest {
     @Test
     public void csvToList() {
         CsvLoader loader = new BranchCsvLoader();
-        List<Branch> branchesActual = loader.csvToList("C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\branchesTest.csv");
+        String path = FileURLDecoder.getPathToResource("TestCsv/branchesTest.csv");
+        List<Branch> branchesActual = loader.csvToList(path);
 
         Branch branch = new Branch();
         branch.setBranchCode("NS");
@@ -30,7 +32,8 @@ public class BranchCsvLoaderTest {
     @Test(expected = UploadDataException.class)
     public void csvToListCatchUploadDataException() {
         CsvLoader loader = new BranchCsvLoader();
-        List<Branch> branches = loader.csvToList("C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\br.csv");
+        String path = FileURLDecoder.getPathToResource("br.csv");
+        List<Branch> branches = loader.csvToList(path);
 
     }
 

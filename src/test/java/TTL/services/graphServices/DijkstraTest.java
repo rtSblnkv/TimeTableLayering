@@ -38,13 +38,13 @@ public class DijkstraTest {
         Dijkstra dijkstra = new Dijkstra(graph);
         dijkstra.computeMinDistancesfrom(startNode);
 
-        List minDistancesTest = Arrays.asList(0.0,5.0,6.0,10.0);
+        List minDistancesTest = Arrays.asList(0.0,5.0,6.0,10.0,9.0,15.0,16.0);
         List<Double> minDistances = nodes
                 .stream()
                 .map(Node::getMinDistance)
                 .collect(Collectors.toList());
 
-        Assert.assertEquals(minDistances,minDistancesTest);
+        Assert.assertEquals(minDistancesTest,minDistances);
     }
 
     @Test
