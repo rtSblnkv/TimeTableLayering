@@ -7,12 +7,14 @@ import TTL.models.Branch;
 import TTL.models.Edge;
 import TTL.models.Node;
 import TTL.models.Order;
+import TTL.utils.FileURLDecoder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,11 +34,11 @@ public class DataService {
 
     private List<Branch> branches;
 
-    private static final HashMap<String,String> csvPaths = new HashMap<>(){{
-        put("branches","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\branches.csv");
-        put("edges","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\edges.csv");
-        put("nodes","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\nodes.csv");
-        put("orders","C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\orders.csv");
+    private static final HashMap<String, String> csvPaths = new HashMap<>(){{
+        put("branches", FileURLDecoder.getPathToResource("branches.csv"));
+        put("edges",FileURLDecoder.getPathToResource("edges.csv"));
+        put("nodes",FileURLDecoder.getPathToResource("nodes.csv"));
+        put("orders",FileURLDecoder.getPathToResource("orders.csv"));
     }};
 
     /**
@@ -47,7 +49,7 @@ public class DataService {
     @Benchmark
     public void uploadDataFromCsvFiles() throws UploadDataException
     {
-        try {
+       try {
             CsvLoaderFactory loaderFactory = new CsvLoaderFactory();
 
             CsvLoader branchLoader = loaderFactory.createCsvLoader("branches");

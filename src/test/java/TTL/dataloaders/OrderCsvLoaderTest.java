@@ -5,6 +5,7 @@ import TTL.models.Edge;
 import TTL.models.Node;
 import TTL.models.Order;
 import TTL.models.OrderItem;
+import TTL.utils.FileURLDecoder;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -21,7 +22,8 @@ public class OrderCsvLoaderTest {
     @Test
     public void csvToList() {
         CsvLoader loader = new OrderCsvLoader();
-        List<Order> nodesActual = loader.csvToList("C:\\Users\\роппг\\IdeaProjects\\TimeTableLayering\\src\\main\\resources\\TestCsv\\ordersTest.csv");
+        String path = FileURLDecoder.getPathToResource("TestCsv/ordersTest.csv");
+        List<Order> nodesActual = loader.csvToList(path);
 
         Date date = null;
 
@@ -66,6 +68,7 @@ public class OrderCsvLoaderTest {
     @Test(expected = UploadDataException.class)
     public void csvToListCatchUploadDataException() {
         CsvLoader loader = new NodeCsvLoader();
-        List<Node> nodes = loader.csvToList("C");
+        String path = FileURLDecoder.getPathToResource("/TestCsv/ordersTest.csv");
+        List<Node> nodes = loader.csvToList(path);
     }
 }

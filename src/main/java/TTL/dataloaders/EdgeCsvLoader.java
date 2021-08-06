@@ -6,6 +6,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 public class EdgeCsvLoader implements CsvLoader {
