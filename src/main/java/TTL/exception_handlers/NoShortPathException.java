@@ -8,12 +8,11 @@ import lombok.Getter;
  * Param - unattainable node
  */
 @Getter
-public class NoShortPathException extends RuntimeException{
+public class NoShortPathException extends RuntimeException {
 
-    private Node unattainableNode;
+    private final Node unattainableNode;
 
-    public NoShortPathException(String errMessage,Node unattainableNode)
-    {
+    public NoShortPathException(String errMessage, Node unattainableNode) {
         super(errMessage);
         this.unattainableNode = unattainableNode;
     }

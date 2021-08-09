@@ -1,7 +1,10 @@
 package TTL.models;
 
 import com.opencsv.bean.CsvBindByName;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,17 +15,18 @@ import java.util.List;
  */
 
 @NoArgsConstructor
-@Getter @Setter
-@EqualsAndHashCode(exclude = {"edges","visited","previousNode","epsilon","minDistance","id"})
-public class Node implements Serializable,Comparable<Node>,Cloneable {
+@Getter
+@Setter
+@EqualsAndHashCode(exclude = {"edges", "visited", "previousNode", "epsilon", "minDistance", "id"})
+public class Node implements Serializable, Comparable<Node>, Cloneable {
 
-    @CsvBindByName(column="node")
+    @CsvBindByName(column = "node")
     private long id;
 
-    @CsvBindByName(column="lat")
+    @CsvBindByName(column = "lat")
     private double latitude;
 
-    @CsvBindByName(column="lon")
+    @CsvBindByName(column = "lon")
     private double longtitude;
 
     private List<Edge> edges = new ArrayList<>();
@@ -41,16 +45,15 @@ public class Node implements Serializable,Comparable<Node>,Cloneable {
 
     @Override
     public String toString() {
-        return  latitude +
+        return latitude +
                 "," + longtitude;
     }
 
     public int compareTo(Node secondNode) {
-        return Double.compare(this.minDistance,secondNode.minDistance);
+        return Double.compare(this.minDistance, secondNode.minDistance);
     }
 
-    public Node clone()
-    {
+    public Node clone() {
         Node node = new Node();
         node.id = id;
         node.longtitude = longtitude;

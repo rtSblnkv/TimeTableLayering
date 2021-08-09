@@ -2,8 +2,6 @@ package TTL.services.graphServices;
 
 import TTL.controllers.layers.ByBranchCodeLayers;
 import TTL.controllers.layers.ByOrderTypeLayers;
-import TTL.models.Branch;
-import TTL.models.Edge;
 import TTL.models.Node;
 import TTL.models.Order;
 import lombok.AllArgsConstructor;
@@ -21,10 +19,10 @@ import java.util.List;
  * in different variations:
  * for full list of orders
  * linear and parallel versions for splitted by
- *  - order type
- *  - branch code
- *  linear and parallel for splitted on branch code orders
- *  with preliminary launching of the dijkstra algorithm for each branch location
+ * - order type
+ * - branch code
+ * linear and parallel for splitted on branch code orders
+ * with preliminary launching of the dijkstra algorithm for each branch location
  */
 @State(Scope.Benchmark)
 @NoArgsConstructor
@@ -36,125 +34,127 @@ public class PathCalculatorLauncher {
 
     /**
      * Linear computing of shortest pathes and distances for each order in full list of orders
-     * @return Map(Node, lists,which contains shortest path to the Node from restaurant)
+     *
+     * @return Map(Node, lists, which contains shortest path to the Node from restaurant)
      */
     @Benchmark
-    public HashMap<Node, List<Node>> getShortestForAllOrders()
-    {
+    public HashMap<Node, List<Node>> getShortestForAllOrders() {
         System.out.println("Linear All orders");
-        return runner.computePathes(orders,"","orders");
+        return runner.computePathes(orders, "", "orders");
     }
 
     /**
      * Linear computing of shortest pathes and distances for each order in list orders splitted by order type
-     * @return Map(Node, lists,which contains shortest path to the Node from restaurant)
+     *
+     * @return Map(Node, lists, which contains shortest path to the Node from restaurant)
      */
     @Benchmark
-    public HashMap<Node,List<Node>> getShortestForAllOrdersByOrderTypeLinear()
-    {
+    public HashMap<Node, List<Node>> getShortestForAllOrdersByOrderTypeLinear() {
         ByOrderTypeLayers byOrderTypeLayers = new ByOrderTypeLayers(orders);
         System.out.println("Order Type Linear");
         return byOrderTypeLayers.getLayers()
                 .entrySet()
                 .stream()
-                .map(branchOrders -> runner.computePathes(branchOrders.getValue(),branchOrders.getKey(),"OrderTypeLinear"))
+                .map(branchOrders -> runner.computePathes(branchOrders.getValue(), branchOrders.getKey(), "OrderTypeLinear"))
                 .reduce(this::merge)
-                .orElse(new HashMap<>() );
+                .orElse(new HashMap<>());
     }
 
     /**
      * Parallel computing of shortest pathes and distances for each order in list orders splitted by order type
-     * @return Map(Node, lists,which contains shortest path to the Node from restaurant)
+     *
+     * @return Map(Node, lists, which contains shortest path to the Node from restaurant)
      */
     @Benchmark
-    public HashMap<Node,List<Node>> getShortestForAllOrdersByOrderTypeParallel()
-    {
-        ByOrderTypeLayers  byOrderTypeLayers = new ByOrderTypeLayers(orders);
+    public HashMap<Node, List<Node>> getShortestForAllOrdersByOrderTypeParallel() {
+        ByOrderTypeLayers byOrderTypeLayers = new ByOrderTypeLayers(orders);
         System.out.println(" Order Type Parallel");
         return byOrderTypeLayers.getLayers()
                 .entrySet()
                 .parallelStream()
-                .map(branchOrders -> runner.computePathes(branchOrders.getValue(),branchOrders.getKey(),"OrderTypeParallel"))
+                .map(branchOrders -> runner.computePathes(branchOrders.getValue(), branchOrders.getKey(), "OrderTypeParallel"))
                 .reduce(this::merge)
-                .orElse(new HashMap<>() );
+                .orElse(new HashMap<>());
     }
 
     /**
      * Linear computing of shortest pathes and distances for each order in list orders splitted by branch code
-     * @return Map(Node, lists,which contains shortest path to the Node from restaurant)
+     *
+     * @return Map(Node, lists, which contains shortest path to the Node from restaurant)
      */
     @Benchmark
-    public HashMap<Node,List<Node>> getShortestForAllOrdersByBranchCodeLinear()
-    {
+    public HashMap<Node, List<Node>> getShortestForAllOrdersByBranchCodeLinear() {
         ByBranchCodeLayers byBranchCodeLayers = new ByBranchCodeLayers(orders);
         System.out.println("Branch Code Linear");
         return byBranchCodeLayers.getLayers()
                 .entrySet()
                 .stream()
-                .map(branchOrders -> runner.computePathes(branchOrders.getValue(),branchOrders.getKey(),"BranchCodeLinear"))
+                .map(branchOrders -> runner.computePathes(branchOrders.getValue(), branchOrders.getKey(), "BranchCodeLinear"))
                 .reduce(this::merge)
-                .orElse(new HashMap<>() );
+                .orElse(new HashMap<>());
     }
 
     /**
      * Parallel computing of shortest pathes and distances for each order in list orders splitted by branch code
-     * @return Map(Node, lists,which contains shortest path to the Node from restaurant)
+     *
+     * @return Map(Node, lists, which contains shortest path to the Node from restaurant)
      */
     @Benchmark
-    public HashMap<Node,List<Node>> getShortestForAllOrdersByBranchCodeParallel()
-    {
+    public HashMap<Node, List<Node>> getShortestForAllOrdersByBranchCodeParallel() {
         ByBranchCodeLayers byBranchCodeLayers = new ByBranchCodeLayers(orders);
         System.out.println("Branch Code Parallel");
         return byBranchCodeLayers.getLayers()
                 .entrySet()
                 .parallelStream()
-                .map(branchOrders -> runner.computePathes(branchOrders.getValue(),branchOrders.getKey(),"BranchCodeParallel"))
+                .map(branchOrders -> runner.computePathes(branchOrders.getValue(), branchOrders.getKey(), "BranchCodeParallel"))
                 .reduce(this::merge)
-                .orElse(new HashMap<>() );
+                .orElse(new HashMap<>());
     }
 
     /**
      * Linear computing of shortest pathes and distances for each order in list orders splitted by branch code
      * Using computePathesForLayer method
-     * @return Map(Node, lists,which contains shortest path to the Node from restaurant)
+     *
+     * @return Map(Node, lists, which contains shortest path to the Node from restaurant)
      */
     @Benchmark
-    public HashMap<Node,List<Node>> getShortestForOrdersByBranchCodeLinearPreliminary()
-    {
+    public HashMap<Node, List<Node>> getShortestForOrdersByBranchCodeLinearPreliminary() {
         ByBranchCodeLayers byBranchCodeLayers = new ByBranchCodeLayers(orders);
         System.out.println("Branch Code Linear by Layer");
         return byBranchCodeLayers.getLayers()
                 .entrySet()
                 .stream()
-                .map(branchOrders -> runner.computePathesForLayer(branchOrders.getKey(),branchOrders.getValue(),"BranchCodeLinear"))
+                .map(branchOrders -> runner.computePathesForLayer(branchOrders.getKey(), branchOrders.getValue(), "BranchCodeLinear"))
                 .reduce(this::merge)
-                .orElse(new HashMap<>() );
+                .orElse(new HashMap<>());
     }
 
     /**
      * Parallel computing of shortest pathes and distances for each order in list orders splitted by branch code
      * Using computePathesForLayer method
-     * @return Map(Node, lists,which contains shortest path to the Node from restaurant)
+     *
+     * @return Map(Node, lists, which contains shortest path to the Node from restaurant)
      */
     @Benchmark
-    public HashMap<Node,List<Node>> getShortestForOrdersByBranchCodeParallelPreliminary() {
+    public HashMap<Node, List<Node>> getShortestForOrdersByBranchCodeParallelPreliminary() {
         ByBranchCodeLayers byBranchCodeLayers = new ByBranchCodeLayers(orders);
         System.out.println("Branch Code Parallel by Layer");
         return byBranchCodeLayers.getLayers()
                 .entrySet()
                 .parallelStream()
-                .map(branchOrders -> runner.computePathesForLayer(branchOrders.getKey(),branchOrders.getValue(),"BranchCodeParallel"))
+                .map(branchOrders -> runner.computePathesForLayer(branchOrders.getKey(), branchOrders.getValue(), "BranchCodeParallel"))
                 .reduce(this::merge)
-                .orElse(new HashMap<>() );
+                .orElse(new HashMap<>());
     }
 
     /**
      * merge 2 hashmaps into 1
-     * @param firstMap - HashMap <Node,List<Node>>
+     *
+     * @param firstMap   - HashMap <Node,List<Node>>
      * @param secondMap- HashMap <Node,List<Node>>
      * @return
      */
-    private HashMap<Node,List<Node>> merge(HashMap<Node,List<Node>> firstMap,HashMap<Node,List<Node>> secondMap) {
+    private HashMap<Node, List<Node>> merge(HashMap<Node, List<Node>> firstMap, HashMap<Node, List<Node>> secondMap) {
         firstMap.putAll(secondMap);
         return firstMap;
     }

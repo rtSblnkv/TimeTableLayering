@@ -4,22 +4,26 @@ package TTL.dataloaders;
 public class CsvLoaderFactory {
     /**
      * fabric method
+     *
      * @param tableName - name of table for parse
      * @return CsvLoader class
      */
-    public CsvLoader createCsvLoader(String tableName)
-    {
-        switch(tableName)
-        {
-            case"branches": return new BranchCsvLoader();
+    public CsvLoader createCsvLoader(String tableName) {
+        switch (tableName) {
+            case "branches":
+                return new BranchCsvLoader();
 
-            case"orders": return new OrderCsvLoader();
+            case "orders":
+                return new OrderCsvLoader();
 
-            case"edges": return new EdgeCsvLoader();
+            case "edges":
+                return new EdgeCsvLoader();
 
-            case"nodes": return new NodeCsvLoader();
+            case "nodes":
+                return new NodeCsvLoader();
 
-            default: return null;
+            default:
+                return null;
         }
     }
 }

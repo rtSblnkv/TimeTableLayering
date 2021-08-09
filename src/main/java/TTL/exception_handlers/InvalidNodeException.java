@@ -11,11 +11,10 @@ import lombok.Getter;
 @Getter
 public class InvalidNodeException extends RuntimeException {
 
-    private double lat;
-    private double lon;
+    private final double lat;
+    private final double lon;
 
-    public InvalidNodeException(double lat,double lon,String errMessage)
-    {
+    public InvalidNodeException(double lat, double lon, String errMessage) {
         super(errMessage);
         this.lat = lat;
         this.lon = lon;

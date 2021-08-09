@@ -8,14 +8,13 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 /**
- *  Class which creates graph structure from
- *  list of nodes (nodes)
- *  list of edges (edges)
+ * Class which creates graph structure from
+ * list of nodes (nodes)
+ * list of edges (edges)
  **/
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,16 +26,16 @@ public class GraphCreator {
 
     /**
      * Creates graph structure from Nodes and Edges lists by adding list of adjacent edges for each node
-     * @return Map(node id , node)
+     *
+     * @return Map(node id, node)
      */
-    public  HashMap<Long, Node> createGraph()
-    {
+    public HashMap<Long, Node> createGraph() {
         EdgeWorker edgeWorker = new EdgeWorker(edges);
 
-        HashMap<Long,List<Edge>> edgeHashMap = edgeWorker.toHashMap();
+        HashMap<Long, List<Edge>> edgeHashMap = edgeWorker.toHashMap();
         NodeWorker nodeWorker = new NodeWorker(nodes);
         HashMap<Long, Node> graph = nodeWorker.toHashMap();
-        graph.forEach((id,node) -> node.setEdges(edgeHashMap.get(node.getId())
+        graph.forEach((id, node) -> node.setEdges(edgeHashMap.get(node.getId())
         ));
         return graph;
     }

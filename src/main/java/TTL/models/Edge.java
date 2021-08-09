@@ -5,30 +5,33 @@ import com.opencsv.bean.CsvIgnore;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * edges.csv Data Object
  */
 @NoArgsConstructor
-@ToString(exclude = {"speedLimit","street_type","dist_on_limit"})
-@EqualsAndHashCode(exclude = {"speedLimit","street_type","dist_on_limit"})
+@ToString(exclude = {"speedLimit", "street_type", "dist_on_limit"})
+@EqualsAndHashCode(exclude = {"speedLimit", "street_type", "dist_on_limit"})
 public class Edge implements Serializable {
 
     @CsvBindByName(column = "u")
-    @Getter @Setter
+    @Getter
+    @Setter
     private long from;
 
     @CsvBindByName(column = "v")
-    @Getter @Setter
+    @Getter
+    @Setter
     private long to;
 
-    @CsvBindByName(column="distance(m)")
-    @Getter @Setter
+    @CsvBindByName(column = "distance(m)")
+    @Getter
+    @Setter
     private double distance;
 
-    @CsvBindByName(column="speed(km/h)")
-    @Getter @Setter
+    @CsvBindByName(column = "speed(km/h)")
+    @Getter
+    @Setter
     private double speedLimit;
 
     @CsvIgnore

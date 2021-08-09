@@ -31,13 +31,13 @@ import java.util.List;
 @NoArgsConstructor
 public class DijkstraRunner {
 
-    private  List<Node> nodes;
-    private  List<Edge> edges;
-    private  List<Branch> branches;
+    private List<Node> nodes;
+    private List<Edge> edges;
+    private List<Branch> branches;
 
     private static HashMap<String, Node> branchNodes;
 
-    public DijkstraRunner( List<Node> nodes, List<Edge> edges, List<Branch> branches) {
+    public DijkstraRunner(List<Node> nodes, List<Edge> edges, List<Branch> branches) {
         this.nodes = nodes;
         this.edges = edges;
         this.branches = branches;
@@ -45,14 +45,15 @@ public class DijkstraRunner {
 
     /**
      * computes pathes for list of orders with claculating of dijkstra for each order
-     * @param orders - order list
-     * @param splitter - splitter (if exists) for which whole order list are divided into order sublists (used for creating file name)
+     *
+     * @param orders        - order list
+     * @param splitter      - splitter (if exists) for which whole order list are divided into order sublists (used for creating file name)
      * @param algorithmType - type of started algorithm (used for creating file name)
      * @return map of node and list of nodes as the shortest path to it from departure node
      */
-    public HashMap<Node,List<Node>> computePathes(List<Order> orders,String splitter,String algorithmType) {
+    public HashMap<Node, List<Node>> computePathes(List<Order> orders, String splitter, String algorithmType) {
 
-        HashMap<Node,List<Node>> shortPathes = new HashMap<>();
+        HashMap<Node, List<Node>> shortPathes = new HashMap<>();
         String fileName = "results\\" + splitter + "_" + algorithmType + ".txt";
         String noShortPathFileName = "results\\" + splitter + "_no_short_path.txt";
         String nodeNotExistFileName = "results\\" + splitter + "_strange.txt";
@@ -60,13 +61,11 @@ public class DijkstraRunner {
         try {
             orders.forEach(order -> {
 
-                try{
+                try {
                     NodesToFileWriter.createFile(fileName);
                     NodesToFileWriter.createFile(noShortPathFileName);
                     NodesToFileWriter.createFile(nodeNotExistFileName);
-                }
-                catch(FileAlreadyExistsException ex)
-                {
+                } catch (FileAlreadyExistsException ex) {
                     System.out.println(ex.getMessage());
                 }
 
@@ -99,47 +98,40 @@ public class DijkstraRunner {
 
                     shortPathes.put(nodeTo, pathToCurrentNode);
                     NodesToFileWriter.writeResultInFile(fileName, nodeTo,
-                                    pathToCurrentNode, datasetDistanceToInMetres,
-                                    nodeTo.getMinDistance(), epsilon);
-                }
-                catch(InvalidNodeException ex)
-                {
-                    NodesToFileWriter.writeErrResultInFile(nodeNotExistFileName,ex.getLat(),ex.getLon());
-                }
-                catch(NoShortPathException ex)
-                {
+                            pathToCurrentNode, datasetDistanceToInMetres,
+                            nodeTo.getMinDistance(), epsilon);
+                } catch (InvalidNodeException ex) {
+                    NodesToFileWriter.writeErrResultInFile(nodeNotExistFileName, ex.getLat(), ex.getLon());
+                } catch (NoShortPathException ex) {
                     double errNodeLat = ex.getUnattainableNode().getLatitude();
                     double errNodeLon = ex.getUnattainableNode().getLongtitude();
-                    NodesToFileWriter.writeErrResultInFile(noShortPathFileName,errNodeLat,errNodeLon);
+                    NodesToFileWriter.writeErrResultInFile(noShortPathFileName, errNodeLat, errNodeLon);
                 }
             });
-        }
-        catch(WriteResultException ex)
-        {
+        } catch (WriteResultException ex) {
             ex.printStackTrace();
         }
         return shortPathes;
     }
 
 
-    public HashMap<Node,List<Node>> computePathesForLayer(String branch,List<Order> orders,String type) {
-        HashMap<Node,List<Node>> shortPathes = new HashMap<>();
+    public HashMap<Node, List<Node>> computePathesForLayer(String branch, List<Order> orders, String type) {
+        HashMap<Node, List<Node>> shortPathes = new HashMap<>();
 
-        String fileName = "results\\"+branch +"_"+ type + ".txt";
-        String noShortPathFileName = "results\\"+branch +"_"+ type +"_no_short_path.txt";
-        String nodeNotExistFileName = "results\\"+branch +"_"+ type +"_strange.txt";
+        String fileName = "results\\" + branch + "_" + type + ".txt";
+        String noShortPathFileName = "results\\" + branch + "_" + type + "_no_short_path.txt";
+        String nodeNotExistFileName = "results\\" + branch + "_" + type + "_strange.txt";
 
-        try{
+        try {
             NodesToFileWriter.createFile(fileName);
             NodesToFileWriter.createFile(noShortPathFileName);
             NodesToFileWriter.createFile(nodeNotExistFileName);
-        }
-        catch(FileAlreadyExistsException ex) {
+        } catch (FileAlreadyExistsException ex) {
             System.out.println(ex.getMessage());
         }
 
         List<Node> nodesClone = new ArrayList<>();
-        for(Node node: nodes) {
+        for (Node node : nodes) {
             nodesClone.add(node.clone());
         }
 
@@ -149,7 +141,7 @@ public class DijkstraRunner {
         branchNodes = branchWorker.toBranchNodeHashMap(nodeWorker);
         Node branchNode = branchNodes.get(branch);
 
-        GraphCreator graphBuilder = new GraphCreator(nodesClone,edges);
+        GraphCreator graphBuilder = new GraphCreator(nodesClone, edges);
         HashMap<Long, Node> graph = graphBuilder.createGraph();
 
         Dijkstra dijkstra = new Dijkstra();
@@ -169,19 +161,15 @@ public class DijkstraRunner {
                     NodesToFileWriter.writeResultInFile(fileName, nodeTo,
                             pathToCurrentNode, datasetDistanceToInMetres,
                             nodeTo.getMinDistance(), epsilon);
-                }
-                catch(InvalidNodeException ex) {
-                    NodesToFileWriter.writeErrResultInFile(nodeNotExistFileName,ex.getLat(),ex.getLon());
-                }
-                catch(NoShortPathException ex) {
+                } catch (InvalidNodeException ex) {
+                    NodesToFileWriter.writeErrResultInFile(nodeNotExistFileName, ex.getLat(), ex.getLon());
+                } catch (NoShortPathException ex) {
                     double errNodeLat = ex.getUnattainableNode().getLatitude();
                     double errNodeLon = ex.getUnattainableNode().getLongtitude();
                     NodesToFileWriter.writeErrResultInFile(noShortPathFileName, errNodeLat, errNodeLon);
                 }
             });
-        }
-        catch(WriteResultException ex)
-        {
+        } catch (WriteResultException ex) {
             ex.printStackTrace();
         }
         return shortPathes;

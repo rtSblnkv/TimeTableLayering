@@ -22,12 +22,12 @@ public class NodeWorker implements Worker {
     /**
      * Returns the nodeId of node with latitude = lat and longtitude = lon
      * or else return 0L
+     *
      * @param lat - node latitude
      * @param lon - node longtitude
      * @return node id
      */
-    public long getNodeId(double lat, double lon) throws InvalidNodeException
-    {
+    public long getNodeId(double lat, double lon) throws InvalidNodeException {
         Long nodeId = nodes
                 .stream()
                 .filter(node -> lat == node.getLatitude() && lon == node.getLongtitude())
@@ -35,9 +35,9 @@ public class NodeWorker implements Worker {
                 .findFirst()
                 .orElse(0L);
 
-        if (nodeId == 0L){
-            String errMessage = "No Nodes with [" + lat + "," + lon +"] coordinates in the Dataset";
-            throw new InvalidNodeException(lat,lon,errMessage);
+        if (nodeId == 0L) {
+            String errMessage = "No Nodes with [" + lat + "," + lon + "] coordinates in the Dataset";
+            throw new InvalidNodeException(lat, lon, errMessage);
         }
         return nodeId;
     }
@@ -45,45 +45,41 @@ public class NodeWorker implements Worker {
     /**
      * Returns the Node object with latitude = lat and longtitude = lon
      * or Else returns empty Node
+     *
      * @param lat - node latitude
      * @param lon - node longtitude
      * @return Node
      */
-    public Node getNodeByCoordinates(double lat, double lon) throws InvalidNodeException
-    {
+    public Node getNodeByCoordinates(double lat, double lon) throws InvalidNodeException {
         Node node = nodes
                 .stream()
                 .filter(curNode -> lat == curNode.getLatitude() && lon == curNode.getLongtitude())
                 .findFirst()
                 .orElse(new Node());
 
-        if (node.equals(new Node())){
-            String errMessage = "No Nodes with [" + lat + "," + lon +"] coordinates in the Dataset";
-            throw new InvalidNodeException(lat,lon,errMessage);
+        if (node.equals(new Node())) {
+            String errMessage = "No Nodes with [" + lat + "," + lon + "] coordinates in the Dataset";
+            throw new InvalidNodeException(lat, lon, errMessage);
         }
         return node;
     }
 
     /**
      * Checks nodes with nodeStartId and nodeEndId exists in list of nodes
+     *
      * @param nodeStartId - id of start node in edge
-     * @param nodeEndId - id of end node in edge
+     * @param nodeEndId   - id of end node in edge
      * @return true if both nodes are exist else false
      */
-    Boolean checkNodesInEdgeExist(long nodeStartId, long nodeEndId)
-    {
+    Boolean checkNodesInEdgeExist(long nodeStartId, long nodeEndId) {
         Boolean firstExist = false;
         Boolean secondExist = false;
-        if (nodes != null && !nodes.isEmpty())
-        {
-            for(Node node : nodes)
-            {
-                if(node.getId() == nodeStartId)
-                {
+        if (nodes != null && !nodes.isEmpty()) {
+            for (Node node : nodes) {
+                if (node.getId() == nodeStartId) {
                     firstExist = true;
                 }
-                if(node.getId() == nodeEndId)
-                {
+                if (node.getId() == nodeEndId) {
                     secondExist = true;
                 }
             }
@@ -93,12 +89,13 @@ public class NodeWorker implements Worker {
 
     /**
      * Converts list of nodes into HashMap
+     *
      * @return HashMap ( Node ID, Node)
      */
     @Override
     public HashMap<Long, Node> toHashMap() {
-        HashMap<Long,Node> nodesHashMap = new HashMap<>();
-        nodes.forEach(node -> nodesHashMap.put(node.getId(),node));
+        HashMap<Long, Node> nodesHashMap = new HashMap<>();
+        nodes.forEach(node -> nodesHashMap.put(node.getId(), node));
         return nodesHashMap;
     }
 

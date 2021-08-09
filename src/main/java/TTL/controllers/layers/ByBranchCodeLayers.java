@@ -8,8 +8,7 @@ import java.util.stream.Collectors;
 
 public class ByBranchCodeLayers extends Layers {
 
-    public ByBranchCodeLayers(List<Order> orders)
-    {
+    public ByBranchCodeLayers(List<Order> orders) {
         super(orders);
         setSplitter();
         splitOnLayers();
@@ -29,7 +28,7 @@ public class ByBranchCodeLayers extends Layers {
     public void splitOnLayers() {
         super.getSplitters()
                 .forEach(branchCode -> super.getLayers()
-                        .put(branchCode,new ArrayList<Order>()));
+                        .put(branchCode, new ArrayList<Order>()));
 
         super.getOrders()
                 .forEach(order -> super.getLayers()

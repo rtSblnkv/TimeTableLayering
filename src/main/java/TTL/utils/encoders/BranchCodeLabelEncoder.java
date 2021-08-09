@@ -11,6 +11,7 @@ import java.util.List;
 public class BranchCodeLabelEncoder implements LabelEncoder {
     /**
      * realizes label encoder for branch code elements of order in order list
+     *
      * @param orders - order list
      * @return array of double, which correspond to the branch code created number
      * with position,which correspond to the position of the order in order list
@@ -22,8 +23,7 @@ public class BranchCodeLabelEncoder implements LabelEncoder {
         int ordersSize = orders.size();
         double[] branchCodeLE = new double[ordersSize];
         int i = 0;
-        for(Order order : orders)
-        {
+        for (Order order : orders) {
             branchCodeLE[i] = branchCodes.indexOf(order.getBranchCode().toUpperCase());
             i++;
         }

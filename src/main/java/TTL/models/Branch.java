@@ -9,12 +9,13 @@ import java.io.Serializable;
  * branches.csv Data Object
  */
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @ToString(exclude = "branchName")
 @EqualsAndHashCode
 public class Branch implements Serializable {
 
-    @CsvBindByName(column ="branch_code")
+    @CsvBindByName(column = "branch_code")
     private String branchCode;
 
     @CsvBindByName(column = "lat")
@@ -23,7 +24,7 @@ public class Branch implements Serializable {
     @CsvBindByName(column = "lon")
     private double longtitude;
 
-    @CsvBindByName(column ="branch_name")
+    @CsvBindByName(column = "branch_name")
     private String branchName;
 
 }

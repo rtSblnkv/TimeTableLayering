@@ -1,19 +1,22 @@
 package TTL.controllers.layers;
 
 import TTL.models.Order;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public abstract class Layers {
 
     private List<Order> orders;
 
-    private HashMap<String,List<Order>> layers;
+    private HashMap<String, List<Order>> layers;
 
     private ArrayList<String> splitters;
 
@@ -24,5 +27,6 @@ public abstract class Layers {
     }
 
     public abstract void setSplitter();
+
     public abstract void splitOnLayers();
 }

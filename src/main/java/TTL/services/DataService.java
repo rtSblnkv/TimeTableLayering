@@ -14,7 +14,6 @@ import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,22 +33,22 @@ public class DataService {
 
     private List<Branch> branches;
 
-    private static final HashMap<String, String> csvPaths = new HashMap<>(){{
+    private static final HashMap<String, String> csvPaths = new HashMap<>() {{
         put("branches", FileURLDecoder.getPathToResource("branches.csv"));
-        put("edges",FileURLDecoder.getPathToResource("edges.csv"));
-        put("nodes",FileURLDecoder.getPathToResource("nodes.csv"));
-        put("orders",FileURLDecoder.getPathToResource("orders.csv"));
+        put("edges", FileURLDecoder.getPathToResource("edges.csv"));
+        put("nodes", FileURLDecoder.getPathToResource("nodes.csv"));
+        put("orders", FileURLDecoder.getPathToResource("orders.csv"));
     }};
 
     /**
      * Uploads data from dataset with csvToList methods
      * initialize branches,edges,nodes,orders.
+     *
      * @throws UploadDataException
      */
     @Benchmark
-    public void uploadDataFromCsvFiles() throws UploadDataException
-    {
-       try {
+    public void uploadDataFromCsvFiles() throws UploadDataException {
+        try {
             CsvLoaderFactory loaderFactory = new CsvLoaderFactory();
 
             CsvLoader branchLoader = loaderFactory.createCsvLoader("branches");
@@ -71,10 +70,8 @@ public class DataService {
             orders = orderLoader.csvToList(csvPaths.get("orders"));
 
             System.out.println("orders " + orders.size());
-        }
-        catch (UploadDataException|IllegalArgumentException ex)
-        {
-            throw new UploadDataException(ex.getMessage(),ex);
+        } catch (UploadDataException | IllegalArgumentException ex) {
+            throw new UploadDataException(ex.getMessage(), ex);
         }
     }
 }

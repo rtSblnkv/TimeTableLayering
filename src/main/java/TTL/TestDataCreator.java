@@ -14,10 +14,9 @@ import java.util.List;
  */
 public class TestDataCreator {
 
-    public static List<Node> getTestNodes()
-    {
+    public static List<Node> getTestNodes() {
         List<Node> nodes = new ArrayList<>();
-        for(int i = 1; i<=7;i++) {
+        for (int i = 1; i <= 7; i++) {
             Node node = new Node();
             node.setLatitude(-i);
             node.setLongtitude(i);
@@ -28,8 +27,7 @@ public class TestDataCreator {
         return nodes;
     }
 
-    public static List<Edge> getTestEdges()
-    {
+    public static List<Edge> getTestEdges() {
         Edge edge12 = new Edge();
         edge12.setDistance(5);
         edge12.setFrom(1);
@@ -75,13 +73,12 @@ public class TestDataCreator {
         edge57.setFrom(5);
         edge57.setTo(7);
 
-        return new ArrayList<>(List.of(edge12,edge13,edge23,edge24,edge34,edge35,edge45,edge46,edge57));
+        return new ArrayList<>(List.of(edge12, edge13, edge23, edge24, edge34, edge35, edge45, edge46, edge57));
     }
 
     // nodes [1,2,3,4,5,6,7]
     // edges [12,13,23,24,34,35,45,46,57]
-    public static HashMap<Long, Node> getTestGraph()
-    {
+    public static HashMap<Long, Node> getTestGraph() {
         List<Node> nodes = getTestNodes();
         List<Edge> edges = getTestEdges();
 
@@ -96,14 +93,12 @@ public class TestDataCreator {
         nodes.get(4).addEdge(edges.get(8));
 
         NodeWorker nw = new NodeWorker(nodes);
-        return  nw.toHashMap();
+        return nw.toHashMap();
     }
 
-    public static List<Order> getTestOrders()
-    {
+    public static List<Order> getTestOrders() {
         List<Order> orders = new ArrayList<>();
-        for(int i = 1; i<=7;i++)
-        {
+        for (int i = 1; i <= 7; i++) {
             Order order = new Order();
             order.setBranchCode("NS");
             order.setLatitude(-i);

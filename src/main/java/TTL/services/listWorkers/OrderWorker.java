@@ -21,10 +21,10 @@ public class OrderWorker implements Worker {
 
     /**
      * Returns list of branch codes from list of orders (Order.BranchCode)
+     *
      * @return list of branch codes
      */
-    public List<String> getBranchCodes()
-    {
+    public List<String> getBranchCodes() {
         return orders
                 .stream()
                 .distinct()
@@ -35,35 +35,36 @@ public class OrderWorker implements Worker {
 
     /**
      * Returns list of order types from list of orders (Order.OrderType)
+     *
      * @return list of order types
      */
-    public List<String> getOrderTypes()
-    {
+    public List<String> getOrderTypes() {
         return orders
-                        .stream()
-                        .distinct()
-                        .map(Order::getOrderType)
-                        .collect(Collectors.toList()
-                        );
+                .stream()
+                .distinct()
+                .map(Order::getOrderType)
+                .collect(Collectors.toList()
+                );
     }
 
     /**
      * Delete list of orders orders which Node computed by order latitude and longtitude are not exist in List of nodes.
+     *
      * @param nw - handler of list of nodes
      */
-    public void deleteOrdersWithIncorrectNodes(NodeWorker nw )
-    {
-        orders.removeIf(order -> nw.getNodeId(order.getLatitude(),order.getLongtitude()) == 0);
+    public void deleteOrdersWithIncorrectNodes(NodeWorker nw) {
+        orders.removeIf(order -> nw.getNodeId(order.getLatitude(), order.getLongtitude()) == 0);
     }
 
     /**
      * Converts list of orders into HashMap
+     *
      * @return HashMap ( order ID, order)
      */
     @Override
     public HashMap<String, Order> toHashMap() {
-        HashMap<String,Order> ordersHashMap = new HashMap<>();
-        orders.forEach(order -> ordersHashMap.put(order.getOrderId(),order));
+        HashMap<String, Order> ordersHashMap = new HashMap<>();
+        orders.forEach(order -> ordersHashMap.put(order.getOrderId(), order));
         return ordersHashMap;
     }
 

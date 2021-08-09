@@ -69,7 +69,7 @@ public class DijkstraTest {
 
         Dijkstra dijkstra = new Dijkstra(graph);
         dijkstra.computeMinDistancesfrom(startNode);
-        List<Node> path = dijkstra.getShortestPathTo(nodes.get(7));
+        List<Node> path = dijkstra.getShortestPathTo(nodes.get(6));
     }
 
 }

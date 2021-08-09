@@ -23,25 +23,26 @@ import java.util.concurrent.PriorityBlockingQueue;
 @AllArgsConstructor
 public class Dijkstra {
 
-    @Getter @Setter
-    private HashMap<Long,Node> graph;
+    @Getter
+    @Setter
+    private HashMap<Long, Node> graph;
 
     /**
      * compute minDistances and set previous Node,
      * from which the distance is the shortest, for each Node in Graph.
+     *
      * @param nodeFrom - Node from which min distances will be computed
      */
-    public void computeMinDistancesfrom(Node nodeFrom)
-    {
-        try{
-        nodeFrom.setMinDistance(0);
-        PriorityBlockingQueue<Node> priorityQueue = new PriorityBlockingQueue<>();
-        priorityQueue.add(nodeFrom);
+    public void computeMinDistancesfrom(Node nodeFrom) {
+        try {
+            nodeFrom.setMinDistance(0);
+            PriorityBlockingQueue<Node> priorityQueue = new PriorityBlockingQueue<>();
+            priorityQueue.add(nodeFrom);
 
             while (!priorityQueue.isEmpty()) {
                 Node curNode = priorityQueue.poll();
                 List<Edge> curNodeEdges = curNode.getEdges();
-                if(curNodeEdges != null) {
+                if (curNodeEdges != null) {
                     curNodeEdges.forEach(edge -> {
                         Node nodeTo = graph.get(edge.getTo());
                         double minDistance = curNode.getMinDistance() + edge.getDistance();
@@ -54,29 +55,26 @@ public class Dijkstra {
                     });
                 }
             }
-        }
-        catch(RuntimeException ex)
-        {
-            System.out.println("Error: "+ex.getMessage());
+        } catch (RuntimeException ex) {
+            System.out.println("Error: " + ex.getMessage());
         }
     }
 
     /**
      * Returns shortest path to Node nodeTo from node,
      * for which computeMinDistancesFrom was launched
+     *
      * @param nodeTo - The final point to compute short path for
      * @return list of nodes, which contains the shortest path to nodeTo
      */
-    public List<Node> getShortestPathTo(Node nodeTo) throws NoShortPathException
-    {
+    public List<Node> getShortestPathTo(Node nodeTo) throws NoShortPathException {
         List<Node> path = new ArrayList<>();
-        for(Node node = nodeTo;node != null; node = node.getPreviousNode()){
+        for (Node node = nodeTo; node != null; node = node.getPreviousNode()) {
             path.add(node);
         }
-        if(path.size() == 1)
-        {
+        if (path.size() == 1) {
             String errMessage = "No short path for order with coordinates [" + nodeTo.getLatitude() + "," + nodeTo.getLongtitude() + "]";
-            throw new NoShortPathException(errMessage,nodeTo);
+            throw new NoShortPathException(errMessage, nodeTo);
         }
         Collections.reverse(path);
         return path;

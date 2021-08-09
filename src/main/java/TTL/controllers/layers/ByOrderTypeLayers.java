@@ -12,8 +12,7 @@ import java.util.stream.Collectors;
  */
 public class ByOrderTypeLayers extends Layers {
 
-    public ByOrderTypeLayers(List<Order> orders)
-    {
+    public ByOrderTypeLayers(List<Order> orders) {
         super(orders);
         setSplitter();
         splitOnLayers();
@@ -35,7 +34,7 @@ public class ByOrderTypeLayers extends Layers {
         super.getSplitters()
                 .forEach(orderType ->
                         super.getLayers()
-                        .put(orderType,new ArrayList<Order>()));
+                                .put(orderType, new ArrayList<Order>()));
 
         super.getOrders().forEach(order ->
                 super.getLayers()
