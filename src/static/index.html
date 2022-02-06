@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Map router</title>
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""></script>
+</head>
+<body>
+        <div id="map"></div>
+
+        <div class="filters">
+            <select id="filter_branch">
+                <option >BK</option>
+                <option selected>NS</option>
+                <option >TP</option>
+            </select>
+            <select id="filter_type">
+                <option selected >Linear</option>
+                <option >Parallel</option>
+            </select>
+            <select id="filter_color">
+                <option selected >green</option>
+                <option >black</option>
+                <option >red</option>
+            </select>
+            <select id="filter_alg">
+                <option selected >Dijkstra</option>
+                <option >AStar</option>
+            </select>
+            <button class="filter_button">Построить</button>
+            <button class="clear_button">Очистить</button>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="routeViewer.js"></script>
+</body>
+</html>

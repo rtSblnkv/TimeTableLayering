@@ -1,0 +1,9 @@
+ [37.8122409,144.9638955]
+ Path :: ?
+ Distance: Calculated -> ? In Dataset -> ? Epsilon -> ?
+ [37.8187668,144.9699889]
+ Path :: ?
+ Distance: Calculated -> ? In Dataset -> ? Epsilon -> ?
+ [37.8063565,144.9829932]
+ Path :: ?
+ Distance: Calculated -> ? In Dataset -> ? Epsilon -> ?

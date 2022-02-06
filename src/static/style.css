@@ -1,0 +1,39 @@
+#map {
+    width: 1500px;
+    height: 700px;
+    position: relative;
+}
+
+.filters{
+    padding:40px;
+    margin-top:75px;
+    background: black;
+    display: inline-block;
+}
+
+label{
+    background-color: #E8FCC2;
+}
+
+.filters select {
+    font-size:medium;
+    font-weight:700;
+    padding: 10px;
+    border: solid 1px #E8FCC2;
+    outline: 0;
+    background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #CAD9E3), to(#D0F4EA));
+    background: -moz-linear-gradient(top, #FFFFFF, #CAD9E3 1px, #FFFFFF 25px);
+    box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    width:150px;
+}
+
+.filter_button, .clear_button{
+    padding: 13px 13px 13px 13px;
+    font-size: 12px;
+    font-weight:800;
+    border-radius:5px;
+    text-align: center;
+    background-color: #E8FCC2;
+}
